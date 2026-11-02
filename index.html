@@ -13,31 +13,37 @@
 <style>
 /* レイアウト: 760px の一本の列。上に4つのタブ、一覧 → 詳細 の二段。リスクは色の帯と「高・中」の札で示す */
 :root{
-  --bg:#F2F5F3; --surface:#FFFFFF; --ink:#1C2A28; --muted:#566865; --line:#D8E1DE;
-  --accent:#2C6A5C; --accent-ink:#FFFFFF; --accent-soft:#E2EEEA;
-  --danger:#B42318; --danger-soft:#FCEBE8; --warn:#8A5A00; --warn-soft:#FFF3D9; --info:#1F5A8A; --info-soft:#E5EFF8;
+  --bg:#F5F6F3; --surface:#FFFFFF; --ink:#262626; --muted:#666666; --line:#E0E3DC;
+  --accent:#3E7F1C; --accent-fill:#6DB92C; --accent-ink:#13220A; --accent-soft:#EAF5E1;
+  --brand-red:#EA361F; --brand-yellow:#FFC51D; --brand-green:#6DB92C; --brand-gray:#666666;
+  --danger:#C42D18; --danger-soft:#FDE9E5; --warn:#8A6400; --warn-soft:#FFF5D6; --info:#2F6B9A; --info-soft:#E7F0F7;
   --f-display:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
   --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
   --r:12px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#111816; --surface:#19221F; --ink:#E3ECE9; --muted:#9AADA8; --line:#2B3834;
-  --accent:#7DC3AF; --accent-ink:#0E1E19; --accent-soft:#1E3530;
-  --danger:#FF8F84; --danger-soft:#3A1F1C; --warn:#F0C268; --warn-soft:#342A13; --info:#8EC1EA; --info-soft:#182A3A; color-scheme:dark}}
+  --bg:#151715; --surface:#1D211C; --ink:#ECEDEA; --muted:#A8ABA5; --line:#30352E;
+  --accent:#8FD25B; --accent-fill:#6DB92C; --accent-ink:#0F1A08; --accent-soft:#22301A;
+  --danger:#FF7B66; --danger-soft:#3A1E19; --warn:#FFC51D; --warn-soft:#332A10; --info:#8EC1EA; --info-soft:#182A3A; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#111816; --surface:#19221F; --ink:#E3ECE9; --muted:#9AADA8; --line:#2B3834;
-  --accent:#7DC3AF; --accent-ink:#0E1E19; --accent-soft:#1E3530;
-  --danger:#FF8F84; --danger-soft:#3A1F1C; --warn:#F0C268; --warn-soft:#342A13; --info:#8EC1EA; --info-soft:#182A3A; color-scheme:dark}
+  --bg:#151715; --surface:#1D211C; --ink:#ECEDEA; --muted:#A8ABA5; --line:#30352E;
+  --accent:#8FD25B; --accent-fill:#6DB92C; --accent-ink:#0F1A08; --accent-soft:#22301A;
+  --danger:#FF7B66; --danger-soft:#3A1E19; --warn:#FFC51D; --warn-soft:#332A10; --info:#8EC1EA; --info-soft:#182A3A; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.75;-webkit-text-size-adjust:100%}
 .wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
 header.top{padding-block:22px 10px}
 header.top h1{font-family:var(--f-display);font-size:1.55rem;line-height:1.3;margin:0;letter-spacing:.02em;text-wrap:balance}
 header.top p{margin:4px 0 0;color:var(--muted);font-size:.88rem}
-header.top p.brand{margin:0 0 2px;font-family:var(--f-display);font-weight:700;font-size:.9rem;letter-spacing:.12em;color:var(--accent)}
+header.top p.brand .dots{display:inline-flex;gap:3px;margin-right:6px;vertical-align:middle}
+header.top p.brand .dots i{width:8px;height:8px;border-radius:50%;display:block}
+header.top p.brand .dots i:nth-child(1){background:var(--brand-red)}
+header.top p.brand .dots i:nth-child(2){background:var(--brand-yellow)}
+header.top p.brand .dots i:nth-child(3){background:var(--brand-green)}
+header.top p.brand{margin:0 0 2px;font-family:var(--f-display);font-weight:700;font-size:.9rem;letter-spacing:.12em;color:var(--muted)}
 nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;border-bottom:1px solid var(--line)}
 nav.tabs button{font:inherit;font-size:.78rem;font-weight:700;padding:8px 2px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;line-height:1.3}
-nav.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+nav.tabs button[aria-selected="true"]{background:var(--accent-fill);color:var(--accent-ink);border-color:var(--accent-fill)}
 button:focus-visible,input:focus-visible,.card:focus-visible{outline:3px solid var(--info);outline-offset:2px}
 main{padding-top:18px;display:flex;flex-direction:column;gap:16px}
 h2{font-family:var(--f-display);font-size:1.35rem;line-height:1.35;margin:0;text-wrap:balance}
@@ -75,7 +81,7 @@ ul.plain li+li{margin-top:3px}
 .say small{display:block;font-size:.75rem;color:var(--muted);font-weight:700;letter-spacing:.06em;margin-bottom:2px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer;line-height:1.5}
-.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip.on{background:var(--accent-fill);border-color:var(--accent-fill);color:var(--accent-ink);font-weight:700}
 .chip.x::after{content:"×";margin-left:6px;opacity:.75}
 .chip.link{color:var(--accent);border-color:var(--accent)}
 input[type=search],input[type=text]{width:100%;font:inherit;font-size:1rem;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
@@ -93,11 +99,11 @@ input[type=search],input[type=text]{width:100%;font:inherit;font-size:1rem;paddi
 .sugg small{color:var(--muted);margin-left:6px}
 .step{display:flex;flex-direction:column;gap:10px}
 .step-h{display:flex;align-items:center;gap:10px}
-.step-h i{font-style:normal;font-weight:700;font-size:.8rem;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);flex:none}
+.step-h i{font-style:normal;font-weight:700;font-size:.8rem;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--accent-fill);color:var(--accent-ink);flex:none}
 .step-h b{font-size:1rem}
 .example{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--info-soft);color:var(--info);border-radius:10px;padding:8px 12px;font-size:.88rem;font-weight:700}
 .btn{font:inherit;font-weight:700;font-size:.9rem;padding:8px 14px;border-radius:10px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);cursor:pointer}
-.btn.fill{background:var(--accent);color:var(--accent-ink)}
+.btn.fill{background:var(--accent-fill);border-color:var(--accent-fill);color:var(--accent-ink)}
 .out-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .checks label{display:flex;gap:10px;align-items:flex-start;padding:6px 4px;cursor:pointer;border-radius:8px}
@@ -136,7 +142,7 @@ pre.out{white-space:pre-wrap;word-break:break-word;font-family:var(--f-body);fon
 .sec-h h3{margin:0}
 .subtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .subtabs button{font:inherit;font-size:.85rem;font-weight:700;padding:9px 4px;border-radius:10px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);cursor:pointer;line-height:1.3}
-.subtabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.subtabs button[aria-selected="true"]{background:var(--accent-fill);border-color:var(--accent-fill);color:var(--accent-ink)}
 @media (max-width:480px){.subtabs{grid-template-columns:repeat(2,1fr)}}
 .foot-act{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
 a{color:var(--info)}
@@ -154,7 +160,7 @@ footer{margin-top:28px;border-top:1px solid var(--line);padding-top:12px}
 <body>
 <div class="wrap">
   <header class="top">
-    <p class="brand">野の花</p>
+    <p class="brand"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>野の花</p>
     <h1>精神・知的の利用者の訪問アセスメント</h1>
     <p>精神の病気や知的障害のある利用者さんの訪問で、病気・お薬・リスクを確かめて説明するための手引き</p>
   </header>
