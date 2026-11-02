@@ -1,0 +1,1505 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>野の花　精神・知的の利用者の訪問アセスメント</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+/* レイアウト: 760px の一本の列。上に4つのタブ、一覧 → 詳細 の二段。リスクは色の帯と「高・中」の札で示す */
+:root{
+  --bg:#F2F5F3; --surface:#FFFFFF; --ink:#1C2A28; --muted:#566865; --line:#D8E1DE;
+  --accent:#2C6A5C; --accent-ink:#FFFFFF; --accent-soft:#E2EEEA;
+  --danger:#B42318; --danger-soft:#FCEBE8; --warn:#8A5A00; --warn-soft:#FFF3D9; --info:#1F5A8A; --info-soft:#E5EFF8;
+  --f-display:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111816; --surface:#19221F; --ink:#E3ECE9; --muted:#9AADA8; --line:#2B3834;
+  --accent:#7DC3AF; --accent-ink:#0E1E19; --accent-soft:#1E3530;
+  --danger:#FF8F84; --danger-soft:#3A1F1C; --warn:#F0C268; --warn-soft:#342A13; --info:#8EC1EA; --info-soft:#182A3A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111816; --surface:#19221F; --ink:#E3ECE9; --muted:#9AADA8; --line:#2B3834;
+  --accent:#7DC3AF; --accent-ink:#0E1E19; --accent-soft:#1E3530;
+  --danger:#FF8F84; --danger-soft:#3A1F1C; --warn:#F0C268; --warn-soft:#342A13; --info:#8EC1EA; --info-soft:#182A3A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.75;-webkit-text-size-adjust:100%}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+header.top{padding-block:22px 10px}
+header.top h1{font-family:var(--f-display);font-size:1.55rem;line-height:1.3;margin:0;letter-spacing:.02em;text-wrap:balance}
+header.top p{margin:4px 0 0;color:var(--muted);font-size:.88rem}
+header.top p.brand{margin:0 0 2px;font-family:var(--f-display);font-weight:700;font-size:.9rem;letter-spacing:.12em;color:var(--accent)}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;border-bottom:1px solid var(--line)}
+nav.tabs button{font:inherit;font-size:.78rem;font-weight:700;padding:8px 2px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;line-height:1.3}
+nav.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button:focus-visible,input:focus-visible,.card:focus-visible{outline:3px solid var(--info);outline-offset:2px}
+main{padding-top:18px;display:flex;flex-direction:column;gap:16px}
+h2{font-family:var(--f-display);font-size:1.35rem;line-height:1.35;margin:0;text-wrap:balance}
+h3{font-size:1rem;margin:0 0 6px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+h3 .k{font-size:.72rem;letter-spacing:.08em;color:var(--muted);font-weight:500}
+p{margin:0}
+.lead{color:var(--muted);font-size:.92rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.card{display:flex;flex-direction:column;gap:2px;text-align:left;font:inherit;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;cursor:pointer}
+.card:hover{border-color:var(--accent)}
+.card b{font-size:1rem}
+.card span{color:var(--muted);font-size:.82rem;line-height:1.5}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 14px;min-width:0}
+.panel.soft{background:var(--accent-soft);border-color:transparent}
+ul.plain{margin:0;padding-left:1.2em}
+ul.plain li+li{margin-top:3px}
+.back{align-self:flex-start;font:inherit;font-size:.9rem;background:none;border:none;color:var(--accent);font-weight:700;cursor:pointer;padding:4px 0}
+.sym{display:grid;gap:10px}
+.sym div{border-left:3px solid var(--line);padding-left:10px}
+.sym b{display:block;font-size:.9rem}
+.risks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.risks li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:10px 12px;border-radius:10px;background:var(--bg)}
+.risks li.h{background:var(--danger-soft)}
+.risks li.m{background:var(--warn-soft)}
+.risks li.l{background:var(--info-soft)}
+.lv{font-size:.74rem;font-weight:700;border-radius:999px;padding:1px 9px;margin-top:3px;white-space:nowrap;border:1px solid currentColor}
+.h .lv{color:var(--danger)} .m .lv{color:var(--warn)} .l .lv{color:var(--info)}
+.risks b{display:block}
+.risks p{font-size:.9rem;color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+.ok h3{color:var(--accent)} .ng h3{color:var(--danger)}
+.say{background:var(--bg);border-radius:10px;padding:12px 14px;font-size:.95rem}
+.say + .say{margin-top:8px}
+.say small{display:block;font-size:.75rem;color:var(--muted);font-weight:700;letter-spacing:.06em;margin-bottom:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer;line-height:1.5}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip.x::after{content:"×";margin-left:6px;opacity:.75}
+.chip.link{color:var(--accent);border-color:var(--accent)}
+input[type=search],input[type=text]{width:100%;font:inherit;font-size:1rem;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.cls-h{font-size:.78rem;letter-spacing:.08em;color:var(--muted);font-weight:700;margin:6px 0 -2px}
+.drow{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.gen{color:var(--muted);font-size:.9rem;font-weight:400}
+.badge{font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.alert{border:1px solid var(--danger);background:var(--danger-soft);border-radius:var(--r);padding:12px 14px}
+.alert b{color:var(--danger)}
+.note{font-size:.8rem;color:var(--muted);line-height:1.6}
+.sugg{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:6px;background:var(--surface)}
+.sugg button{font:inherit;text-align:left;padding:8px 12px;background:none;border:none;border-bottom:1px solid var(--line);color:var(--ink);cursor:pointer}
+.sugg button:last-child{border-bottom:none}
+.sugg button:hover{background:var(--accent-soft)}
+.sugg small{color:var(--muted);margin-left:6px}
+.step{display:flex;flex-direction:column;gap:10px}
+.step-h{display:flex;align-items:center;gap:10px}
+.step-h i{font-style:normal;font-weight:700;font-size:.8rem;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);flex:none}
+.step-h b{font-size:1rem}
+.example{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--info-soft);color:var(--info);border-radius:10px;padding:8px 12px;font-size:.88rem;font-weight:700}
+.btn{font:inherit;font-weight:700;font-size:.9rem;padding:8px 14px;border-radius:10px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);cursor:pointer}
+.btn.fill{background:var(--accent);color:var(--accent-ink)}
+.out-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:6px 4px;cursor:pointer;border-radius:8px}
+.checks label:hover{background:var(--bg)}
+.checks input{width:18px;height:18px;margin-top:4px;accent-color:var(--accent);flex:none}
+.checks small{display:block;color:var(--muted);font-size:.82rem;line-height:1.5}
+.drugline{padding:8px 0;border-top:1px solid var(--line)}
+.drugline:first-child{border-top:none;padding-top:0}
+.drugline b{display:block}
+.em{display:flex;flex-direction:column;gap:8px}
+.em h3{font-size:1.05rem}
+.em .lbl{font-size:.75rem;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.em .act{background:var(--danger-soft);border-radius:10px;padding:8px 12px}
+.em .act .lbl{color:var(--danger)}
+.grp{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.grp-i+.grp-i{border-top:1px solid var(--line)}
+.grp-h{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;font:inherit;font-weight:700;font-size:.92rem;text-align:left;padding:11px 12px;background:var(--surface);color:var(--ink);border:none;cursor:pointer}
+.grp-h:hover{background:var(--accent-soft)}
+.grp-n{display:flex;align-items:center;gap:8px;color:var(--accent);font-size:.8rem;white-space:nowrap}
+.grp-n i{font-style:normal;color:var(--muted);font-size:.7rem}
+.grp-b{padding:4px 12px 12px;background:var(--surface)}
+.chip .alt{display:block;font-size:.7rem;opacity:.75;line-height:1.2}
+.frow{display:flex;flex-direction:column;gap:6px;padding:10px 0;border-top:1px solid var(--line)}
+.frow:first-of-type{border-top:none;padding-top:2px}
+.fl{font-weight:700;font-size:.9rem}
+.frow input[type=text],.frow input[type=date],.vit input,.gafrow input{width:100%;max-width:280px;font:inherit;font-size:.95rem;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.vit{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.vit label,.tlabel{display:flex;flex-direction:column;gap:4px;font-size:.85rem;font-weight:700}
+.tlabel textarea{width:100%;font:inherit;font-size:.95rem;font-weight:400;min-height:72px}
+.tlist{display:flex;flex-direction:column;gap:12px}
+.gafrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.gafrow input{max-width:110px}
+.gafhint{font-size:.88rem;color:var(--accent);font-weight:700}
+pre.out{white-space:pre-wrap;word-break:break-word;font-family:var(--f-body);font-size:.9rem;line-height:1.7;background:var(--bg);border-radius:10px;padding:10px 12px;margin:0}
+.sec-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.sec-h h3{margin:0}
+.subtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.subtabs button{font:inherit;font-size:.85rem;font-weight:700;padding:9px 4px;border-radius:10px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);cursor:pointer;line-height:1.3}
+.subtabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:480px){.subtabs{grid-template-columns:repeat(2,1fr)}}
+.foot-act{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+a{color:var(--info)}
+.chip{min-height:38px}
+.btn{min-height:40px}
+.pii{border-color:var(--danger)!important;outline:2px solid var(--danger)}
+.btn.sm{font-size:.8rem;padding:5px 12px}
+.selmeds{display:flex;flex-wrap:wrap;gap:8px}
+.selmed{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--line);border-radius:999px}
+textarea{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px}
+footer{margin-top:28px;border-top:1px solid var(--line);padding-top:12px}
+@media (prefers-reduced-motion:no-preference){.card,.chip,nav.tabs button{transition:background .15s,border-color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="brand">野の花</p>
+    <h1>精神・知的の利用者の訪問アセスメント</h1>
+    <p>精神の病気や知的障害のある利用者さんの訪問で、病気・お薬・リスクを確かめて説明するための手引き</p>
+  </header>
+  <nav class="tabs" role="tablist" aria-label="画面の切りかえ">
+    <button id="tab-dis" role="tab" data-tab="dis">病名から</button>
+    <button id="tab-drug" role="tab" data-tab="drug">薬から</button>
+    <button id="tab-as" role="tab" data-tab="as">アセス<br>・記録</button>
+    <button id="tab-sum" role="tab" data-tab="sum">まとめ<br>アイちゃん用</button>
+    <button id="tab-em" role="tab" data-tab="em">危険な<br>サイン</button>
+  </nav>
+  <main id="main"></main>
+  <footer>
+    <p class="note">ここに書いてあるのは一般的な要点です（2026年11月時点の添付文書・診療ガイドラインの内容をもとに、訪問看護で使う形にまとめています）。量・飲み合わせ・禁忌の最終確認は、添付文書・主治医・薬剤師で行ってください。利用者さんの名前などの個人情報は入力しないでください。</p>
+  </footer>
+</div>
+
+<script>
+/* ================= 薬の分類（共通の内容） ================= */
+const CLS={
+ ap:{n:'抗精神病薬',what:'幻覚・妄想・興奮をしずめ、再発を防ぐ薬。統合失調症のほか、双極性障害、うつ病の補助、認知症の興奮などにも使われます。',
+  side:['眠気・だるさ','便秘','体重増加・食欲が増える','口の渇き','立ちくらみ（起立性低血圧）','手のふるえ・動きが遅い・表情が乏しい・小刻みに歩く（パーキンソン症状）','そわそわしてじっとしていられない（アカシジア）','月経不順・乳汁が出る・性機能の低下（高プロラクチン血症）'],
+  danger:['悪性症候群：高熱・体のこわばり・大量の汗・意識がぼんやり・脈が速い','急性ジストニア：首が反る・目が上を向いたまま・舌が出る（飲み始め・増量の数日以内）','腸閉塞：何日も便が出ない・お腹が張る・吐く','高血糖：のどの渇き・水をたくさん飲む・尿が多い・だるい','飲み込みにくさ・むせ（誤嚥性肺炎）','遅発性ジスキネジア：口をもぐもぐ・舌が勝手に動く（長く飲んでいる人）'],
+  obs:['最後の排便日と便の回数','体重（できれば腹囲も）','ふるえ・歩き方・よだれ・表情','そわそわ感（アカシジアは「不安が強くなった」と見間違えやすい）','眠気・立ちくらみ・転倒','水分をとる量（多すぎ・少なすぎ）'],
+  tip:'飲み始めや増量の後に「イライラ・落ち着かない」が出たら、病状の悪化ではなくアカシジア（副作用）のことがあります。主治医に伝えましょう。',
+  say:'頭の中のざわざわ（不安や聞こえる声）をしずめて、再発を防ぐお薬です。眠気や便秘が出ることがあるので、困ったら教えてください。自分の判断でやめると、しばらくして調子を崩すことが多いので、やめたい時はまず相談してください。'},
+ ad:{n:'抗うつ薬',what:'脳の中のセロトニンやノルアドレナリンの働きを整え、気分の落ち込みや不安をやわらげる薬。効果が出るまで2〜4週間かかります。',
+  side:['飲み始めの吐き気・胃の不快感（1〜2週で軽くなることが多い）','眠気、または眠りにくさ','頭痛','性機能の低下','口の渇き・便秘（古いタイプの三環系で強い）'],
+  danger:['アクチベーション症候群：飲み始め・増量の時期に、不安・焦り・イライラ・衝動的な行動が強まる。24歳以下では死にたい気持ちが強まることがある','セロトニン症候群：興奮・ふるえ・手足がぴくつく・汗・下痢・発熱・脈が速い','躁転：双極性障害の人で、急に元気になりすぎる・眠らない・お金を使う','中断症候群：急にやめると、めまい・耳鳴り・しびれ・電気が走る感じ・イライラ','低ナトリウム血症（高齢者）：だるさ・ぼんやり・ふらつき','出血しやすい：痛み止めや血をサラサラにする薬と一緒の時','【併用禁忌】多くの抗うつ薬は、MAO阻害薬（パーキンソン病の薬：エフピー・アジレクト・エクフィナ）と一緒に使えない（デジレルは併用注意）。SSRIの一部（パキシル・ジェイゾロフト・デプロメール・レクサプロ）はピモジド（オーラップ）も'],
+  obs:['飲み始め2週間の焦り・イライラ・死にたい気持ち','吐き気と食事量','睡眠','効かないからと自己中断していないか','高齢者は意識のはっきりさ・ふらつき'],
+  tip:'最初の2〜4週間は「効かない」と感じてやめやすい時期です。効き方の見通しを先に伝えておくと続けやすくなります。',
+  say:'気分の落ち込みや不安をやわらげるお薬です。効き始めるまで2〜4週間かかります。飲み始めに吐き気が出ることがありますが、多くは1〜2週間で軽くなります。飲み始めに、そわそわ・イライラが強くなったときはすぐ教えてください。'},
+ ms:{n:'気分安定薬',what:'気分の波（躁とうつ）を小さくし、再発を防ぐ薬。てんかんの薬でもあるものが多くあります。',
+  side:['眠気・ふらつき','体重増加（薬による）','手のふるえ（薬による）'],
+  danger:['薬ごとに危険な副作用が違います（上の「この薬で特に注意」を見てください）'],
+  obs:['採血（血中濃度・肝機能・血球）の予定と結果','発疹・発熱・口内炎','ふるえ・下痢・ふらつき','妊娠の可能性'],
+  tip:'定期的な採血が必要な薬が多いので、検査日を一緒に確認しましょう。',
+  say:'気分の波を小さくして、再発を防ぐお薬です。調子がよい時も続けることが大切です。決められた採血の日は必ず受けてください。'},
+ ep:{n:'抗てんかん薬',what:'脳の神経の過剰な興奮をおさえて、てんかん発作を防ぐ薬。毎日決まった時間に飲み続けることで発作を防ぎます。気分の安定や痛みの治療に使われるものもあります。',
+  side:['眠気','ふらつき・めまい','物が二重に見える','だるさ','イライラ・気分の変化（薬による）'],
+  danger:['飲み忘れ・急な中止で発作が増える','けいれん重積：発作が5分以上続く・意識が戻らないまま発作をくり返す → 119','重い薬疹：熱を伴う発疹・口内炎・目の充血','気分の落ち込み・死にたい気持ち（抗てんかん薬全体で報告がある）','発作やふらつきによる転倒・けが'],
+  obs:['発作の回数・様子・続いた時間（発作の記録）','飲み忘れ・残薬','眠気・ふらつき','気分の落ち込み・イライラ','採血（血中濃度）の予定','睡眠不足・飲酒（発作のきっかけになる）'],
+  tip:'発作を起こしやすくするのは、飲み忘れ・睡眠不足・飲酒・発熱です。発作を見たら、まず時間を計ります。',
+  say:'発作を防ぐために毎日続けるお薬です。飲み忘れたり急にやめたりすると、発作が起きやすくなります。眠気やふらつきがあれば教えてください。発作があった日は、時間と様子を一緒に記録しましょう。'},
+ bz:{n:'抗不安薬（ベンゾジアゼピン系）',what:'不安や緊張をやわらげる薬。すぐ効くので頓服でも使われます。',
+  side:['眠気','ふらつき','集中しにくい・物忘れ'],
+  danger:['【禁忌】急性閉塞隅角緑内障・重症筋無力症の人には使えない','依存：効きにくくなって量が増える、やめられなくなる','急にやめると離脱症状：不安・不眠・ふるえ・けいれん','お酒と一緒に飲むと呼吸が弱くなる・意識が下がる','高齢者の転倒・骨折・せん妄','過量服薬'],
+  obs:['実際に飲んでいる量と頓服の回数','ふらつき・転倒','飲酒','ほかの医療機関からも同じような薬が出ていないか'],
+  tip:'長く飲んでいる人には、自己判断で急にやめないよう伝えます（減らすときは主治医と少しずつ）。',
+  say:'不安や緊張をやわらげるお薬です。よく効きますが、長く続けると量が増えたり、やめにくくなったりします。お酒と一緒に飲まないこと、急にやめずに相談することを守ってください。'},
+ hy:{n:'睡眠薬',what:'寝つきや眠りの続きを助ける薬。ベンゾジアゼピン系・非ベンゾジアゼピン系・オレキシン受容体拮抗薬・メラトニン受容体作動薬で特徴が違います。',
+  side:['翌朝の眠気・ふらつき（持ち越し）','頭が重い'],
+  danger:['夜中のトイレでの転倒','お酒と一緒に飲むと危険','飲んだ後に記憶がないまま動く（もうろう状態）'],
+  obs:['寝た時間・起きた時間・夜中に何回起きたか','翌朝の眠気','夜中のトイレと転倒','飲酒'],
+  tip:'飲んだらすぐ布団へ。飲んでから家事や入浴をしないよう伝えます。',
+  say:'眠りを助けるお薬です。飲んだらすぐ布団に入ってください。お酒と一緒に飲むのは危険です。夜中にトイレに行くときはふらつきに気をつけましょう。'},
+ ac:{n:'抗パーキンソン薬（副作用止め）',what:'抗精神病薬で出るふるえ・こわばり・ジストニアを抑える薬。',
+  side:['口の渇き','便秘','尿が出にくい','かすみ目'],
+  danger:['せん妄・物忘れ（特に高齢者）','腸閉塞・尿閉','気分が高まるため欲しがる・乱用されることがある','急にやめると悪性症候群に似た状態になることがある'],
+  obs:['便・尿','もうろう・物忘れ','必要以上に欲しがらないか'],
+  tip:'長く続けている場合は、減らせるかを主治医に相談できます。',
+  say:'ほかのお薬で出るふるえやこわばりを抑えるお薬です。口が渇く、便が出にくい、おしっこが出にくい時は教えてください。'},
+ adhd:{n:'ADHDの薬',what:'不注意・多動・衝動性をやわらげる薬。',
+  side:['食欲低下','眠りにくい','頭痛・吐き気','動悸'],
+  danger:['薬ごとに違います（上の「この薬で特に注意」を見てください）'],
+  obs:['食事量と体重','睡眠','脈・血圧','気分（落ち込み・イライラ）'],
+  tip:'食欲が落ちやすいので、朝食をとってから飲む・夕食をしっかりとるなどの工夫を一緒に考えます。',
+  say:'集中しにくさや衝動をやわらげるお薬です。食欲が落ちたり、眠りにくくなったりすることがあるので、食事と睡眠を一緒に確認させてください。'},
+ dem:{n:'抗認知症薬',what:'認知症の進み方をゆるやかにする薬（治す薬ではありません）。',
+  side:['吐き気・食欲低下・下痢（ドネペジルなど）','めまい・眠気・便秘（メマンチン）'],
+  danger:['脈が遅くなる・失神','興奮・怒りっぽくなる'],
+  obs:['脈拍','食事量','怒りっぽさ・興奮の変化','飲み忘れ・二重に飲んでいないか'],
+  tip:'飲み始めや増量のあとに食欲が落ちることが多いので、食事量を確認します。',
+  say:'物忘れなどの進み方をゆるやかにするお薬です。吐き気や食欲が落ちることがあるので、食事の様子を教えてください。'},
+ alc:{n:'アルコール依存症の薬',what:'断酒を続ける、または飲む量を減らすのを助ける薬。本人の「やめたい・減らしたい」気持ちがあって初めて役立ちます。',
+  side:['薬ごとに違います（上の「この薬で特に注意」を見てください）'],
+  danger:['薬ごとに違います（上の「この薬で特に注意」を見てください）'],
+  obs:['飲酒の有無と量','薬を飲めているか','肝機能（採血）','通院・自助グループへの参加'],
+  tip:'再飲酒しても責めず、正直に話してくれたことを認めます。',
+  say:'お酒をやめ続ける、または減らすのを助けるお薬です。お薬だけでなく、通院や自助グループと組み合わせると続けやすくなります。'},
+ lax:{n:'便秘薬',what:'便をやわらかくしたり、腸の動きを助けたりして、便を出しやすくする薬。抗精神病薬や副作用止め（抗コリン薬）を飲んでいる人は便秘になりやすく、よく一緒に出ます。',
+  side:['お腹の張り・腹痛','下痢'],
+  danger:['薬を使っても何日も便が出ない・お腹が張る・吐く → 腸閉塞のおそれ（下剤を増やさずに受診）','下痢が続いて脱水になる（リーマスを飲んでいる人は特に注意）','高マグネシウム血症（酸化マグネシウム）：吐き気・だるさ・ぼんやり・脈が遅い'],
+  obs:['最後の排便日・便の回数と形','お腹の張り・腹痛・吐き気','下剤の量（自己判断で増やしていないか）','水分・食事の量'],
+  tip:'精神科の利用者さんは便秘を自分から言わないことが多いです。毎回「最後にお通じがあったのはいつですか」と聞き、出ていない日数と下剤の指示を確認します。',
+  say:'お通じを出しやすくするお薬です。精神科のお薬は便秘になりやすいので、毎回、最後にお通じがあった日を教えてください。お腹が張って苦しい時や吐き気がある時は、すぐ教えてください。'},
+ oth:{n:'そのほか（抗ヒスタミン薬・漢方・痛み止め）',what:'精神科の薬と一緒によく出る薬です。何のために出ているかを、お薬手帳や薬袋で確認しましょう。',
+  side:['薬ごとに違います（上の「この薬で特に注意」を見てください）'],
+  danger:['薬ごとに違います（上の「この薬で特に注意」を見てください）'],
+  obs:['何のために出ているか','使った回数','眠気・ふらつき'],
+  tip:'市販薬（かぜ薬・痛み止め・睡眠改善薬）を自分で買って飲んでいないかも確認します。',
+  say:'お薬ごとに使い方が違うので、何のためのお薬か一緒に確認しましょう。'},
+ prn:{n:'頓服でよく使う薬',what:'決まった時間ではなく、「不安が強い時」「眠れない時」など、必要な時だけ使う薬です。',
+  side:[],danger:[],obs:[],tip:'',say:''}
+};
+const PRN_GUIDE=['何のための頓服か（不穏・不安・不眠・便秘・痛み）を、主治医の指示で確認する','1回の量、1日に使える回数、次に使うまであける時間を確認する','使う前に：ほかの対応（休む・話を聞く・水分をとる）を試したか、今日すでに何回使ったか','使ったら：使った時間・理由と、30〜60分後の効き目を記録する','頓服の回数が増えている時は、病状の悪化や副作用のサイン。主治医に報告する','頓服をため込んでいないか確認する（過量服薬の手段になる）'];
+
+/* ================= 薬 ================= */
+const DRUGS=[
+ {id:'abilify',n:'エビリファイ',prn:'不穏・興奮時に内用液（分包）で使われることがある',g:'アリピプラゾール',c:'ap',form:'錠・OD錠・散・内用液／持続性注射剤「エビリファイ持続性水懸筋注」（4週に1回）',use:'統合失調症、双極性障害の躁症状、うつ病の補助（ほかの薬で効果が不十分なとき）、小児の自閉スペクトラム症の易刺激性',
+  pts:['眠気・体重増加・プロラクチン上昇は比較的少ない','かえって眠りにくくなることがある'],warn:['アカシジア（そわそわ・じっとできない）が出やすい','衝動がおさえられない（ギャンブル・買い物・過食がやめられない）','【警告】糖尿病性ケトアシドーシス・糖尿病性昏睡が起こるおそれがある（のどの渇き・多飲・多尿に注意）']},
+ {id:'risperdal',n:'リスパダール',prn:'不穏・興奮・幻聴が強い時に内用液（分包）で使われることが多い',g:'リスペリドン',c:'ap',form:'錠・OD錠・細粒・内用液／持効性注射剤「リスパダールコンスタ」（2週に1回）',use:'統合失調症、小児の自閉スペクトラム症の易刺激性',
+  pts:['内用液は不穏時の頓服で使われることが多い'],warn:['高プロラクチン（月経不順・乳汁が出る・性機能の低下）が出やすい','パーキンソン症状','立ちくらみ','体重増加・血糖上昇']},
+ {id:'invega',n:'インヴェガ',alt:['ゼプリオン','ゼプリオンTRI'],g:'パリペリドン',c:'ap',form:'徐放錠「インヴェガ」／持効性注射剤「ゼプリオン」（4週に1回）・「ゼプリオンTRI」（12週に1回）',use:'統合失調症',
+  pts:['リスペリドンが体の中で働く形の成分','徐放錠は割ったり砕いたりしない（錠剤の殻が便に出ることがあるが心配ない）'],warn:['高プロラクチン・パーキンソン症状','【禁忌】腎臓の働きが中等度以上に悪い人には使えない','注射の人は注射した所の痛み・腫れも確認']},
+ {id:'zyprexa',n:'ジプレキサ',prn:'不穏・興奮時にザイディス錠（口の中で溶ける）で使われることがある',g:'オランザピン',c:'ap',form:'錠・ザイディス錠（口の中で溶ける）・細粒・筋注',use:'統合失調症、双極性障害の躁とうつ、抗がん剤による吐き気',
+  pts:['気持ちをしずめる力が強く、眠気が出やすい','たばこをやめると薬の血中濃度が上がることがある'],warn:['【禁忌】糖尿病の人・糖尿病になったことがある人には使えない','【警告】高血糖・糖尿病性ケトアシドーシス：のどの渇き・多飲・多尿・だるさ','体重増加が大きい']},
+ {id:'seroquel',n:'セロクエル',prn:'不眠・不穏時に少ない量で使われることがある',alt:['ビプレッソ'],g:'クエチアピン',c:'ap',form:'錠・細粒／徐放錠「ビプレッソ」（双極性障害のうつ）',use:'統合失調症（ビプレッソは双極性障害のうつ状態）',
+  pts:['眠気が強い。少ない量を眠りのために使われることもある'],warn:['【禁忌】糖尿病の人・糖尿病になったことがある人には使えない（ビプレッソも同じ）','【警告】高血糖：のどの渇き・多飲・多尿','立ちくらみ・転倒','体重増加']},
+ {id:'lonasen',n:'ロナセン',g:'ブロナンセリン',c:'ap',form:'錠・散・テープ剤「ロナセンテープ」（1日1回貼りかえ）',use:'統合失調症',
+  pts:['飲み薬は食後に飲む（空腹時は吸収が下がる）','眠気・体重増加は比較的少ない'],warn:['【併用禁忌】強いCYP3A4阻害薬（イトラコナゾール・ボリコナゾール・クラリスロマイシン・一部のHIVの薬など）','パーキンソン症状・アカシジア','テープは毎日貼る場所を変える（かぶれ）']},
+ {id:'rexulti',n:'レキサルティ',g:'ブレクスピプラゾール',c:'ap',form:'錠・OD錠',use:'統合失調症、うつ病の補助、アルツハイマー型認知症に伴う焦燥感',
+  pts:['エビリファイに近い薬で、アカシジアは比較的少ないとされる'],warn:['体重増加','血糖上昇','アカシジア']},
+ {id:'sycrest',n:'シクレスト',g:'アセナピン',c:'ap',form:'舌下錠',use:'統合失調症',
+  pts:['舌の下に置いて溶かす。飲み込むと効かない','飲んだ後10分間は飲んだり食べたりしない'],warn:['口の中のしびれ・味の変化','眠気','パーキンソン症状']},
+ {id:'latuda',n:'ラツーダ',g:'ルラシドン',c:'ap',form:'錠',use:'統合失調症、双極性障害のうつ',
+  pts:['食後に飲む','体重・血糖への影響は比較的少ない'],warn:['【併用禁忌】強いCYP3A4阻害薬（イトラコナゾール・クラリスロマイシンなど）','【併用禁忌】強いCYP3A4誘導薬（リファンピシン・アレビアチン（フェニトイン）など）','アカシジア・パーキンソン症状','眠気']},
+ {id:'lullan',n:'ルーラン',g:'ペロスピロン',c:'ap',form:'錠',use:'統合失調症',pts:['食後に飲む'],warn:['パーキンソン症状','眠気']},
+ {id:'clozaril',n:'クロザリル',g:'クロザピン',c:'ap',form:'錠',use:'治療抵抗性統合失調症（ほかの薬で効果がなかった人）',
+  pts:['登録した医療機関・薬局だけで出せる薬（CPMS）','決められた間隔の血液検査が必ず必要','たばこをやめると血中濃度が上がる'],
+  warn:['無顆粒球症：発熱・のどの痛み・だるさ → すぐ連絡','心筋炎：飲み始め数週間の胸の痛み・動悸・息切れ・発熱','重い便秘・腸閉塞（命に関わることがある）','高血糖','よだれが多い','けいれん']},
+ {id:'serenace',n:'セレネース',prn:'不穏・興奮時（錠・内用液）',alt:['ハロマンス'],g:'ハロペリドール',c:'ap',form:'錠・細粒・内用液・注射／持効性注射剤「ハロマンス」（4週に1回）',use:'統合失調症、躁病（せん妄にも適応外で使われる）',
+  pts:['古いタイプの薬で、幻覚・妄想をおさえる力が強い'],warn:['【禁忌】パーキンソン病・レビー小体型認知症の人には使えない','パーキンソン症状・ジストニア・アカシジアが出やすい','悪性症候群','QT延長（不整脈）']},
+ {id:'contomin',n:'コントミン',prn:'不穏・不眠時',alt:['ウインタミン'],g:'クロルプロマジン',c:'ap',form:'錠・細粒・注射',use:'統合失調症、躁病、不安・緊張',
+  pts:['気持ちをしずめる力が強い'],warn:['眠気・立ちくらみ','口の渇き・便秘・尿が出にくい','日光で皮膚が赤くなる（光線過敏）','体温の調節がしにくい（夏の熱中症に注意）']},
+ {id:'levotomin',n:'レボトミン',prn:'不穏・不眠時',alt:['ヒルナミン'],g:'レボメプロマジン',c:'ap',form:'錠・散・顆粒・注射',use:'統合失調症、躁病、不安・緊張',
+  pts:['気持ちをしずめる力が強く、寝る前に使われることが多い'],warn:['立ちくらみ・転倒','便秘・口の渇き','翌朝まで眠気が残る']},
+ {id:'dogmatil',n:'ドグマチール',g:'スルピリド',c:'ap',form:'錠・細粒・カプセル',use:'胃潰瘍（少ない量）、うつ病（中くらいの量）、統合失調症（多い量）',
+  pts:['量によって使い道が違う'],warn:['高プロラクチン（乳汁が出る・月経不順）','パーキンソン症状（特に高齢者）','食欲が増える・体重増加']},
+ {id:'rodopin',n:'ロドピン',g:'ゾテピン',c:'ap',form:'錠・細粒',use:'統合失調症',pts:['気持ちをしずめる力が強い'],warn:['けいれんを起こしやすい（てんかんの人は注意）','眠気・立ちくらみ','パーキンソン症状','体重増加']},
+ {id:'pzc',n:'ピーゼットシー',g:'ペルフェナジン',c:'ap',form:'錠・散・注射',use:'統合失調症、吐き気、メニエール症候群のめまい',pts:['古いタイプの薬'],warn:['パーキンソン症状・アカシジア','眠気']},
+ {id:'neuleptil',n:'ニューレプチル',g:'プロペリシアジン',c:'ap',form:'錠・細粒・内用液',use:'統合失調症',pts:['気持ちをしずめる力が強い'],warn:['眠気・立ちくらみ','便秘・口の渇き','パーキンソン症状']},
+
+ {id:'lexapro',n:'レクサプロ',g:'エスシタロプラム',c:'ad',sub:'SSRI',form:'錠',use:'うつ病、社交不安症',pts:['1日1回'],warn:['【禁忌】QT延長のある人には使えない（心臓の病気がある人は注意）','吐き気','飲み始めの焦り']},
+ {id:'zoloft',n:'ジェイゾロフト',g:'セルトラリン',c:'ad',sub:'SSRI',form:'錠・OD錠',use:'うつ病、パニック症、PTSD',pts:['1日1回'],warn:['下痢・吐き気','飲み始めの焦り']},
+ {id:'paxil',n:'パキシル',g:'パロキセチン',c:'ad',sub:'SSRI',form:'錠・CR錠（徐放）',use:'うつ病、パニック症、社交不安症、強迫症、PTSD',
+  pts:['飲み合わせに注意が必要な薬が多い'],warn:['急にやめると離脱症状が強い（めまい・しびれ・電気が走る感じ）','若い人は飲み始めの焦り・死にたい気持ちに注意','口の渇き・便秘']},
+ {id:'depromel',n:'デプロメール',alt:['ルボックス'],g:'フルボキサミン',c:'ad',sub:'SSRI',form:'錠',use:'うつ病、強迫症、社交不安症',
+  pts:['1日2回'],warn:['【併用禁忌】ロゼレム・メラトベル（睡眠の薬）、チザニジン（筋肉をゆるめる薬）など。飲み合わせが非常に多い','吐き気']},
+ {id:'cymbalta',n:'サインバルタ',g:'デュロキセチン',c:'ad',sub:'SNRI',form:'カプセル',use:'うつ病、糖尿病の神経の痛み、線維筋痛症、慢性腰痛症、変形性関節症の痛み',
+  pts:['痛みの治療にも使われる'],warn:['【禁忌】高度の肝臓・腎臓の障害、コントロールできていない閉塞隅角緑内障の人には使えない','吐き気','尿が出にくい（前立腺肥大の人）','血圧上昇・動悸','お酒を多く飲む人は肝障害に注意','急にやめると離脱症状']},
+ {id:'effexor',n:'イフェクサーSR',g:'ベンラファキシン',c:'ad',sub:'SNRI',form:'カプセル（徐放）',use:'うつ病',pts:['1日1回'],warn:['血圧上昇','急にやめると離脱症状が強い','吐き気']},
+ {id:'toledomin',n:'トレドミン',g:'ミルナシプラン',c:'ad',sub:'SNRI',form:'錠',use:'うつ病',pts:[],warn:['【禁忌】前立腺の病気などで尿が出にくい人には使えない','動悸・頭痛']},
+ {id:'reflex',n:'リフレックス',alt:['レメロン'],g:'ミルタザピン',c:'ad',sub:'NaSSA',form:'錠',use:'うつ病',
+  pts:['眠気が強いので寝る前に飲む','吐き気・性機能の低下は少ない'],warn:['眠気・ふらつき','食欲が増える・体重増加','まれに無顆粒球症（発熱・のどの痛み）']},
+ {id:'trintellix',n:'トリンテリックス',g:'ボルチオキセチン',c:'ad',sub:'S-RIM',form:'錠',use:'うつ病',pts:['1日1回'],warn:['飲み始めの吐き気']},
+ {id:'desyrel',n:'デジレル',prn:'眠れない時に少ない量で使われることがある',alt:['レスリン'],g:'トラゾドン',c:'ad',sub:'その他',form:'錠',use:'うつ病（眠りのために少ない量で使われることが多い）',pts:[],warn:['眠気・ふらつき・立ちくらみ','まれに持続勃起（すぐ受診）']},
+ {id:'tryptanol',n:'トリプタノール',g:'アミトリプチリン',c:'ad',sub:'三環系',form:'錠',use:'うつ病、夜尿症、末梢神経の痛み',
+  pts:['古いタイプ（三環系）の抗うつ薬'],warn:['口の渇き・便秘・尿が出にくい・かすみ目（抗コリン作用が強い）','緑内障の一部の人には使えない','過量服薬で不整脈・けいれんを起こし命に関わる','立ちくらみ・眠気','高齢者のせん妄']},
+ {id:'anafranil',n:'アナフラニール',g:'クロミプラミン',c:'ad',sub:'三環系',form:'錠・注射',use:'うつ病、遺尿症、ナルコレプシーの情動脱力発作',
+  pts:['古いタイプ（三環系）の抗うつ薬'],warn:['口の渇き・便秘・尿が出にくい','過量服薬で命に関わる','けいれん']},
+ {id:'noritren',n:'ノリトレン',g:'ノルトリプチリン',c:'ad',sub:'三環系',form:'錠',use:'うつ病',pts:['古いタイプ（三環系）の抗うつ薬'],warn:['口の渇き・便秘・尿が出にくい','過量服薬で不整脈・けいれんを起こし命に関わる','立ちくらみ']},
+ {id:'tofranil',n:'トフラニール',g:'イミプラミン',c:'ad',sub:'三環系',form:'錠',use:'うつ病、遺尿症',pts:['古いタイプ（三環系）の抗うつ薬'],warn:['口の渇き・便秘・尿が出にくい','過量服薬で命に関わる','立ちくらみ・眠気']},
+ {id:'amoxan',n:'アモキサン',g:'アモキサピン',c:'ad',sub:'三環系',form:'カプセル・細粒',use:'うつ病',pts:['三環系の中では効き始めが早いとされる'],warn:['口の渇き・便秘・尿が出にくい','過量服薬で命に関わる','けいれん']},
+ {id:'ludiomil',n:'ルジオミール',g:'マプロチリン',c:'ad',sub:'四環系',form:'錠',use:'うつ病',pts:['四環系の抗うつ薬'],warn:['けいれんを起こしやすい','口の渇き・便秘','過量服薬で危険']},
+ {id:'tetramide',n:'テトラミド',g:'ミアンセリン',c:'ad',sub:'四環系',form:'錠',use:'うつ病',pts:['眠気が強く、寝る前に飲む。眠りのために少ない量で使われることもある'],warn:['眠気・ふらつき','まれに無顆粒球症（発熱・のどの痛み）']},
+
+ {id:'lithium',n:'リーマス',g:'炭酸リチウム',c:'ms',form:'錠',use:'躁病・躁うつ病の躁状態（再発の予防にも使われる）',
+  pts:['効く量と中毒になる量の差が小さい。定期的に血中濃度を測る','夏や体調不良の時は水分をしっかりとる'],
+  warn:['リチウム中毒：下痢・吐く・ふるえが強くなる・ふらつき・ろれつが回らない・ぼんやり → すぐ連絡','中毒を起こしやすい場面：脱水・発熱・下痢・塩分を控えた時・食事がとれない時','一緒に飲むと濃度が上がる薬：ロキソニンなどの痛み止め（NSAIDs）、利尿薬、一部の血圧の薬（ACE阻害薬・ARB）','甲状腺の働きの低下・腎臓の障害','尿が多い・のどが渇く・軽い手のふるえはよくある','妊娠の可能性があれば主治医と相談']},
+ {id:'depakene',n:'デパケン',alt:['デパケンR','セレニカR'],g:'バルプロ酸ナトリウム',c:'ms',also:['ep'],form:'錠・徐放錠・細粒・シロップ',use:'てんかん、躁病・躁状態、片頭痛の予防',
+  pts:['採血で血中濃度・肝機能・血小板を確認する'],warn:['肝障害','高アンモニア血症：ぼんやり・意識が下がる・吐き気','血小板が減る：あざ・出血','膵炎：強い腹痛・吐く','体重増加・髪が抜ける','妊娠中は赤ちゃんへの影響が大きい（妊娠の可能性がある人は主治医と相談）','【併用禁忌】カルバペネム系の抗菌薬（効き目が急に下がる）']},
+ {id:'tegretol',n:'テグレトール',g:'カルバマゼピン',c:'ms',also:['ep'],form:'錠・細粒',use:'てんかん、躁状態、三叉神経痛',
+  pts:['ほかの薬の効き目を弱めることが多い（飲み合わせが非常に多い）'],warn:['重い薬疹（SJSなど）：飲み始め数か月の発疹・発熱・口内炎 → すぐ受診','血球が減る：発熱・のどの痛み・あざ','低ナトリウム血症','めまい・ふらつき・眠気','妊娠の可能性があれば主治医と相談']},
+ {id:'lamictal',n:'ラミクタール',g:'ラモトリギン',c:'ms',also:['ep'],form:'錠',use:'てんかん、双極性障害の再発予防（特にうつの再発）',
+  pts:['決められた少ない量から2週間ごとに増やす決まりがある'],warn:['【警告】重い皮膚障害（SJS・TEN）：飲み始め8週間以内の発疹・発熱・口内炎・目の充血はすぐ受診','デパケンと一緒だと血中濃度が上がる（量を減らす必要がある）','飲み忘れて数日あいたら、自己判断で元の量を飲まず主治医に相談（少ない量からやり直すことがある）']},
+
+ {id:'keppra',n:'イーケプラ',g:'レベチラセタム',c:'ep',form:'錠・ドライシロップ・注射',use:'てんかん（部分発作、強直間代発作）',
+  pts:['飲み合わせの問題が少なく、よく使われる','1日2回'],warn:['イライラ・怒りっぽさ・攻撃的になる・気分の落ち込みなどの精神症状','眠気・ふらつき','腎臓の働きが悪い人は量を調整']},
+ {id:'vimpat',n:'ビムパット',g:'ラコサミド',c:'ep',form:'錠・ドライシロップ・注射',use:'てんかん（部分発作、強直間代発作）',
+  pts:['1日2回'],warn:['めまい・ふらつき・物が二重に見える','心臓の脈の伝わりが遅くなる（PR延長）：脈の乱れ・失神に注意']},
+ {id:'fycompa',n:'フィコンパ',g:'ペランパネル',c:'ep',form:'錠・細粒',use:'てんかん（部分発作、強直間代発作）',
+  pts:['1日1回、寝る前に飲む'],warn:['攻撃的になる・怒りっぽさ・気分の変化などの精神症状（家族にも伝えておく）','めまい・眠気・ふらつき・転倒']},
+ {id:'aleviatin',n:'アレビアチン',alt:['ヒダントール'],g:'フェニトイン',c:'ep',form:'錠・散・注射',use:'てんかん（強直間代発作、部分発作）',
+  pts:['古い薬。効く量と中毒になる量の差が小さく、血中濃度を測る','ほかの薬の効き目を弱めることが多い（飲み合わせが非常に多い）'],warn:['中毒：ふらつき・目が揺れる（眼振）・ろれつが回らない・眠気','歯ぐきが腫れる（歯肉増殖）・毛深くなる','重い薬疹：発熱を伴う発疹 → すぐ受診']},
+ {id:'phenobal',n:'フェノバール',g:'フェノバルビタール',c:'ep',form:'錠・散・エリキシル・注射',use:'てんかん、不安・緊張、不眠',
+  pts:['古い薬。効き目がとても長い','ほかの薬の効き目を弱めることが多い'],warn:['眠気・ぼんやり・ふらつき','依存。急にやめると発作や離脱症状','お酒と一緒は危険（呼吸が弱くなる）','重い薬疹']},
+ {id:'topina',n:'トピナ',g:'トピラマート',c:'ep',form:'錠・細粒',use:'てんかん（部分発作、ほかの薬と一緒に使う）',
+  pts:[],warn:['食欲低下・体重減少','汗が出にくくなる（夏の熱中症・体温上昇に注意）','腎臓の結石','言葉が出にくい・ぼんやり','急な目の痛み・見えにくさ（緑内障）→ すぐ受診']},
+ {id:'excegran',n:'エクセグラン',g:'ゾニサミド',c:'ep',form:'錠・散',use:'てんかん（部分発作、全般発作）',
+  pts:[],warn:['眠気・食欲低下','汗が出にくくなる（熱中症に注意）','腎臓の結石','気分の落ち込み・幻覚などの精神症状']},
+ {id:'gabapen',n:'ガバペン',g:'ガバペンチン',c:'ep',form:'錠・シロップ',use:'てんかん（部分発作、ほかの薬と一緒に使う）',
+  pts:['飲み合わせの問題が少ない'],warn:['眠気・めまい・ふらつき','腎臓の働きが悪い人は量を調整']},
+ {id:'mystan',n:'マイスタン',g:'クロバザム',c:'ep',bz:1,sub:'ベンゾジアゼピン系',form:'錠・細粒',use:'てんかん（ほかの薬と一緒に使う）',
+  pts:['ベンゾジアゼピン系の抗てんかん薬'],warn:['眠気・ふらつき','よだれ・痰が増える','急にやめると発作が起きやすい・依存']},
+
+ {id:'depas',n:'デパス',prn:'不安・緊張が強い時',g:'エチゾラム',c:'bz',form:'錠・細粒',use:'不安・緊張・不眠、肩こり',pts:['短い時間で効いて、早く切れる','依存しやすい（向精神薬に指定）'],warn:['依存・量が増える','高齢者の転倒']},
+ {id:'solanax',n:'ソラナックス',prn:'不安が強い時・パニック発作の時',alt:['コンスタン'],g:'アルプラゾラム',c:'bz',form:'錠',use:'不安・緊張',pts:['パニック発作の頓服で使われることが多い'],warn:['依存','急にやめると離脱症状']},
+ {id:'wypax',n:'ワイパックス',prn:'不安が強い時',g:'ロラゼパム',c:'bz',form:'錠',use:'不安・緊張',pts:['肝臓の負担が少なく、高齢者や肝臓の悪い人に使われることがある'],warn:['依存','眠気・ふらつき']},
+ {id:'meilax',n:'メイラックス',g:'ロフラゼプ酸エチル',c:'bz',form:'錠・細粒',use:'不安・緊張',pts:['効き目がとても長い（1日1回）','急にやめても離脱症状は出にくいが、高齢者は体にたまりやすい'],warn:['持ち越しの眠気・ふらつき']},
+ {id:'rivotril',n:'リボトリール',alt:['ランドセン'],g:'クロナゼパム',c:'bz',also:['ep'],form:'錠・細粒',use:'てんかん（保険で認められているのはてんかん）',pts:['パニック症などにも使われることがある'],warn:['眠気・ふらつき','よだれ・痰が増える','急にやめるとけいれん']},
+ {id:'cercine',n:'セルシン',alt:['ホリゾン'],g:'ジアゼパム',c:'bz',form:'錠・散・シロップ・注射',use:'不安・緊張、けいれん',pts:['効き目が長い'],warn:['眠気・ふらつきの持ち越し']},
+ {id:'lexotan',n:'レキソタン',g:'ブロマゼパム',c:'bz',form:'錠・細粒',use:'不安・緊張',pts:['中くらいの長さで効く'],warn:['依存','眠気・ふらつき']},
+ {id:'rize',n:'リーゼ',g:'クロチアゼパム',c:'bz',form:'錠・顆粒',use:'不安・緊張、心身症',pts:['短い時間で効き、作用はおだやか'],warn:['依存','眠気']},
+ {id:'sepazon',n:'セパゾン',g:'クロキサゾラム',c:'bz',form:'錠・散',use:'不安・緊張',pts:['効き目が長い'],warn:['持ち越しの眠気・ふらつき','依存']},
+
+ {id:'lendormin',n:'レンドルミン',prn:'眠れない時（飲んだらすぐ布団へ）',g:'ブロチゾラム',c:'hy',bz:1,sub:'ベンゾジアゼピン系',form:'錠・OD錠',use:'不眠症',pts:['短時間型（寝つきをよくする）'],warn:['依存','ふらつき']},
+ {id:'halcion',n:'ハルシオン',g:'トリアゾラム',c:'hy',bz:1,sub:'ベンゾジアゼピン系',form:'錠',use:'不眠症',pts:['超短時間型'],warn:['【併用禁忌】強いCYP3A阻害薬（イトラコナゾール・クラリスロマイシンなど）','飲んだ後の記憶がない（健忘）が起こりやすい','依存']},
+ {id:'silece',n:'サイレース',g:'フルニトラゼパム',c:'hy',bz:1,sub:'ベンゾジアゼピン系',form:'錠・注射',use:'不眠症',pts:['効き目が強い（中〜長時間）'],warn:['翌朝の持ち越し・転倒','お酒と一緒は特に危険']},
+ {id:'myslee',n:'マイスリー',prn:'眠れない時（飲んだらすぐ布団へ）',g:'ゾルピデム',c:'hy',sub:'非ベンゾジアゼピン系',form:'錠',use:'不眠症（統合失調症・躁うつ病に伴う不眠症は除く）',pts:['寝つきをよくする（超短時間）'],warn:['【警告】もうろう状態・夢遊（記憶がないまま動く・食べる）','ふらつき','依存']},
+ {id:'lunesta',n:'ルネスタ',prn:'眠れない時（飲んだらすぐ布団へ）',g:'エスゾピクロン',c:'hy',sub:'非ベンゾジアゼピン系',form:'錠',use:'不眠症',pts:['口に苦味が残ることがある'],warn:['もうろう状態','ふらつき']},
+ {id:'amoban',n:'アモバン',g:'ゾピクロン',c:'hy',sub:'非ベンゾジアゼピン系',form:'錠',use:'不眠症',pts:['口に苦味が残る'],warn:['もうろう状態','ふらつき']},
+ {id:'belsomra',n:'ベルソムラ',g:'スボレキサント',c:'hy',sub:'オレキシン受容体拮抗薬',form:'錠',use:'不眠症',pts:['依存やふらつきが少ない'],warn:['悪夢・金縛りのような体験','翌朝の眠気','【併用禁忌】クラリスロマイシンなど一部の抗菌薬・抗真菌薬']},
+ {id:'dayvigo',n:'デエビゴ',g:'レンボレキサント',c:'hy',sub:'オレキシン受容体拮抗薬',form:'錠',use:'不眠症',pts:['依存やふらつきが少ない'],warn:['悪夢','翌朝の眠気']},
+ {id:'rozerem',n:'ロゼレム',g:'ラメルテオン',c:'hy',sub:'メラトニン受容体作動薬',form:'錠',use:'不眠症（寝つきが悪い）',pts:['体内時計を整える。依存がない','効き目はゆっくり（数週間で効いてくる）'],warn:['【併用禁忌】デプロメール・ルボックス（フルボキサミン）']},
+ {id:'eurodin',n:'ユーロジン',g:'エスタゾラム',c:'hy',bz:1,sub:'ベンゾジアゼピン系',form:'錠・散',use:'不眠症',pts:['中間型（夜中に目が覚める人にも）'],warn:['翌朝の持ち越し・ふらつき','依存']},
+ {id:'benzalin',n:'ベンザリン',alt:['ネルボン'],g:'ニトラゼパム',c:'hy',bz:1,sub:'ベンゾジアゼピン系',form:'錠・細粒',use:'不眠症、てんかん',pts:['中間型'],warn:['翌朝の持ち越し・ふらつき','依存']},
+ {id:'doral',n:'ドラール',g:'クアゼパム',c:'hy',bz:1,sub:'ベンゾジアゼピン系',form:'錠',use:'不眠症',pts:['長時間型','食事のすぐ後に飲むと効き目が強く出すぎるので、食後すぐは避ける'],warn:['翌朝・日中の眠気・ふらつき','依存']},
+ {id:'rhythmy',n:'リスミー',g:'リルマザホン',c:'hy',bz:1,sub:'ベンゾジアゼピン系',form:'錠',use:'不眠症',pts:['短時間型'],warn:['ふらつき','依存']},
+ {id:'evamyl',n:'エバミール',alt:['ロラメット'],g:'ロルメタゼパム',c:'hy',bz:1,sub:'ベンゾジアゼピン系',form:'錠',use:'不眠症',pts:['短時間型。肝臓の負担が少ない'],warn:['ふらつき','依存']},
+ {id:'quviviq',n:'クービビック',g:'ダリドレキサント',c:'hy',sub:'オレキシン受容体拮抗薬',form:'錠',use:'不眠症',pts:['依存やふらつきが少ない'],warn:['【併用禁忌】強いCYP3A阻害薬（イトラコナゾール・クラリスロマイシンなど）','翌朝の眠気','悪夢']},
+ {id:'meratobel',n:'メラトベル',g:'メラトニン',c:'hy',sub:'メラトニン',form:'顆粒（小児用）',use:'小児の神経発達症（自閉スペクトラム症・ADHDなど）に伴う寝つきの悪さ',pts:['寝る前に飲む。子ども向けの薬'],warn:['【併用禁忌】デプロメール・ルボックス（フルボキサミン）','眠気・頭痛']},
+
+ {id:'akineton',n:'アキネトン',prn:'ふるえ・こわばり・ジストニアが出た時',g:'ビペリデン',c:'ac',form:'錠・細粒・注射',use:'抗精神病薬によるパーキンソン症状・ジストニア',pts:['急性ジストニアには注射で使われる'],warn:['口の渇き・便秘・尿が出にくい','高齢者のせん妄・物忘れ']},
+ {id:'artane',n:'アーテン',g:'トリヘキシフェニジル',c:'ac',form:'錠・散',use:'抗精神病薬によるパーキンソン症状、パーキンソン病',pts:[],warn:['口の渇き・便秘・尿が出にくい','せん妄','乱用されることがある']},
+
+ {id:'concerta',n:'コンサータ',g:'メチルフェニデート（徐放）',c:'adhd',form:'徐放錠',use:'ADHD（6歳以上）',
+  pts:['朝1回。効き目は約12時間','登録された医師・薬局だけで出せる（流通管理）','かんだり割ったりしない'],warn:['食欲低下・体重減少','眠りにくい（午後に飲まない）','動悸・血圧上昇','依存・乱用','チック・不安が強まる']},
+ {id:'strattera',n:'ストラテラ',g:'アトモキセチン',c:'adhd',form:'カプセル・内用液',use:'ADHD',pts:['依存性がない','効き目が出るまで数週間。毎日続ける'],warn:['吐き気・食欲低下・眠気・頭痛','若い人の死にたい気持ちに注意','まれに肝障害']},
+ {id:'intuniv',n:'インチュニブ',g:'グアンファシン',c:'adhd',form:'徐放錠',use:'ADHD',pts:['1日1回'],warn:['血圧が下がる・脈が遅くなる・眠気・ふらつき','急にやめると血圧が急に上がる（自己判断でやめない）']},
+ {id:'vyvanse',n:'ビバンセ',g:'リスデキサンフェタミン',c:'adhd',form:'カプセル',use:'小児のADHD（6歳以上18歳未満で開始）',pts:['覚醒剤原料に指定されていて管理が厳しい（人に渡さない・保管を確認）'],warn:['食欲低下・眠りにくい・動悸','依存']},
+
+ {id:'aricept',n:'アリセプト',alt:['アリドネパッチ'],g:'ドネペジル',c:'dem',form:'錠・OD錠・細粒・ゼリー（貼り薬は「アリドネパッチ」という別の商品）',use:'アルツハイマー型認知症、レビー小体型認知症（アリドネパッチはアルツハイマー型）',pts:[],warn:['吐き気・下痢・食欲低下','脈が遅くなる・失神（心臓の病気がある人）','興奮・怒りっぽくなる']},
+ {id:'reminyl',n:'レミニール',g:'ガランタミン',c:'dem',form:'錠・OD錠・内用液',use:'軽度〜中等度のアルツハイマー型認知症',pts:['1日2回'],warn:['吐き気・食欲低下','脈が遅くなる']},
+ {id:'rivastach',n:'リバスタッチパッチ',alt:['イクセロンパッチ'],g:'リバスチグミン',c:'dem',form:'貼付剤（1日1回貼りかえ）',use:'軽度〜中等度のアルツハイマー型認知症',pts:['飲み込めない人にも使える','前の日の貼り薬をはがし忘れない'],warn:['貼った所のかぶれ・かゆみ','吐き気']},
+ {id:'memary',n:'メマリー',g:'メマンチン',c:'dem',form:'錠・OD錠・ドライシロップ',use:'中等度〜高度のアルツハイマー型認知症',pts:['興奮をおだやかにすることがある'],warn:['めまい・ふらつき・眠気','便秘','腎臓の働きが悪い人は量を調整']},
+
+ {id:'cyanamide',n:'シアナマイド',g:'シアナミド',c:'alc',form:'内用液',use:'慢性アルコール中毒・過飲酒者の断酒',
+  pts:['抗酒薬（飲んでいる間にお酒を飲むと気分が悪くなる薬）','効き目は約1日'],warn:['服用中に飲酒すると、顔が赤くなる・動悸・頭痛・吐き気・血圧低下などの強い反応','料理酒・栄養ドリンク・アルコール消毒・洋菓子のお酒でも反応することがある','本人が知らないうちに飲ませてはいけない','肝障害']},
+ {id:'noxbin',n:'ノックビン',g:'ジスルフィラム',c:'alc',form:'散',use:'慢性アルコール中毒の断酒',
+  pts:['抗酒薬。やめた後も1〜2週間ほど効き目が残る'],warn:['服用中の飲酒で強い反応（顔が赤くなる・動悸・吐き気・血圧低下）','料理酒・アルコール消毒でも反応することがある','肝障害']},
+ {id:'regtect',n:'レグテクト',g:'アカンプロサート',c:'alc',form:'錠',use:'アルコール依存症の断酒の維持',pts:['飲みたい気持ちをおさえ、断酒を続けやすくする','断酒を始めてから使う。1日3回'],warn:['下痢','腎臓の働きが大きく落ちている人には使えない']},
+ {id:'selincro',n:'セリンクロ',g:'ナルメフェン',c:'alc',form:'錠',use:'アルコール依存症の飲酒量を減らす',pts:['お酒を飲む1〜2時間前に飲む'],warn:['吐き気・めまい・眠気（飲み始め）','【禁忌】オピオイド（医療用麻薬・トラマドールなどの痛み止め）を使っている人、やめて1週間以内の人には使えない']},
+
+ {id:'magmitt',n:'マグミット',alt:['酸化マグネシウム'],g:'酸化マグネシウム',c:'lax',form:'錠・細粒',use:'便秘、胃酸過多',
+  pts:['便に水分を集めて、やわらかくする','くせになりにくい'],warn:['高マグネシウム血症（高齢者・腎臓の悪い人）：吐き気・だるさ・ぼんやり・脈が遅い → すぐ連絡','一緒に飲むと効き目が下がる薬がある（一部の抗菌薬・骨粗しょう症の薬など）。飲む時間をずらす','下痢']},
+ {id:'pursennid',n:'プルゼニド',alt:['アローゼン'],g:'センノシド',c:'lax',form:'錠（アローゼンは顆粒）',use:'便秘',prn:'便が出ない時に寝る前に使う指示が多い',
+  pts:['腸を刺激して動かす。寝る前に飲むと翌朝出ることが多い'],warn:['腹痛','毎日続けると効きにくくなる（くせになる）','尿が赤〜黄色っぽくなることがある（心配ない）','腸閉塞が疑われる時は使わない']},
+ {id:'laxoberon',n:'ラキソベロン',g:'ピコスルファートナトリウム',c:'lax',form:'内用液・錠',use:'便秘',prn:'便が出ない時に、液を指示の滴数で使う',
+  pts:['液は滴数で量を細かく調整できる'],warn:['腹痛・下痢','腸閉塞が疑われる時は使わない']},
+ {id:'amitiza',n:'アミティーザ',g:'ルビプロストン',c:'lax',form:'カプセル',use:'慢性便秘症',pts:['腸の中に水分を出させて便をやわらかくする','食後に飲む'],warn:['吐き気（若い女性に多い）','下痢','【禁忌】妊娠中の人には使えない']},
+ {id:'linzess',n:'リンゼス',g:'リナクロチド',c:'lax',form:'錠',use:'慢性便秘症、便秘型の過敏性腸症候群',pts:['食前に飲む'],warn:['下痢']},
+ {id:'goofice',n:'グーフィス',g:'エロビキシバット',c:'lax',form:'錠',use:'慢性便秘症',pts:['食前に飲む'],warn:['腹痛・下痢']},
+ {id:'movicol',n:'モビコール',g:'マクロゴール4000',c:'lax',form:'配合内用剤（水などに溶かして飲む）',use:'慢性便秘症',pts:['溶かす袋の数で量を調整できる'],warn:['下痢','腸閉塞が疑われる時は使わない']},
+ {id:'lecicarbon',n:'新レシカルボン坐剤',g:'炭酸水素ナトリウム・無水リン酸二水素ナトリウム',c:'lax',form:'坐剤',use:'便秘',prn:'便が出ない時に、指示に従って肛門から入れる',
+  pts:['腸の中で炭酸ガスを出して、便意を起こさせる','入れてから10〜30分ほどで便意が来ることが多い'],warn:['肛門の痛み・違和感']},
+ {id:'daikenchuto',n:'大建中湯',alt:['ツムラ100番'],g:'漢方薬',c:'lax',form:'顆粒',use:'お腹が冷えて張る・痛む、腸の動きが悪い',pts:['お腹を温めて、腸の動きを助ける'],warn:['まれに間質性肺炎（せき・息切れ・発熱）・肝障害']},
+
+ {id:'atarax',n:'アタラックスP',alt:['アタラックス'],g:'ヒドロキシジン',c:'oth',form:'カプセル・散・シロップ・注射',use:'不安・緊張、じんましん・皮膚のかゆみ',prn:'不安が強い時・かゆみがある時',
+  pts:['抗ヒスタミン薬。ベンゾジアゼピン系ではないので、依存の心配が少ない'],warn:['眠気・ふらつき','口の渇き','QT延長（心臓の病気がある人は注意）','【禁忌】妊娠中・妊娠の可能性がある人には使えない']},
+ {id:'sediel',n:'セディール',g:'タンドスピロン',c:'oth',form:'錠',use:'心身症・神経症の不安・抑うつ',pts:['ベンゾジアゼピン系ではなく、依存が少ない','効き目が出るまで2〜4週間かかる'],warn:['眠気・めまい','抗うつ薬と一緒だとセロトニン症候群に注意']},
+ {id:'aspara',n:'アスパラカリウム',g:'L-アスパラギン酸カリウム',c:'oth',form:'錠・散',use:'低カリウム血症（摂食障害・下剤や利尿薬の使用・嘔吐のくり返しなど）',pts:['カリウムを補う薬'],warn:['高カリウム血症（腎臓の悪い人）：しびれ・力が入らない・脈の乱れ → すぐ連絡','胃の不快感']},
+ {id:'alinamin',n:'アリナミンF',g:'フルスルチアミン',c:'oth',form:'錠・注射',use:'ビタミンB1の補給（アルコール依存症・低栄養の人のウェルニッケ脳症の予防など）',pts:['ビタミンB1の薬'],warn:['まれに吐き気・発疹']},
+ {id:'yokukansan',n:'抑肝散',alt:['ツムラ54番'],g:'漢方薬',c:'oth',form:'顆粒',use:'神経の高ぶり・イライラ・不眠、認知症の興奮・怒りっぽさ',
+  pts:['漢方薬。認知症の興奮に使われることが多い'],warn:['低カリウム血症（甘草による）：手足のだるさ・こむら返り・むくみ・血圧上昇','食欲低下']},
+ {id:'loxonin',n:'ロキソニン',g:'ロキソプロフェンナトリウム',c:'oth',form:'錠・細粒・テープ・パップ',use:'痛み・熱',prn:'痛い時・熱がある時',
+  pts:['NSAIDs（非ステロイド性の痛み止め）'],warn:['胃の痛み・胃潰瘍（空腹時を避ける）','腎臓の働きが落ちる（高齢者・脱水時）','リーマスの血中濃度を上げる（リチウム中毒のおそれ）','抗うつ薬（SSRI・SNRI）と一緒だと出血しやすい','ぜんそくの人は発作が起きることがある']},
+ {id:'calonal',n:'カロナール',alt:['アセトアミノフェン'],g:'アセトアミノフェン',c:'oth',form:'錠・細粒・シロップ・坐剤',use:'痛み・熱',prn:'痛い時・熱がある時',
+  pts:['胃にやさしく、リーマスを飲んでいる人の痛み止めとして選ばれやすい'],warn:['量が多いと肝障害（市販のかぜ薬・痛み止めと成分が重ならないように）','お酒を多く飲む人は肝障害に注意']}
+];
+const D=Object.fromEntries(DRUGS.map(d=>[d.id,d]));
+
+/* ================= 病気 ================= */
+const DIS=[
+ {id:'scz',n:'統合失調症',tag:'幻聴・妄想・意欲の低下',
+  one:'脳の情報処理のバランスが崩れ、現実と頭の中の区別がつきにくくなる病気です。100人に1人ほどがかかり、10代後半〜30代で始まることが多い病気です。薬を続けることで再発をかなり防げます。',
+  sym:[['陽性症状（あるはずのないものがある）','幻聴（悪口や命令が聞こえる）、被害妄想（見張られている・毒を入れられる）、考えが抜き取られる・操られる感じ、まとまりのない話、興奮'],['陰性症状（あるはずのものがない）','意欲が出ない、感情の表れが乏しい、口数が少ない、閉じこもる、入浴や身だしなみができない'],['認知機能の障害','集中・記憶・段取りが苦手。お金や薬の管理でつまずきやすい'],['その他','自分が病気だと思いにくい（病識が乏しい）、眠れない']],
+  risk:[['h','服薬中断による再発','再発のいちばん多い原因。中断してから数週〜数か月後に悪くなることが多い'],['h','自殺','始まったばかりの時期、退院後、回復してきて落ち込んだ時に多い。「死ね」という命令の幻聴にも注意'],['m','多飲水・水中毒','1日に何リットルも水を飲む。朝と夕方で体重が大きく違う。頭痛・吐き気・けいれん'],['m','薬の副作用','便秘から腸閉塞、体重増加・糖尿病、悪性症候群'],['m','生活の破綻','お金がなくなる、ゴミがたまる、近所とのトラブル'],['m','体の病気','喫煙・肥満・糖尿病・歯の病気が多く、見落とされやすい'],['l','興奮・暴力','多くは被害的な幻聴や妄想に関係する。ほとんどの人は暴力的ではない']],
+  sign:['眠れなくなる','イライラ・落ち着かない','独り言・ひとり笑いが増える','被害的な話が増える','閉じこもる・カーテンを閉め切る','薬を飲まなくなる・残薬が増える','身だしなみが乱れる','電話が急に増える、または連絡が取れなくなる'],
+  obs:['睡眠時間','表情・視線・会話のまとまり','幻聴の回数と内容（命令するものか）','残薬の数','便通','体重・水分量','たばこ・コーヒーの量','部屋の様子'],
+  ok:['幻聴や妄想は否定も肯定もせず、「そう聞こえるとつらいですね」と気持ちに寄りそう','ゆっくり短い言葉で、一度に一つずつ伝える','本人が困っていること（眠れない・疲れる）から話題にする','訪問する曜日・時間・担当者をできるだけそろえ、変更は早めに伝える','調子のよい時に「悪くなる前のサイン」を一緒に確認しておく'],
+  ng:['妄想を理屈で説得する・言い争う','大きな声、急に近づく、本人の物に勝手に触る','「薬を飲まないとダメ」と責める','本人の前で家族とひそひそ話す'],
+  sayP:'眠れているか、疲れていないか、お薬で困っていないかを一緒に見ていく係です。調子を崩す前には「眠れない」「音が気になる」などのサインが出やすいので、早めに気づけるようお手伝いします。',
+  sayF:'統合失調症は、薬を続けることで再発をかなり防げる病気です。急に薬をやめると数か月後に悪くなることが多いので、飲みにくさや副作用があれば、やめる前に私たちか主治医に相談してください。',
+  meds:['abilify','risperdal','invega','zyprexa','seroquel','lonasen','rexulti','sycrest','latuda','lullan','clozaril','serenace','levotomin','contomin','dogmatil','rodopin','pzc','neuleptil','akineton','artane','magmitt','pursennid','laxoberon','lendormin','silece','belsomra']},
+ {id:'dep',n:'うつ病',tag:'落ち込み・意欲の低下・不眠',
+  one:'気分の落ち込みや、何にも興味がわかない状態が2週間以上ほぼ毎日続き、生活に支障が出る病気です。怠けではなく、脳のエネルギーが切れた状態です。休養と薬で多くの人が回復しますが、再発もしやすい病気です。',
+  sym:[['気分','憂うつ、何をしても楽しくない、涙もろい、イライラ'],['考え','自分を責める（自分はだめだ・迷惑をかけている）、集中できない、決められない、死にたい気持ち'],['体','眠れない（朝早く目が覚める）または寝すぎ、食欲が落ちる・やせる、だるい、頭痛・肩こり、便秘'],['特徴','朝がいちばんつらく夕方に少し楽になる。高齢者は物忘れや体の不調として出やすい']],
+  risk:[['h','自殺','最大のリスク。回復しはじめ、薬の飲み始め、退院直後、大きな喪失の後に多い'],['h','過量服薬','手元の薬をため込んで一度に飲む'],['m','脱水・低栄養','食べられない、水分がとれない'],['m','双極性障害が隠れている','抗うつ薬で急に元気になりすぎる（躁転）'],['m','アルコール','眠るため・つらさを紛らわすための飲酒が増える'],['m','抗うつ薬の飲み始め・中断','飲み始めの焦り・イライラ、急にやめた時の離脱症状']],
+  sign:['眠れなくなる・朝起きられない','食欲が落ちる','身の回りのことをしなくなる','口数が減る','「迷惑をかけて申し訳ない」が増える','身辺整理を始める・お別れのような言葉'],
+  obs:['睡眠（寝つき・夜中に起きる・朝早く目が覚める）','食事量・体重','表情・声の大きさ','朝と夕方の違い','死にたい気持ち（直接たずねる）','薬の管理とため込み','飲酒量'],
+  ok:['「死にたい気持ちになることはありますか」と率直に聞く。聞くことで危険が高まることはない','話をさえぎらず、ゆっくり聞く。沈黙も待つ','「今は休むことが治療です」と伝える','退職・離婚・引っ越しなど大きな決断は、回復するまで先に延ばすよう勧める','できたことを小さく認める'],
+  ng:['「がんばって」「気の持ちようだよ」と励ます','気晴らしの外出や旅行を無理に勧める','死にたい気持ちの話をそらす、「そんなこと言わないで」で終わらせる','守れない秘密を「誰にも言わない」と約束する'],
+  sayP:'うつは心の弱さではなく、脳が疲れきってエネルギーが切れた状態です。お薬は効き始めるまで2〜4週間かかります。つらさが強いとき、死にたい気持ちが出たときは、一人で抱えずに話してください。',
+  sayF:'励ますより、そばで見守ることがいちばんの支えになります。「死にたい」「いなくなりたい」という言葉や、物を整理しはじめるなどの変化があれば、すぐに私たちか主治医に連絡してください。',
+  meds:['lexapro','zoloft','paxil','depromel','cymbalta','effexor','toledomin','reflex','trintellix','desyrel','tetramide','ludiomil','tryptanol','anafranil','amoxan','noritren','tofranil','dogmatil','abilify','rexulti','lithium','wypax','lunesta','belsomra','dayvigo']},
+ {id:'bp',n:'双極性障害（躁うつ病）',tag:'気分の高まりと落ち込みをくり返す',
+  one:'気分が高まる「躁（そう）」と、落ち込む「うつ」をくり返す病気です。うつ病とは治療が違い、気分安定薬が中心になります。再発しやすいので、調子がよい時も薬を続けることが大切です。',
+  sym:[['躁','眠らなくても元気、しゃべり続ける、次々と考えが浮かぶ、気が大きくなる、浪費・借金、怒りっぽい、無謀な行動'],['軽躁','本人も周りも「調子がよい」と感じやすく、見逃されやすい'],['うつ','うつ病と同じ症状。双極性障害のうつは長引きやすい'],['混合状態','気分は沈んでいるのに焦り・イライラが強い。自殺の危険がとても高い']],
+  risk:[['h','自殺','特にうつ状態と混合状態のとき'],['h','躁状態でのトラブル','浪費・借金・けんか・逮捕・人間関係が壊れる'],['h','リチウム中毒','脱水・発熱・下痢・痛み止めの併用で血中濃度が上がる'],['m','服薬中断','躁のときは「治った」と感じてやめやすい'],['m','抗うつ薬だけの治療での躁転',''],['m','飲酒・物質使用','']],
+  sign:['睡眠時間が短くなる（いちばん大事なサイン）','口数・電話・SNSが増える','買い物が増える','予定を詰め込む','怒りっぽくなる','逆に、起きられない・閉じこもる'],
+  obs:['睡眠時間（毎回記録する）','話す速さと量','お金の使い方','活動量','気分の自己評価（0〜10）','リチウムの副作用（ふるえ・下痢・尿が多い）','血中濃度の検査日'],
+  ok:['起きる・寝る・食事の時間をそろえることを一緒に目標にする','躁のときは刺激を減らし、短く穏やかに話す。言い争わない','調子のよい時に「躁のサイン」「うつのサイン」を本人と決めておく','お金やカードの管理方法を、調子のよい時に話し合っておく'],
+  ng:['躁の勢いに乗る、言い争う','「調子がいいから薬を減らしても」に同意する','夜遅くまで続く会話や電話に付き合い続ける'],
+  sayP:'この病気は、睡眠時間の変化がいちばん早いサインになります。毎回、何時に寝て何時に起きたかを一緒に確認させてください。お薬は、調子がよい時も再発を防ぐために続けるものです。',
+  sayF:'「最近やけに元気」「寝ないで動いている」「買い物が増えた」は再発のサインです。早めに知らせてもらえると、入院せずに済むことが多くなります。',
+  meds:['lithium','depakene','lamictal','tegretol','abilify','zyprexa','seroquel','latuda','serenace','levotomin','contomin','lunesta','dayvigo']},
+ {id:'anx',n:'不安症（パニック症など）',tag:'パニック発作・強い不安・回避',
+  one:'不安や恐怖が強すぎて、生活に支障が出る状態です。パニック症、全般不安症、社交不安症などがあります。発作そのもので命を落とすことはありませんが、本人の苦しさはとても強い病気です。',
+  sym:[['パニック発作','突然の動悸・息苦しさ・めまい・手足のしびれ・「死ぬのでは」という恐怖。10分ほどでピークになり、多くは30分以内におさまる'],['予期不安','「また起きたらどうしよう」と不安になる'],['広場恐怖','電車・人混み・一人での外出を避ける'],['全般不安','いろいろなことを心配し続ける、肩こり、不眠、疲れやすい'],['社交不安','人前で話す・食べることに強く緊張する']],
+  risk:[['m','抗不安薬への依存','頓服の回数や量が増えていく'],['m','引きこもり','外出できず通院が途切れる'],['m','うつ病・アルコール依存の合併',''],['m','体の病気の見落とし','胸の痛み・動悸を毎回「発作」と決めつけない（特に高齢者や初めての症状）']],
+  sign:['外出できる範囲が狭くなる','頓服を飲む回数が増える','眠れなくなる','飲酒が増える'],
+  obs:['発作の回数・場面・続いた時間','頓服を使った回数','避けている場所や行動','睡眠','飲酒・カフェイン'],
+  ok:['発作の時は「大丈夫、必ずおさまります」と落ち着いた声で伝え、ゆっくり息を吐く呼吸を一緒にする','不安を否定せず、小さな挑戦（近くのコンビニまで、など）を一緒に計画する','頓服の使い方と1日の上限を、主治医の指示どおり確認する'],
+  ng:['「気にしすぎ」「大げさ」と言う','紙袋を口に当てさせる（今はすすめられていない）','初めての胸の痛みや高齢者の動悸を、発作と決めつける'],
+  sayP:'パニック発作はとても苦しいですが、発作そのもので命を落とすことはありません。おさまり方を一緒に練習して、少しずつ行ける場所を広げていきましょう。',
+  sayF:'発作の時はそばで落ち着いて付き添い、ゆっくり息を吐くよう声をかけてください。苦手な場面を全部代わりにしてしまうと不安が強まることがあるので、できる範囲は本人に任せてください。',
+  meds:['lexapro','zoloft','paxil','depromel','solanax','wypax','meilax','depas','rivotril','lexotan','rize','sepazon','cercine','sediel','atarax']},
+ {id:'ocd',n:'強迫症',tag:'確認・手洗いがやめられない',
+  one:'頭から離れない考え（強迫観念）と、それを打ち消すためにやめられない行動（強迫行為）がくり返される病気です。本人も「やりすぎ」と分かっていることが多い病気です。',
+  sym:[['よくある形','汚れが怖くて手洗い・入浴が長くなる、戸締まり・火の元を何度も確かめる、物の置き方や順番へのこだわり、縁起の悪い考えを打ち消す'],['巻き込み','家族に何度も確認を頼む・「大丈夫」と言ってもらおうとする']],
+  risk:[['m','家族の巻き込み・家族の疲れ',''],['m','手荒れ・皮膚炎、一日が強迫行為で埋まる',''],['m','うつ病の合併、死にたい気持ち',''],['l','ため込み','衛生面・火災の危険']],
+  sign:['手洗いや確認の時間が増える','外出・入浴を避ける','家族への確認の頼みが増える'],
+  obs:['1日に強迫行為をしている時間','困っている場面','家族の巻き込みの程度','皮膚の状態','気分の落ち込み'],
+  ok:['「やめなさい」ではなく、困っている気持ちを聞く','本人がしたい生活（朝9時に家を出たい、など）を目標にする','確認に毎回つきあわず、主治医の治療方針（曝露反応妨害法など）にそろえる'],
+  ng:['確認や「大丈夫」を何度も一緒にする（安心は一時的で、症状が強まる）','強迫行為を笑う・責める','無理にやめさせる'],
+  sayP:'やめたいのにやめられないのは、性格ではなく病気の症状です。お薬と練習で少しずつ楽になる方が多い病気です。困っている場面から一緒に考えていきましょう。',
+  sayF:'確認に答えたり代わりに洗ったりすると、その場は落ち着いても症状が強くなりやすいです。対応の仕方は主治医の方針に合わせて一緒に決めましょう。',
+  meds:['depromel','paxil','zoloft','lexapro','anafranil','risperdal','abilify']},
+ {id:'ptsd',n:'PTSD（心的外傷後ストレス障害）',tag:'つらい体験の記憶がよみがえる',
+  one:'命の危険や暴力、災害などのつらい体験のあと、その記憶が何度もよみがえり、心と体が警戒し続ける状態です。',
+  sym:[['よみがえり','フラッシュバック・悪夢'],['回避','思い出させる場所・人・話題を避ける'],['過覚醒','ちょっとした音にびくっとする、眠れない、イライラ'],['気分と考え','自分を責める、人を信じられない、感情がまひする'],['解離','ぼーっとして記憶が飛ぶ']],
+  risk:[['h','自殺・自傷',''],['m','アルコール・薬への依存',''],['m','再び被害にあう','DVや虐待の環境が続いていないか'],['m','支援者の言動で再体験する','急な接近、大きな声、体に触れる']],
+  sign:['悪夢・不眠が増える','出来事のあった日付の前後の不調','飲酒が増える','閉じこもる'],
+  obs:['睡眠と悪夢','きっかけになるもの（音・におい・季節）','解離があるか','飲酒','安全な環境か（加害者との関係）'],
+  ok:['安全と安心を最優先にする。訪問の予定と目的を前もって伝える','体に触れる前に声をかける。座る位置やドアの位置を本人が選べるようにする','体験を無理に聞き出さない。話してくれたら「話してくれてありがとう」と伝える','「あなたのせいではない」と伝える'],
+  ng:['出来事の詳しい内容をしつこく聞く','急な訪問、後ろから近づく、大きな音を立てる','「もう過ぎたこと」「忘れたら」と言う'],
+  sayP:'つらい体験のあと、体と心が身を守ろうとして警戒が続くのは自然な反応です。無理に話していただく必要はありません。眠れているかなど、今の生活を楽にすることから一緒にやっていきましょう。',
+  sayF:'急に怒る、ぼーっとするのは、出来事を思い出しているサインのことがあります。責めずに「ここは安全だよ」と落ち着いて声をかけてください。',
+  meds:['zoloft','paxil','lexapro','reflex','desyrel','abilify','risperdal','dayvigo','belsomra','atarax']},
+ {id:'alc',n:'アルコール依存症',tag:'飲酒のコントロールができない',
+  one:'飲酒のコントロールができなくなり、体・仕事・家族に問題が出ても飲み続けてしまう病気です。意志の弱さではなく脳の病気です。治療の目標は断酒、または飲む量を減らすことです。',
+  sym:[['コントロールの喪失','飲む量や時間を決められない、朝から飲む、隠れて飲む'],['離脱症状','やめると手のふるえ・汗・眠れない・イライラ'],['否認','問題を認めない、小さく言う、飲むための嘘']],
+  risk:[['h','離脱せん妄・けいれん','最後に飲んでから2〜3日で、ふるえ・幻視（虫などが見える）・興奮・けいれん。命に関わる'],['h','自殺','うつ病の合併、酔った時の衝動'],['h','睡眠薬・抗不安薬との併用','呼吸が弱くなる・転倒'],['m','体の病気','肝障害・膵炎・食道静脈瘤（吐血）・低栄養'],['m','ウェルニッケ脳症','ビタミンB1不足。意識の乱れ・ふらつき・目の動きの異常'],['m','転倒・頭のけが','慢性硬膜下血腫'],['m','家族への暴力・経済的な破綻','']],
+  sign:['通院や自助グループを休む','イライラ・眠れない','空き缶・空き瓶がある','お金の使い道がはっきりしない','お酒のにおい','約束が守られない'],
+  obs:['飲酒量（何を何本）と最後に飲んだ時間','離脱症状（ふるえ・汗・脈）','食事','黄疸・お腹のふくらみ・むくみ','転倒の傷','抗酒薬を飲めているか'],
+  ok:['責めずに、飲酒で困っていること（体調・お金・家族）を本人の言葉で聞く','正直に話してくれたことを認める','再飲酒は「失敗」ではなく治療の途中のこととして扱う','断酒会・AAなどの自助グループや専門医療機関につなぐ'],
+  ng:['説教する、飲酒を責め立てる','お酒を隠す・捨てるなど見張り役になる（家族にも勧めない）','酔っている時に大事な話をする'],
+  sayP:'お酒をやめられないのは意志の問題ではなく、脳がお酒に慣れてしまった状態です。体のこと、眠りのこと、お金のことなど、困っていることを一緒に整理しましょう。正直に話してもらえることが、いちばん助かります。',
+  sayF:'ご家族が見張りや後始末を続けると、ご家族のほうが倒れてしまいます。家族会や相談窓口もあるので、一人で抱えないでください。お酒を急にやめた後の手のふるえ・幻覚・けいれんは危険なので、すぐ連絡してください。',
+  medNote:'離脱症状の時期には、ベンゾジアゼピン系（セルシンなど）とビタミンB1が使われることが多くあります。',
+  meds:['cyanamide','noxbin','regtect','selincro','cercine','wypax','alinamin']},
+ {id:'dem',n:'認知症',tag:'物忘れ・混乱・BPSD',
+  one:'脳の病気で記憶や判断の力が落ち、生活に支障が出る状態です。アルツハイマー型、血管性、レビー小体型、前頭側頭型などがあります。',
+  sym:[['中核症状','新しいことが覚えられない、時間・場所が分からない、段取りができない、言葉が出ない'],['行動・心理症状（BPSD）','物盗られ妄想、歩き回る、興奮・暴言、不安、うつ、昼夜逆転、介護を嫌がる'],['レビー小体型の特徴','幻視（人や虫が見える）、パーキンソン症状、日によって調子が大きく違う、抗精神病薬にとても敏感']],
+  risk:[['h','せん妄','脱水・感染・便秘・薬で急に混乱する。急な変化は認知症の進行ではなく体の問題を疑う'],['h','転倒・骨折',''],['m','服薬の失敗','飲み忘れ・二重に飲む'],['m','脱水・低栄養・誤嚥',''],['m','火の不始末・行方不明・消費者被害',''],['m','抗精神病薬による転倒・誤嚥','高齢の認知症の人では死亡のリスクも上がるとされる']],
+  sign:['急に混乱がひどくなった','ぼーっとしている時間が増えた','食べない・飲まない','熱がある','便秘','転んだ'],
+  obs:['いつもとの違い（急な変化）','水分・食事・排泄','服薬の確認方法（お薬カレンダー・一包化）','火・鍵・お金','家族の疲れ','皮膚の傷やあざ'],
+  ok:['ゆっくり、短く、正面から目線を合わせて話す','否定せず気持ちに合わせる（物盗られ妄想は一緒に探す）','できることは本人にしてもらい、役割を残す','家族の介護の負担を聞く'],
+  ng:['間違いを指摘・訂正し続ける、試すような質問を続ける','急かす、後ろから声をかける','子ども扱いする'],
+  sayP:'お体の具合と、毎日の暮らしで困っていることがないかをお手伝いに来ました。忘れてしまっても大丈夫なように、お薬の確認なども一緒にしますね。',
+  sayF:'急に混乱がひどくなったり、ぼーっとしたりする時は、病気の進行ではなく脱水・感染・薬の影響（せん妄）のことがあります。いつもと違うと感じたら、すぐ知らせてください。',
+  meds:['aricept','reminyl','rivastach','memary','rexulti','risperdal','seroquel','desyrel','belsomra','dayvigo','rozerem','yokukansan','magmitt']},
+ {id:'asd',n:'自閉スペクトラム症（ASD）',tag:'コミュニケーション・こだわり・感覚',
+  one:'生まれつきの脳の特性で、人とのやりとりの仕方や、こだわり・感覚の感じ方に特徴があります。病気というより特性で、環境を合わせることで生活しやすくなります。大人になって、うつや不安で受診してから分かることも多くあります。',
+  sym:[['やりとり','あいまいな言葉や表情・冗談が分かりにくい、言葉どおりに受け取る'],['こだわり','予定の変更が苦手、決まった手順がある、興味の範囲が限られる'],['感覚','音・光・におい・触られることにとても敏感（または鈍感）'],['疲れ','人の多い所で疲れやすく、パニックやかんしゃくになることがある']],
+  risk:[['m','二次障害','うつ・不安・不眠・引きこもり'],['m','パニック時の自傷・物を壊す',''],['m','いじめ・だまされる・お金のトラブル',''],['m','体の不調をうまく伝えられない','病気の発見が遅れる']],
+  sign:['こだわりが強くなる','独り言・同じ質問のくり返しが増える','睡眠の乱れ','イライラ・パニックが増える'],
+  obs:['苦手な刺激','パニックのきっかけと落ち着く方法','睡眠','日課の崩れ','本人の得意なこと'],
+  ok:['具体的に・短く・肯定の形で伝える（「10時になったらお薬を一緒に確認します」）','予定は前もって、紙や図で見せる','照明・声の大きさ・においなど、感覚の苦手に配慮する','パニック時は刺激を減らし、静かな場所で落ち着くのを待つ'],
+  ng:['「ちゃんとして」「適当に」などのあいまいな言い方','急な予定変更、約束の時間に遅れる','たくさんの質問を一度にする'],
+  sayP:'訪問の日にちと時間、何をするかは前もってお伝えします。変更があるときも早めに知らせます。苦手な音や光、においがあれば教えてください。',
+  sayF:'本人にとって分かりやすいのは、具体的な言葉と、目で見える予定表です。苦手な刺激や落ち着く方法を教えていただくと、私たちの関わり方もそろえられます。',
+  meds:['abilify','risperdal','meratobel','intuniv','strattera','concerta','depakene','yokukansan']},
+ {id:'adhd',n:'ADHD（注意欠如・多動症）',tag:'不注意・多動・衝動性',
+  one:'生まれつきの脳の特性で、不注意（忘れ物・うっかり）や、多動・衝動性があります。大人では不注意が目立つことが多い特性です。',
+  sym:[['不注意','忘れ物・なくし物、約束や期限を忘れる、片付けや段取りが苦手、先延ばし'],['多動・衝動性','じっとしていられない、しゃべりすぎる、待てない、思いつきで行動・買い物、イライラしやすい']],
+  risk:[['m','服薬・通院・支払いの管理ミス',''],['m','衝動的な買い物・借金・依存','アルコール・ギャンブルなど'],['m','事故・けが',''],['m','二次障害','うつ・不安'],['m','ADHDの薬の副作用・乱用','食欲低下・眠れない']],
+  sign:['生活が乱れる','支払い忘れ・なくし物が増える','睡眠の乱れ','イライラ'],
+  obs:['飲み忘れ','食欲・体重','睡眠','脈・血圧（ADHDの薬を飲んでいる人）','お金の管理'],
+  ok:['やることは紙やスマホのアラームなど「見える形」にする','一度に一つ、短く伝える','できたことをすぐ認める','服薬はアラーム・お薬カレンダーを使う'],
+  ng:['「何回言ったら分かるの」と責める','長い説明・口だけの約束'],
+  sayP:'忘れやすさは性格ではなく、脳の特性です。アラームやカレンダーなど、うっかりを補う工夫を一緒に考えていきましょう。',
+  sayF:'注意する回数を増やすより、仕組みで補うほうがうまくいきます。できたときにすぐ認めてあげてください。',
+  meds:['concerta','strattera','intuniv','vyvanse','meratobel']},
+ {id:'bpd',n:'境界性パーソナリティ障害',tag:'感情の波・見捨てられ不安・自傷',
+  one:'感情の波がとても大きく、見捨てられることへの強い不安から、人との関係が不安定になりやすい状態です。年齢とともに落ち着いていくことが多いとされています。',
+  sym:[['対人関係','見捨てられ不安（連絡が取れないと強い不安）、相手を理想化したり急にこき下ろしたりする'],['感情','数時間で気分が大きく変わる、強い怒り、空虚感'],['行動','リストカット・過量服薬などの自傷、死をほのめかす、浪費・過食・物質使用などの衝動的な行動']],
+  risk:[['h','自傷・過量服薬・自殺','ほのめかしも本気として扱う'],['m','支援者の間の分裂','「あの人はひどい、あなただけが分かってくれる」'],['m','時間外の頻回な電話・要求',''],['m','物質使用・危険な行動','']],
+  sign:['自傷が増える','電話が増える','関係者への怒りが強まる','処方薬をため込む'],
+  obs:['自傷の有無・方法・傷の手当て','薬の残量（過量服薬の手段になる）','睡眠','人間関係の変化','別れ・喪失などの出来事'],
+  ok:['訪問時間・連絡方法などのルールを最初に決め、チーム全員で同じ対応をする','気持ちは受け止め、そのうえで「できること・できないこと」をはっきり示す','自傷には落ち着いて、傷の手当てと安全の確認をする','情報はチームで共有することを最初に伝えておく'],
+  ng:['一人で抱える、「あなただけに」と特別扱いする','感情的に言い返す、見捨てるような言い方をする','自傷を大げさに騒ぐ、または無視する','秘密を約束する'],
+  sayP:'つらい気持ちのときに一緒に考える係です。訪問の時間と連絡の方法を決めて、その中でしっかりお話を聞きます。安全のため、大事なことはチームで共有させてください。',
+  sayF:'感情の波は病気の特徴で、本人もとても苦しんでいます。危険な自傷や過量服薬のときは、すぐに救急や主治医へ連絡してください。ご家族が疲れきらないよう、相談先も一緒に考えます。',
+  medNote:'この病気だけに効く薬はありません。気分の波・衝動性・不安・不眠などの症状に合わせて使われます。処方薬のため込み（過量服薬）に注意します。ベンゾジアゼピン系は衝動性を強めることがあります。',
+  meds:['abilify','lamictal','depakene','seroquel','zoloft','lexapro','atarax']},
+ {id:'ed',n:'摂食障害',tag:'拒食・過食・嘔吐',
+  one:'体重や体型への強いこだわりから、食べない（拒食）、たくさん食べて吐く（過食・嘔吐）などがくり返される病気です。精神の病気の中でも命に関わる危険が高い病気です。',
+  sym:[['神経性やせ症','極端な食事制限、やせているのに太っていると感じる、動き続ける、月経が止まる'],['神経性過食症','むちゃ食いと、吐く・下剤・絶食で打ち消すことのくり返し'],['共通','隠れて食べる・吐く、体重への強いこだわり']],
+  risk:[['h','低栄養・低カリウムによる不整脈・突然死',''],['h','再栄養症候群','急に食べ始めた時の電解質の異常'],['h','自殺',''],['m','低血糖・骨粗しょう症・むくみ・低体温',''],['m','吐くことによる歯の溶け・食道の傷、下剤の乱用','']],
+  sign:['体重が減る','食事を抜く','食後にトイレにこもる','動き続ける','体型の話が増える'],
+  obs:['体重（主治医の方針どおりに測る）','脈拍（遅すぎないか）・血圧・体温','むくみ','ふらつき・失神','吐く・下剤の有無','手の甲のたこ・歯の状態'],
+  ok:['体重や食事の量より、「最近のつらさ」を先に聞く','医師が決めた体重・食事の計画に、チームで合わせる','ふらつき・失神・動悸はすぐ受診につなぐ'],
+  ng:['体型について言う（「やせたね」「太ったね」のどちらも）','食べることを強制・説得する','一人で体重の管理を約束する'],
+  sayP:'食べることや体重のことを、無理に変えさせに来たのではありません。体がどのくらい疲れているかを一緒に確認しながら、楽に過ごせる方法を考えていきます。',
+  sayF:'食事をめぐる言い争いは、悪くなるきっかけになりやすいです。ふらつき、失神、脈がとても遅いなどのときは命に関わるので、すぐ受診してください。',
+  medNote:'この病気だけに効く薬はありません。栄養状態に合わせたカリウムなどの補充や、不安・こだわり・うつに対する薬が使われます。下剤の使いすぎに注意します。',
+  meds:['zyprexa','zoloft','lexapro','aspara']},
+ {id:'epi',n:'てんかん',tag:'発作をくり返す・飲み続ける薬',
+  one:'脳の神経が一時的に過剰に興奮して、発作をくり返す病気です。100人に1人ほどがかかり、多くは薬で発作をおさえられます。知的障害・認知症・脳の病気の後に合わせ持つことも多く、うつ・不安などのこころの症状を伴うこともあります。',
+  sym:[['焦点発作（部分発作）','体の一部がぴくつく、ぼーっとして口をもぐもぐ・手をもぞもぞ動かす、意識がぼんやりする'],['全般発作','意識をなくして全身がつっぱり、がくがくとけいれんする（強直間代発作）、一瞬ぼーっとする（欠神発作）、体がぴくっとする（ミオクロニー発作）'],['発作のあと','もうろうとする、眠り込む、頭痛、一時的に手足が動かしにくい'],['こころの症状','うつ・不安、発作の前後のイライラ、発作のあとの幻覚・妄想']],
+  risk:[['h','けいれん重積','発作が5分以上続く、意識が戻らないまま発作をくり返す。命に関わる'],['h','入浴中の溺水・転倒・やけど','発作で意識をなくした時の事故'],['m','飲み忘れ・自己中断による発作',''],['m','うつ・死にたい気持ち','てんかんの人はうつを合わせ持ちやすい'],['m','てんかんの人の予期せぬ突然死（SUDEP）','発作が多い人、夜の全身けいれんがある人で起こりやすい'],['m','薬の副作用','眠気・ふらつき・薬疹・イライラなどの精神症状'],['m','誤嚥','発作中・発作のあとのむせ']],
+  sign:['飲み忘れ・残薬が増える','睡眠不足','飲酒','発熱・体調不良','強いストレス','月経の前後に発作が増える人もいる'],
+  obs:['発作の回数・様子・続いた時間（発作の記録）','飲み忘れ・残薬','睡眠','飲酒','体のけが・あざ','眠気・ふらつき','気分の落ち込み・イライラ','入浴の方法'],
+  ok:['発作の時はあわてずに時間を計り、周りの危ない物をどけて、顔を横に向ける','発作が終わって意識が戻るまでそばにいる','入浴はシャワーにする、家族がいる時に入る、浴槽のお湯を少なくする','発作の時の対応（誰に連絡するか・頓用薬の使い方）を主治医と決めておく'],
+  ng:['口にタオルや指を入れる','体を押さえつける','発作の直後に水や薬を飲ませる','一人での入浴や高い所の作業を勧める','薬の自己中断・減量に同意する'],
+  sayP:'発作を防ぐいちばんの方法は、毎日決まった時間にお薬を飲むことと、睡眠をしっかりとることです。発作があったときは、日にちと時間、どんな様子だったかを一緒に記録していきましょう。',
+  sayF:'発作のときは、あわてずに時間を計り、危ない物をどけて顔を横に向けてください。口に物を入れたり押さえつけたりはしないでください。5分以上続くとき、意識が戻らないまま発作をくり返すときは救急車を呼んでください。',
+  meds:['keppra','lamictal','depakene','tegretol','vimpat','fycompa','aleviatin','phenobal','topina','excegran','gabapen','mystan','rivotril']},
+ {id:'id',n:'知的障害',tag:'理解・伝えること・管理の支援が必要',
+  one:'発達期（おおむね18歳まで）に知的な力の遅れがあり、日常生活や社会生活の一部に支援が必要な状態です。知能検査の数字だけでなく、生活の中でどれくらい支援が必要かで考えます。てんかん・自閉スペクトラム症・ADHDを合わせ持つことや、うつ・不安・統合失調症などの精神の病気を合わせ持つことも多くあります。',
+  sym:[['理解','抽象的な話やたとえ話、「あとで」「少し」などのあいまいな言葉、時間の見通しが分かりにくい'],['記憶・段取り','一度にたくさん言われると覚えきれない。手順の多いことが苦手'],['管理','お金・薬・手続き・予定の管理が難しい'],['伝えること','困りごとや体の不調を言葉で伝えにくい。分かっていなくても「はい」と答えて合わせてしまうことがある'],['変化への弱さ','予定・担当者・住む場所などが変わると不安定になりやすい'],['行動で表す','不安・痛み・不満が、大声・自傷・物を壊す・同じ行動のくり返しとして出ることがある（強度行動障害）']],
+  extra:[
+   ['程度の目安（大阪府の療育手帳）',['B2（軽度）：日常会話はできるが、お金の管理・契約・複雑な判断で支援が必要。困っていても「大丈夫」と言いやすく、支援が必要なことが見えにくい','B1（中度）：簡単な会話や身の回りのことはできるが、生活の多くに声かけや見守りが必要','A（重度・最重度）：言葉でのやりとりが限られ、生活のほとんどに支援が必要。体の不調は表情や行動の変化でしか分からないことが多い'],'判定は、知能検査と生活の様子を合わせて行われます。手帳の区分だけで決めつけず、その人ができること・苦手なことを確かめましょう。'],
+   ['合わせ持ちやすい病気・体の問題',['てんかん（発作がないか、薬が続いているか）','自閉スペクトラム症・ADHD','便秘（腸閉塞になることもある）・逆流性食道炎','肥満・糖尿病、または、やせ','虫歯・歯周病（歯みがきの支援が必要なことが多い）','視力・聴力の低下（本人が言わないので気づかれにくい）','飲み込む力の低下・誤嚥（重度の人や、年をとると増える）','ダウン症の人：心臓の病気、甲状腺の病気、睡眠時無呼吸が多い。早く年をとりやすく、40〜50代からアルツハイマー型認知症が増える','精神の病気：うつ・不安・統合失調症・強迫など。症状が行動の変化として出るので見逃されやすい']],
+   ['体の不調が行動に出るサイン（言葉で言えない人）',['急に落ち着かない・大声・自分をたたく、かむ → 痛み（歯・耳・お腹・便秘・月経）を疑う','お腹や顔など、同じ所をさわる・たたく → その部分の痛み','食べない・食べる量が減る → 口の中・歯・のどの痛み、便秘、気分の落ち込み','横になりたがる・動かない → 発熱・だるさ','夜眠らない → 痛み・かゆみ・不安','「問題行動」が増えたら、まず体の原因（便・尿・熱・歯・皮膚・月経）を探す']],
+   ['伝え方の工夫',['一度に一つ、短い文で伝える（「お薬を飲みます」「次に血圧を測ります」）','絵・写真・実物を見せる（薬の写真、カレンダーの印）','「あとで」「ちょっと」ではなく、「時計の長い針が6のところで」など具体的に言う','「分かりましたか」ではなく、「何をするか教えてください」と本人の言葉で確かめる','「はい・いいえ」で答えられる質問と、選べる質問（「お茶と水、どっちがいい？」）を使う','痛みは、顔の絵（フェイススケール）や体の絵を指さしてもらう','本人がいつも使っている言葉やサイン（身ぶり・絵カード）を、支援者から教わる','大人として接する（子ども扱いの言葉づかいにしない）']],
+   ['服薬の支援の工夫',['一包化（1回分ずつ袋にまとめる）を薬局に頼み、袋に日付と「あさ・ひる・よる」を大きく書く','お薬カレンダー・アラームを使い、薬は決まった場所に置く','飲み込みにくい時は、OD錠・粉・ゼリーなど形を変えられるか主治医・薬局に相談する（自分で錠剤をつぶさない）','誰が管理するか（本人・家族・グループホーム・ヘルパー）と、飲めたかの確かめ方を決める','頓服は「どんな時に使うか」を支援者どうしでそろえる','行動をおさえる目的で抗精神病薬が出ている時は、眠気・ふらつき・よだれ・飲み込みの悪化に注意する']],
+   ['権利と本人の意思を守る',['本人に直接話しかけ、本人の希望を聞く（家族や支援者とだけ話さない）','本人が決められるように、選びやすい形で説明する（意思決定支援）','お金や契約の支援には、日常生活自立支援事業（社会福祉協議会）や成年後見制度がある','あざ・やけど・急におびえる・お金がなくなる → 虐待のサインのことがある。気づいたら管理者に報告する（障害者虐待防止法で、市町村への通報の義務がある）','体を押さえる・閉じ込めるなどの身体拘束は、原則しない','相談支援専門員・グループホーム・日中に通う場所と、情報や関わり方をそろえる']]
+  ],
+  risk:[['h','体調不良・病気の見落とし','痛み・便秘・虫歯・骨折などが「問題行動」として出て、発見が遅れやすい'],['h','誤嚥・窒息','早食い・丸のみ、飲み込む力の低下（重度の人、ダウン症の人、年をとった人）'],['m','便秘・腸閉塞','抗精神病薬や運動不足で起こりやすく、本人は訴えにくい'],['m','てんかん発作・発作によるけが',''],['m','服薬の失敗','飲み忘れ・二重に飲む・飲み込めずに吐き出す'],['m','虐待・お金の被害・だまされる','家族・施設・知人からの被害や、悪質な契約'],['m','抗精神病薬の副作用','行動をおさえる目的の薬で、眠気・転倒・よだれ・体重増加'],['m','精神の病気の見落とし','うつ・不安・幻聴などが、行動の変化として出る'],['m','肥満・生活習慣病',''],['m','自傷・他害（強度行動障害）','苦手な刺激、見通しが立たないこと、伝わらないいら立ちがきっかけになりやすい']],
+  sign:['落ち着かない・大声が増える','食欲・睡眠の変化','同じ行動のくり返しが増える','自傷が増える','好きなことをしなくなる','表情が乏しくなる・反応が遅くなる','便や尿の回数が変わる','日課・支援者・住む場所が変わった後'],
+  obs:['いつもの様子との違い（表情・食事・排便・睡眠）','最後の排便日','食べ方（早食い・むせ）','服薬をどこまで自分でできるか','体の傷・あざ・皮膚の状態','歯・口の中','体重','てんかん発作があるか','本人に伝わる言葉・サイン','支援者・家族の関わりと疲れ','お金の管理'],
+  ok:['やさしく短い言葉、絵・写真・実物で伝える','「はい・いいえ」で答えられる聞き方を混ぜる','分かったかどうかを本人の言葉で確かめる','いつもの支援者から、本人に伝わる伝え方を教わる','訪問の流れを毎回同じにして、見通しを持てるようにする','できたことをその場で具体的に認める（「お薬を自分で出せましたね」）'],
+  ng:['子ども扱いする','家族や支援者とだけ話して、本人を置き去りにする','早口・専門用語','「分かった？」に「はい」と答えたことで、理解したと決めつける','本人の前で、本人のできないことを話題にする','急に体に触れる、予定を急に変える','行動の変化を「いつものこと」「障害だから」で片づける'],
+  sayP:'からだの調子と、お薬のことを一緒に見に来ました。痛いところや、いやなことがあったら教えてください。指でさしてもいいですよ。',
+  sayMore:[['ご本人へ（お薬のとき）','お薬を飲む時間です。この「あさ」の袋を飲みましょう。飲んだら、カレンダーに丸をつけましょう。'],['ご本人へ（体を確かめるとき）','腕で血圧を測ります。少しぎゅっとしますが、痛くないですよ。終わったら教えますね。'],['グループホーム・支援者へ','ふだんの様子との違いを教えてください。食事・お通じ・眠り・機嫌の変化は、体の不調のサインのことがあります。お薬の管理の仕方と、頓服を使う時の決まりもそろえさせてください。']],
+  sayF:'ふだんの様子をいちばんよく知っているのは、ご家族や支援者の方です。いつもと違う行動があれば、体の不調のサインのこともあるので教えてください。本人が分かりやすい言葉やサインがあれば、私たちも同じ言葉を使います。',
+  meds:['risperdal','abilify','depakene','tegretol','lamictal','keppra','rivotril','strattera','intuniv','yokukansan','akineton','magmitt','pursennid']},
+ {id:'sad',n:'統合失調感情障害',tag:'統合失調症の症状と気分の波が両方ある',
+  one:'幻覚・妄想などの統合失調症の症状と、躁やうつの気分の症状の両方がみられる病気です。抗精神病薬と、気分安定薬や抗うつ薬を組み合わせて治療することが多い病気です。',
+  sym:[['統合失調症の症状','幻聴・妄想・まとまりのない話'],['気分の症状','躁：眠らない・しゃべり続ける・浪費／うつ：落ち込み・意欲の低下・死にたい気持ち'],['経過','気分の波と一緒に、幻覚・妄想が強くなったり弱くなったりする']],
+  risk:[['h','自殺','特にうつの時期'],['h','服薬中断による再発',''],['m','躁の時期の浪費・トラブル',''],['m','気分安定薬の副作用','リチウム中毒など'],['m','抗精神病薬の副作用','体重増加・血糖・便秘']],
+  sign:['睡眠時間が短くなる','口数や活動が急に増える、または減る','独り言・被害的な話が増える','残薬が増える','閉じこもる'],
+  obs:['睡眠時間','気分の自己評価（0〜10）','幻聴・妄想の内容','残薬','死にたい気持ち','体重・便通'],
+  ok:['気分の波と、幻聴・妄想の両方のサインを本人と一緒に整理する','睡眠時間を毎回記録する','幻聴・妄想は否定せず、気持ちに寄りそう','調子のよい時にクライシスプランを決めておく'],
+  ng:['気分の高まりに合わせて活動を増やす','妄想を理屈で否定する','「薬を減らしたい」に同意する'],
+  sayP:'気分の波と、声が聞こえるなどの症状が一緒に出やすい病気です。眠りの変化が早いサインになるので、毎回睡眠のことを一緒に確認させてください。',
+  sayF:'眠らなくなる、急に元気になる、反対に閉じこもる、独り言が増える、などは悪くなるサインです。早めに知らせてください。',
+  meds:['abilify','risperdal','invega','zyprexa','seroquel','latuda','lithium','depakene','lamictal','lexapro','zoloft']},
+ {id:'del',n:'妄想性障害',tag:'一つの強い思い込みが長く続く',
+  one:'「隣の人に嫌がらせをされている」「配偶者が浮気している」など、事実と違う強い思い込み（妄想）が長く続く病気です。妄想に関係しない部分の生活は、わりと保たれていることが多くあります。本人は病気と思っていないことがほとんどです。',
+  sym:[['被害型','嫌がらせをされている・盗聴されている'],['嫉妬型','配偶者が浮気している'],['身体型','体から臭いが出ている・体に虫がいる'],['そのほか','有名人に愛されている・特別な力がある'],['生活','妄想に関係しない部分は保たれていることが多い']],
+  risk:[['h','近所とのトラブル','苦情・警察への通報・転居をくり返す'],['m','妄想の相手への攻撃','まれだが注意する'],['m','治療・服薬を受け入れにくい',''],['m','孤立・うつ','']],
+  sign:['苦情や通報が増える','眠れない','妄想の話をする時間が増える','戸締まり・目張りなど、身を守る行動が増える'],
+  obs:['妄想の内容と強さ','近所・家族とのトラブル','睡眠','服薬','生活の困りごと'],
+  ok:['妄想は否定も肯定もせず、「それはつらいですね」と困っている気持ちを受け止める','眠れない・疲れるなど、本人が困っていることから支援する','時間をかけて信頼関係をつくる','近所や家族からの情報も確かめる'],
+  ng:['妄想が間違いだと説得する','妄想に同意して一緒に対策をとる','本人に隠れて家族とだけ話す'],
+  sayP:'毎日気が休まらなくて、とても疲れていると思います。よく眠れて、少しでも楽に過ごせるように一緒に考えさせてください。',
+  sayF:'本人は本当にそう感じていて、否定されると心を閉ざしやすくなります。言い争わずに、困っている気持ちを聞いてあげてください。トラブルが起きそうな時は早めに知らせてください。',
+  meds:['risperdal','abilify','zyprexa','lonasen','rexulti','serenace']},
+ {id:'dys',n:'持続性抑うつ障害（気分変調症）',tag:'軽いうつが長く続く',
+  one:'うつ病ほど重くはない気分の落ち込みが、2年以上ほとんど毎日続く状態です。本人は「もともとの性格」と思っていることが多く、途中でうつ病が重なることもあります。',
+  sym:[['気分','いつも気分が晴れない・自信がない・悲観的'],['体','疲れやすい・眠りが悪い・食欲の変化'],['生活','集中できない・決められない・人づきあいを避ける']],
+  risk:[['m','うつ病が重なる',''],['m','死にたい気持ち',''],['m','アルコール・薬への依存',''],['m','孤立・生活の質の低下','']],
+  sign:['急に気分が沈む・寝込む','食欲がなくなる','死にたいと言う','飲酒が増える'],
+  obs:['気分の自己評価（0〜10）','睡眠・食事','活動量','死にたい気持ち','飲酒'],
+  ok:['長く続くつらさを否定せずに聴く','小さな目標（散歩・家事を一つ）を一緒に決めて、できたことを認める','気分の記録で、変化に一緒に気づく'],
+  ng:['「性格だから」「甘え」と言う','大きな目標を急に立てる'],
+  sayP:'長いあいだ気分が晴れない状態が続くと、それが当たり前のように感じてしまいます。治療で楽になる方も多いので、小さなことから一緒に取り組みましょう。',
+  sayF:'性格ではなく、治療で良くなる病気です。急に寝込む、死にたいと言うなどの変化があれば、すぐ知らせてください。',
+  meds:['lexapro','zoloft','cymbalta','reflex','trintellix','abilify']},
+ {id:'ppd',n:'周産期のうつ（産後うつなど）',tag:'妊娠中・出産後の心の不調',
+  one:'妊娠中から出産後1年くらいの間に起こる、気分の落ち込み・不安・眠れないなどの不調です。10人に1人ほどにみられます。赤ちゃんの世話にも影響するので、早く気づいて支えることが大切です。',
+  sym:[['気分','落ち込み・涙が出る・不安・イライラ'],['考え','母親失格だと自分を責める・赤ちゃんをかわいいと思えない'],['体','赤ちゃんが寝ていても眠れない・食欲がない・疲れ'],['注意','出産後すぐに急に混乱する・幻覚が出る時は、産後精神病のおそれがあり緊急']],
+  risk:[['h','自殺','出産後の母親の死因として多い'],['h','赤ちゃんへの影響','世話ができない・虐待のおそれ'],['m','孤立・育児の負担',''],['m','授乳中の薬の心配から、自己判断で服薬をやめる','']],
+  sign:['眠れない','食べない','赤ちゃんの世話をしなくなる','「消えたい」と言う','急に混乱する'],
+  obs:['睡眠・食事','気分・自分を責める気持ち','死にたい気持ち','赤ちゃんの様子と世話の状況','家族の支え','服薬（授乳中の薬は主治医に確認）'],
+  ok:['「よくがんばっている」と認め、責めずに話を聴く','眠れる時間をつくれるよう、家族と相談する','保健師・子育て支援と連携する','死にたい気持ちを直接たずねる'],
+  ng:['「母親なんだから」と励ます','赤ちゃんのことだけを話題にする','授乳中だからと、自己判断で薬をやめるのに同意する'],
+  sayP:'出産のあとは体も心も大きく変わり、多くの方が不調になります。あなたが悪いのではありません。眠ることをいちばんに考えて、一緒に楽になる方法を探しましょう。',
+  sayF:'本人が休める時間をつくることが、いちばんの支えです。眠れない、食べない、「消えたい」と言う、急に混乱するなどの時は、すぐ連絡してください。',
+  meds:['zoloft','lexapro','reflex','desyrel','wypax']},
+ {id:'adj',n:'適応障害',tag:'はっきりしたストレスのあとの不調',
+  one:'仕事・人間関係・引っ越し・病気など、はっきりしたストレスのあとに、気分の落ち込みや不安、行動の変化が出る状態です。ストレスから離れると多くは数か月で良くなりますが、うつ病に移ることもあります。',
+  sym:[['気分','落ち込み・涙もろい・不安・イライラ'],['体','眠れない・食欲がない・頭痛・腹痛'],['行動','仕事や学校を休む・飲酒が増える・人を避ける'],['特徴','ストレスの場面に近づくと症状が強くなる']],
+  risk:[['m','うつ病への移行',''],['m','死にたい気持ち','特に若い人'],['m','飲酒・過食などでの紛らわし',''],['m','仕事・生活の破綻','']],
+  sign:['眠れない日が続く','ストレスから離れても気分が戻らない','飲酒が増える','閉じこもる'],
+  obs:['ストレスの内容と今の状況','睡眠・食事','気分','死にたい気持ち','飲酒'],
+  ok:['ストレスの原因と、本人が困っていることを一緒に整理する','ストレスへの対処法（休む・相談する・環境を変える）を一緒に考える','小さくできたことを認める'],
+  ng:['「気にしすぎ」「みんな我慢している」と言う','原因の場面に無理に戻るよう急かす'],
+  sayP:'つらい出来事が続くと、心と体が疲れて調子を崩すのは自然なことです。何がいちばん負担になっているかを一緒に整理して、楽になる方法を考えましょう。',
+  sayF:'怠けではなく、ストレスで心と体が疲れている状態です。責めずに休ませてあげてください。気分が戻らない時や、死にたいと言う時はすぐ知らせてください。',
+  meds:['lexapro','zoloft','desyrel','wypax','solanax','rize','atarax']},
+ {id:'hoard',n:'ためこみ症',tag:'物を捨てられず、家に物があふれる',
+  one:'価値がなくても物を捨てられず、集め続けて、家の中が物であふれて生活に支障が出る状態です。本人は困っていないと感じていることも多くあります。高齢者や一人暮らしに多く、うつ病・ADHD・認知症などと重なることもあります。',
+  sym:[['捨てられない','捨てようとすると強い不安・苦痛がある'],['集める','無料の物・買い物・拾ってきた物'],['家の状態','通路がふさがる・台所や風呂が使えない・食べ物が腐る'],['受けとめ','本人は問題と思っていないことがある']],
+  risk:[['h','火災','コンロ・ストーブの周りの物'],['h','転倒・物の崩れでのけが',''],['m','不衛生による感染・害虫',''],['m','近所とのトラブル・立ち退き',''],['m','支援者が家に入れず、必要なケアができない','']],
+  sign:['物が増える速さが上がる','使えない部屋が増える','買い物が増える','近所からの苦情'],
+  obs:['通路・出入口・台所・トイレ・風呂が使えるか','火の周り','食べ物の腐敗・害虫','転倒の危険','捨てることへの本人の気持ち'],
+  ok:['安全（通路・火の周り）を最優先に、本人の同意を得て少しずつ片付ける','物への思いを聴き、捨てるかどうかは本人に決めてもらう','片付けの目標を小さく区切る（テーブルの上だけ、など）','地域包括支援センター・相談支援など関係機関と連携する'],
+  ng:['本人の留守に勝手に捨てる','「ゴミ屋敷」など責める言葉を使う','一度に大量に片付ける'],
+  sayP:'一つひとつの物に大切な思いがあると思います。勝手に捨てることはしません。まずは転ばずに歩ける通り道と、火の周りの安全から一緒に考えさせてください。',
+  sayF:'無理に捨てると本人の不安が強くなり、また集めてしまうことが多いです。安全なところから、本人と相談しながら少しずつ進めましょう。',
+  meds:['depromel','paxil','zoloft']},
+ {id:'dsc',n:'解離性障害',tag:'記憶が飛ぶ・自分が自分でない感じ',
+  one:'強いストレスやつらい体験から心を守るために、記憶・意識・自分という感覚がばらばらになる状態です。記憶が抜ける、自分を外から見ている感じがする、別の人格のようにふるまう、などがあります。',
+  sym:[['解離性健忘','ある期間の記憶がない・気づくと知らない場所にいる'],['離人感・現実感がない','自分が自分でない・周りが夢のよう'],['解離性同一症','別の人格のようにふるまう・知らないうちに持ち物が増えている'],['体の症状','声が出ない・手足が動かない・検査で異常のないけいれんのような発作']],
+  risk:[['h','自傷・自殺',''],['m','記憶がない間の危険な行動・事故',''],['m','再び被害にあう','虐待・DVが続いていないか'],['m','訴えを信じてもらえず孤立する','']],
+  sign:['記憶が飛ぶ回数が増える','悪夢・フラッシュバック','自傷','強いストレスの出来事'],
+  obs:['記憶が飛ぶ・ぼーっとする時間','きっかけ（場所・人・話題）','自傷','睡眠','安全な環境か'],
+  ok:['安全と安心を最優先にする','解離している時は、名前を呼び、今いる場所と日付を落ち着いて伝える（グラウンディング）','体験を無理に聞き出さない','主治医の治療方針にそろえる'],
+  ng:['「演技」「わざと」と決めつける','別の人格を面白がる、強く否定する','つらい体験をしつこく聞く'],
+  sayP:'心がつらさから身を守ろうとして、記憶が飛んだり、自分でない感じになったりすることがあります。あなたのせいではありません。安心できる時間を増やすことから一緒にやっていきましょう。',
+  sayF:'わざとではありません。ぼーっとしている時は、名前を呼んで、ここがどこか、今日が何日かを落ち着いて伝えてください。',
+  medNote:'この病気だけに効く薬はありません。不安・うつ・不眠などの症状に合わせて使われます。',
+  meds:['zoloft','paxil','wypax','atarax']},
+ {id:'som',n:'身体症状症（心気症など）',tag:'体の症状や病気への強い不安',
+  one:'痛み・疲れ・胃の不調などの体の症状が続き、その症状や「重い病気ではないか」という不安に強くとらわれて、生活に支障が出る状態です。症状は本人にとって本当につらいもので、気のせいではありません。',
+  sym:[['体の症状','痛み・しびれ・めまい・胃腸の不調・疲れ'],['考え','重い病気ではないかと何度も心配する'],['行動','何度も受診・検査をする・ネットで調べ続ける'],['そのほか','不安・うつを合わせ持つことが多い']],
+  risk:[['m','本当の体の病気の見落とし',''],['m','痛み止め・睡眠薬の使いすぎ・依存',''],['m','受診のくり返しによるお金・時間の負担',''],['m','うつ・死にたい気持ち','']],
+  sign:['受診の回数が増える','痛み止めの量が増える','寝込む時間が増える','気分の落ち込み'],
+  obs:['症状の内容と生活への影響','受診・検査の回数','薬の使い方','気分・不安','新しい症状（本当の病気のサイン）'],
+  ok:['症状のつらさを認めて聴く（「気のせい」と言わない）','決まった医療機関・主治医で相談するよう支える','症状があってもできる活動を一緒に増やす','新しい症状や変化はきちんと確かめる'],
+  ng:['「気のせい」「どこも悪くない」と言う','検査を何度もすすめる','新しい症状を最初から決めつける'],
+  sayP:'体のつらさは本当のもので、気のせいではありません。症状と付き合いながら、できることを少しずつ増やしていけるよう一緒に考えましょう。',
+  sayF:'本人は本当につらく感じています。否定せずに聞いてあげてください。いつもと違う新しい症状がある時は受診につなげますので、知らせてください。',
+  meds:['cymbalta','lexapro','zoloft','reflex','sediel','yokukansan']},
+ {id:'subst',n:'薬物依存症',tag:'覚醒剤・大麻・処方薬・市販薬など',
+  one:'覚醒剤・大麻・危険ドラッグのほか、睡眠薬・抗不安薬などの処方薬や、せき止めなどの市販薬を、やめられずに使い続けてしまう病気です。意志の弱さではなく脳の病気で、回復のための支援があります。使うのをやめた後も、幻覚・妄想などの後遺症が続くことがあります。',
+  sym:[['やめられない','量や回数が増える・隠れて使う'],['離脱症状','やめるとだるさ・眠気・イライラ・不安（薬による）'],['後遺症','覚醒剤：幻聴・被害妄想が続く、ストレスで再び出る（フラッシュバック）'],['生活','お金・仕事・人間関係のトラブル']],
+  risk:[['h','過量摂取','市販薬・処方薬のまとめ飲みを含む'],['h','自殺',''],['h','再使用・逮捕',''],['m','幻覚・妄想の再燃',''],['m','感染症','注射の回し打ち：肝炎・HIV']],
+  sign:['約束を守れない・連絡が取れない','お金の使い道が分からない','眠らない・異常に元気、または寝込む','被害的な話が増える','市販薬を多く買う'],
+  obs:['使用の有無（本人が話せる関係をつくる）','処方薬の量と残数','睡眠・食事','幻聴・妄想','お金の使い方','感染症の症状'],
+  ok:['責めずに、正直に話してくれたことを認める','再使用は回復の途中のこととして扱い、次の対策を考える','自助グループ（NA）・ダルク・精神保健福祉センターの回復プログラムにつなぐ','処方薬の管理方法を主治医と相談する'],
+  ng:['説教する、罰を与えるように話す','隠し事を責め立てる','訪問者が薬の管理を一人で抱え込む'],
+  sayP:'やめたいのにやめられないのは、意志の問題ではなく病気の症状です。正直に話してもらえることが、いちばんの助けになります。責めたりしないので、困っていることを一緒に整理しましょう。',
+  sayF:'家族だけで解決しようとすると、家族が疲れきってしまいます。家族向けの相談窓口や家族会もあります。過量摂取が疑われる時は、すぐ119番してください。',
+  medNote:'依存症そのものに効く薬は限られています。後遺症の幻覚・妄想や、不眠・不安に合わせて薬が使われます。依存しやすい睡眠薬・抗不安薬は、量と残数に注意します。',
+  meds:['risperdal','abilify','zyprexa','desyrel','atarax']},
+ {id:'gam',n:'ギャンブル障害',tag:'ギャンブルがやめられない',
+  one:'パチンコ・競馬・ネットのギャンブルなどを、やめたくてもやめられず、借金や家族とのトラブルが起きても続けてしまう病気です。うつ病や、ほかの依存症と重なりやすい病気です。',
+  sym:[['やめられない','負けを取り返そうとして続ける・時間や金額が増える'],['隠す','嘘をつく・借金を隠す'],['気持ち','ギャンブルのことばかり考える・やめるとイライラする'],['生活','借金・家賃や公共料金の未払い・家族との関係の悪化']],
+  risk:[['h','借金による生活の破綻',''],['h','死にたい気持ち','借金を苦にして'],['m','家族への影響・暴力',''],['m','横領・窃盗などのトラブル',''],['m','うつ病・アルコール依存の合併','']],
+  sign:['お金が急になくなる','外出の時間が増える','嘘が増える','イライラ・眠れない'],
+  obs:['お金の使い方・借金の状況','外出の時間と行き先','気分・死にたい気持ち','家族の状況'],
+  ok:['責めずに、困っていること（借金・家族）を一緒に整理する','自助グループ（GA）・精神保健福祉センター・専門医療機関につなぐ','金銭管理の方法（日常生活自立支援事業など）を一緒に考える','借金は法律の相談窓口（法テラスなど）につなぐ'],
+  ng:['借金を家族が肩代わりするようすすめる','説教する','「意志が弱い」と言う'],
+  sayP:'やめたいのにやめられないのは、病気の症状です。借金や生活のことも、相談できる場所があります。一人で抱えずに、一緒に整理していきましょう。',
+  sayF:'借金を肩代わりすると、かえって続けてしまうことが多いです。家族向けの相談窓口や家族会もあるので、家族だけで抱えないでください。',
+  medNote:'ギャンブル障害そのものに効く薬は認められていません。うつ・不安などに合わせて薬が使われます。',
+  meds:['lexapro','zoloft']},
+ {id:'hbd',n:'高次脳機能障害',tag:'脳のけが・病気の後の記憶や注意の障害',
+  one:'交通事故などの頭のけがや、脳卒中・脳炎などの後に、記憶・注意・段取り・感情のコントロールなどがうまくいかなくなる状態です。見た目では分かりにくく、「見えない障害」と言われます。',
+  sym:[['記憶障害','新しいことを覚えられない・同じことを何度も聞く'],['注意障害','ミスが多い・二つのことを同時にできない'],['遂行機能障害','段取りができない・計画どおりに進められない'],['社会的行動障害','怒りっぽい・こだわる・意欲がない・お金を使いすぎる'],['気づき','自分の障害に気づきにくい']],
+  risk:[['m','服薬・通院の管理ミス',''],['m','感情の爆発による家族・周囲とのトラブル',''],['m','てんかん発作',''],['m','お金のトラブル・だまされる',''],['m','うつ・不安','']],
+  sign:['イライラ・怒りっぽさが増える','忘れ物・ミスが増える','疲れやすさが増す','発作'],
+  obs:['服薬の管理（飲み忘れ・二重に飲む）','疲れやすさ','感情の変化','発作','家族の負担'],
+  ok:['メモ・スケジュール帳・アラームなど、記憶を補う道具を一緒に使う','一度に一つ、短く伝える','疲れる前に休憩をとる','怒りが出た時は刺激を減らし、落ち着いてから話す','家族の負担を聞く'],
+  ng:['「さっき言ったでしょ」と責める','一度にたくさんのことを頼む','感情的に言い返す'],
+  sayP:'脳のけがや病気の後は、覚えにくい・疲れやすいことがあります。メモやアラームなど、うっかりを補う工夫を一緒に見つけていきましょう。',
+  sayF:'わざとではなく、脳の働きの障害によるものです。メモや予定表を使い、一度に一つずつ伝えると分かりやすくなります。家族だけで抱えずに相談してください。',
+  meds:['depakene','tegretol','keppra','lamictal','risperdal','abilify','yokukansan','lexapro']},
+ {id:'insom',n:'不眠症（睡眠障害）',tag:'眠れない・眠りが浅い',
+  one:'寝つけない、夜中に何度も目が覚める、朝早く目が覚める、などが続き、昼間の調子が悪くなる状態です。精神の病気の始まりや悪化のサインとして出ることも多くあります。',
+  sym:[['寝つけない','入眠困難'],['夜中に目が覚める','中途覚醒'],['朝早く目が覚める','早朝覚醒'],['昼間','眠気・だるさ・集中できない・イライラ'],['そのほか','いびき・呼吸が止まる（睡眠時無呼吸）、足のむずむず']],
+  risk:[['m','睡眠薬の使いすぎ・依存',''],['m','睡眠薬による夜間の転倒','特に高齢者'],['m','ほかの精神の病気の悪化のサイン','うつ・躁・統合失調症'],['m','寝酒による依存・睡眠の悪化','']],
+  sign:['眠れない日が続く','睡眠薬の量が増える','昼夜逆転','寝酒が増える'],
+  obs:['寝た時刻・起きた時刻・夜中に起きた回数','昼寝','カフェイン・寝酒','睡眠薬の使い方','夜間のトイレと転倒'],
+  ok:['睡眠の記録を一緒につける','起きる時刻をそろえ、朝に光を浴びるよう勧める','寝る前のスマホ・カフェイン・寝酒を減らす工夫を考える','眠れない日が続く時は主治医に相談する'],
+  ng:['「横になっていれば大丈夫」と放っておく','睡眠薬を自己判断で増やすのに同意する','寝酒をすすめる'],
+  sayP:'眠れない日が続くと、とてもつらいですね。眠りの記録をつけて、どこを変えると眠りやすくなるか一緒に考えましょう。お酒で眠るのは、かえって眠りを浅くするので控えましょう。',
+  sayF:'眠れない状態が続く時は、体や心の不調のサインのことがあります。夜中のトイレで転ばないよう、通り道の明かりも確かめてください。',
+  meds:['belsomra','dayvigo','quviviq','rozerem','lunesta','myslee','lendormin','desyrel','reflex','seroquel']}
+];
+const DS=Object.fromEntries(DIS.map(d=>[d.id,d]));
+const DGROUPS=[["統合失調症とそのなかま",["scz","sad","del"]],["気分の病気（うつ・躁）",["dep","dys","bp","ppd"]],["不安・ストレスの病気",["anx","ocd","hoard","ptsd","adj","dsc","som"]],["依存症",["alc","subst","gam"]],["発達・知的",["asd","adhd","id"]],["脳の病気と関係するもの",["dem","epi","hbd"]],["パーソナリティ・食事・睡眠",["bpd","ed","insom"]]];
+
+/* ================= 危険なサイン ================= */
+const EM=[
+ {n:'悪性症候群',see:'38℃以上の熱、体がこわばる、大量の汗、意識がぼんやり、脈が速い、尿が赤茶色',why:'抗精神病薬の飲み始め・増量・急な中断、脱水、抗パーキンソン薬の急な中止',act:'様子を見ずに、すぐ主治医へ。体を冷やす。意識がはっきりしていて、むせなければ水分をとる。夜間・休日は救急へ'},
+ {n:'自殺の危険が高い',see:'具体的な計画や手段がある（薬のため込み・ロープなど）、別れの言葉・身辺整理、急に穏やかになる',why:'うつ状態、混合状態、回復しはじめ、退院直後、大きな喪失、飲酒',act:'一人にしない。手段（薬・刃物・ひもなど）を遠ざける。主治医・管理者へすぐ報告。差し迫っていれば119・110'},
+ {n:'過量服薬',see:'意識が低い、呼吸が浅い・遅い、ろれつが回らない、吐いている',why:'うつ病、境界性パーソナリティ障害、ため込み。三環系抗うつ薬・リチウムは特に危険',act:'すぐ119。何をどれだけ飲んだか分かるもの（薬の空き殻・薬袋）を一緒に持っていく'},
+ {n:'リチウム中毒',see:'下痢・吐く・食欲がない、ふるえが強くなる、ふらつき、ろれつが回らない、眠気・ぼんやり、けいれん',why:'リーマス服用中の脱水・発熱・下痢・塩分制限、痛み止め（NSAIDs）・利尿薬・一部の血圧の薬との併用',act:'すぐ主治医へ連絡し、指示を受ける（血中濃度の検査）。意識が悪ければ救急'},
+ {n:'セロトニン症候群',see:'薬を始めた・増やした数時間〜1日以内に、不安・興奮、ふるえ、手足がぴくつく、汗、下痢、発熱、脈が速い',why:'抗うつ薬の開始・増量・併用（痛み止めのトラマドール、片頭痛の薬なども関係）',act:'すぐ主治医へ。高熱や意識の乱れがあれば救急'},
+ {n:'急性ジストニア',see:'首が反る・ねじれる、目が上を向いたまま戻らない、舌が出る、ろれつが回らない。本人は強い恐怖を感じる',why:'抗精神病薬の飲み始め・増量の数日以内。若い男性に多い',act:'主治医へ連絡（抗パーキンソン薬の注射ですぐよくなることが多い）。のどが詰まる感じがあれば救急'},
+ {n:'腸閉塞（麻痺性イレウス）',see:'何日も便が出ない、お腹が張る、吐く、お腹が痛い。痛みを訴えにくい人もいる',why:'抗精神病薬（特にクロザピン）、抗コリン薬、三環系抗うつ薬',act:'受診につなぐ。ふだんから最後の排便日を確認しておく'},
+ {n:'水中毒',see:'水をとても多く飲む、朝より夕方に体重が大きく増える、頭痛・吐き気・ぼんやり・けいれん',why:'統合失調症の多飲水、一部の薬（低ナトリウム）',act:'意識の乱れ・けいれんは救急。ふだんから体重の朝夕の差を見る'},
+ {n:'重い薬疹（SJS・TEN・DIHS）',see:'熱を伴う発疹、唇や口の中のただれ、目の充血、皮膚がむける',why:'ラミクタール、テグレトールなど。飲み始め2か月以内が多い',act:'すぐ主治医に連絡し、中止などの指示を受けて至急受診（抗てんかん薬は自分で急にやめると発作が起きることがある）'},
+ {n:'無顆粒球症',see:'発熱、のどの痛み、口内炎、だるさ',why:'クロザリル、まれにリフレックス・テグレトール・一部の抗精神病薬',act:'至急主治医へ。クロザリルの人はすぐ'},
+ {n:'高血糖・糖尿病性ケトアシドーシス',see:'のどが渇く、水をたくさん飲む、尿が多い、やせる、だるい、意識が下がる',why:'ジプレキサ・セロクエル（糖尿病の人には禁忌）、エビリファイなどほかの抗精神病薬',act:'受診につなぐ。意識が悪ければ救急'},
+ {n:'アルコール離脱せん妄',see:'最後に飲んでから2〜3日で、手のふるえ、汗、幻視（虫などが見える）、興奮、けいれん',why:'アルコール依存症の人が急に飲酒をやめた時（入院・お金がない・体調不良）',act:'救急・専門医療機関へ。けいれんは119'},
+ {n:'けいれん重積（てんかん発作が止まらない）',see:'発作が5分以上続く、意識が戻らないまま発作をくり返す、唇が紫色',why:'抗てんかん薬の飲み忘れ・急な中止、睡眠不足、飲酒、発熱',act:'すぐ119。時間を計り、周りの危ない物をどけて顔を横に向ける。口に物を入れない。主治医から頓用薬の指示があれば、その指示どおり使う'},
+ {n:'ベンゾジアゼピンの離脱',see:'急にやめた後の強い不安・眠れない・ふるえ・汗・けいれん',why:'抗不安薬・睡眠薬を長く飲んでいた人の急な中止',act:'主治医へ。自己判断で急にやめないよう、ふだんから伝える'}
+];
+
+/* ================= 初回訪問で確かめること ================= */
+const CHECK=[
+ ['本人の希望・困りごと','本人の言葉で書きとる。「どんな生活をしたいか」'],
+ ['主治医・通院先・次の受診日','緊急時の連絡先も'],
+ ['服薬の管理','誰が管理しているか、飲み忘れ・残薬、一包化・お薬カレンダー、自分でやめた経験'],
+ ['睡眠・食事・水分・排便','最後の排便日を必ず'],
+ ['精神症状','気分、不安、幻聴・妄想、死にたい気持ち（直接たずねる）'],
+ ['体の状態','血圧・脈・体温・体重、ふるえ・歩き方、糖尿病・心臓の病気'],
+ ['生活','清潔、部屋の様子、お金の管理、買い物・調理、たばこ・お酒・コーヒー'],
+ ['支援者','家族、相談支援専門員、ヘルパー、日中に通う場所'],
+ ['調子が悪くなる前のサインと対応','本人が望む対応・連絡先（クライシスプラン）'],
+ ['本人の強み・好きなこと','目標づくりに使う']
+];
+const BG=[['age65','65歳以上'],['dm','糖尿病・血糖が高いと言われた'],['heart','心臓の病気・不整脈'],['alcohol','お酒を飲む'],['nsaids','痛み止めをよく飲む'],['preg','妊娠中・妊娠の可能性'],['alone','一人暮らし'],['attempt','自殺未遂・自傷の経験'],['stop','薬を自分でやめたことがある'],['discharge','退院して間もない'],['smoke','たばこを吸う']];
+
+/* ================= 状態 ================= */
+const KEY='kokoro-assess-v1';
+let S={tab:'dis',dis:null,drug:null,q:'',cf:'all',a:{dis:['scz'],drugs:['abilify','levotomin','akineton'],prn:['levotomin'],bg:['stop','smoke'],example:true},chk:{},open:{},f:null};
+function today(){const t=new Date();return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');}
+S.f={_v:2,date:today(),temp:'36.4',pulse:'76',pulseR:'整',bp:'124/78',spo2:'98',weight:'68',
+  eat:['課題なし'],sleep:['入眠困難'],sleepH:'5時間くらい',medMgr:'一部他者管理',medWho:'グループホーム',medIss:['不規則'],hoketsu:'課題なし',kankyo:'やや散乱',kinsen:'課題あり',kinsenNote:'月末にお金が足りなくなる',taijin:'課題なし',
+  katsudo:'作業所に週3回通所。休日はほとんど外出しない。',mood:'少しある',anx:'少しある',hal:'あるが生活に支障なし',irr:'なし',sui:'なし',seishin:'表情はやや硬いが、問いかけには答えられる。夜に声が聞こえると話す。',
+  water:'ふつう',bowel:'3日以上出ていない',side:'なし',rhythm:'少し乱れ',social:'一部',body:'安定',gaf:'45',care:['内服確認','残薬確認','声掛け','傾聴'],exInfo:true,exSelf:true,shiji:['生活リズムの確立','薬物療法継続への援助','身体合併症の発症・悪化の防止'],visitPlan:'看護職員 週2回（月・木）',monthTrend:'日による波があった',hobby:['たばこ','買い物'],instType:'精神科訪問看護指示書',instStart:today().slice(0,8)+'01',instEnd:(()=>{const t=new Date();const e=new Date(t.getFullYear(),t.getMonth()+1,0);return e.getFullYear()+'-'+String(e.getMonth()+1).padStart(2,'0')+'-'+String(e.getDate()).padStart(2,'0');})(),instMulti:'なし',instShort:'なし',adlEat:'自立',adlExc:'自立',adlToilet:'自立',adlBath:'自立',adlOut:'自立',pain:'痛みの訴えなし',goodTopic:'音楽、ダンスの動画',muntela:'一部理解している',muntelaP:'薬を飲むと眠れる',econ:'生活保護',ins:['医療保険（精神）','生活保護','自立支援医療（精神通院）'],infect:'無',allergy:'無',kaigo:'グループホームの世話人が毎日、服薬を声かけしている。',monthEvents:'主治医が安定剤を調整した。',familyRel:'母と月1回電話で話している。関係は良好。',services:'就労継続支援B型（週3回）',
+  wish:'夜に声が聞こえて眠れない日がある。作業所には続けて通いたい。',crisisSign:'眠れない日が3日続く、独り言が増える',crisisAct:'頓服を使う。続く時は訪問看護ステーションに電話する'};
+try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v){S.tab=v.tab||S.tab;S.sub=v.sub||"base";S.sumF=v.sumF||"all";if(v.chk&&typeof v.chk==='object')S.chk=v.chk;S.day=v.day||'';S.oldDay=(v.day&&v.day!==today())?v.day:'';if(v.a&&Array.isArray(v.a.dis))S.a=v.a;if(v.f&&typeof v.f==='object'&&v.f._v===2)S.f=v.f; else if(!S.a.example)S.f={_v:2,date:today()};}}catch(e){}
+function sanitize(){
+  const A=(S.a&&typeof S.a==='object')?S.a:{}; const arr=x=>Array.isArray(x)?x.filter(v=>typeof v==='string'):[];
+  S.a={dis:arr(A.dis).filter(id=>DS[id]),drugs:arr(A.drugs).filter(id=>D[id]),bg:arr(A.bg),prn:arr(A.prn),example:!!A.example};
+  if(!['dis','drug','as','sum','em'].includes(S.tab)) S.tab='dis';
+  if(!['base','every','month','init'].includes(S.sub)) S.sub='base';
+  if(!['all','every','month','init'].includes(S.sumF)) S.sumF='all';
+  if(!S.f||typeof S.f!=='object'||S.f._v!==2) S.f={_v:2,date:today()};
+  if(!S.chk||typeof S.chk!=='object') S.chk={};
+}
+try{sanitize();}catch(e){S.tab='dis';S.sub='base';S.sumF='all';S.a={dis:[],drugs:[],bg:[],prn:[],example:false};S.f={_v:2,date:today()};S.chk={};}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({tab:S.tab,a:S.a,f:S.f,sub:S.sub,sumF:S.sumF,chk:S.chk,day:S.day||''}))}catch(e){}}
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hira=s=>String(s).toLowerCase().replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60)).replace(/[\s・ー\-（）()]/g,'');
+const ul=a=>a.length?'<ul class="plain">'+a.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'';
+const dname=d=>d.n+(d.alt?'（'+d.alt.join('・')+'）':'');
+const LV={h:'高',m:'中',l:'注意'};
+const riskList=a=>'<ul class="risks">'+a.map(r=>`<li class="${r[0]}"><span class="lv">${LV[r[0]]}</span><div><b>${esc(r[1])}</b>${r[2]?'<p>'+esc(r[2])+'</p>':''}</div></li>`).join('')+'</ul>';
+const HIGH=/禁忌|警告|命に関わる|すぐ/;
+
+/* ================= 画面 ================= */
+const M=document.getElementById('main');
+function render(){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===S.tab));
+  if(S.tab==='dis') M.innerHTML=S.dis?disDetail(DS[S.dis]):disList();
+  if(S.tab==='drug'){M.innerHTML=S.drug?drugDetail(D[S.drug]):drugList(); if(!S.drug) fillDrugList();}
+  if(S.tab==='as') M.innerHTML=assess();
+  if(S.tab==='em') M.innerHTML=emView();
+  if(S.tab==='sum') M.innerHTML=sumView();
+}
+
+function disList(){
+  return `<p class="lead">病名を選ぶと、症状・起きやすいリスク・再発のサイン・関わり方・初回訪問での説明の例が出ます。</p>
+  ${DGROUPS.map(g=>`<p class="cls-h" style="margin-top:6px">${esc(g[0])}</p><div class="grid">${g[1].map(id=>DS[id]).map(d=>`<button class="card" data-dis="${d.id}"><b>${esc(d.n)}</b><span>${esc(d.tag)}</span></button>`).join('')}</div>`).join('')}`;
+}
+function disDetail(d){
+  return `<button class="back" data-back="dis">← 病名の一覧へ</button>
+  <h2>${esc(d.n)}</h2>
+  <div class="panel soft"><h3>ひとことで言うと</h3><p>${esc(d.one)}</p></div>
+  <div class="panel"><h3>主な症状</h3><div class="sym">${d.sym.map(s=>`<div><b>${esc(s[0])}</b>${esc(s[1])}</div>`).join('')}</div></div>
+  <div class="panel"><h3>起きやすいリスク</h3>${riskList(d.risk)}</div>
+  <div class="two">
+    <div class="panel"><h3>再発・悪化のサイン</h3>${ul(d.sign)}</div>
+    <div class="panel"><h3>訪問で見るところ</h3>${ul(d.obs)}</div>
+  </div>
+  ${(d.extra||[]).map(x=>`<div class="panel"><h3>${esc(x[0])}</h3>${ul(x[1])}${x[2]?`<p class="note" style="margin-top:8px">${esc(x[2])}</p>`:''}</div>`).join('')}
+  <div class="two">
+    <div class="panel ok"><h3>こう関わる</h3>${ul(d.ok)}</div>
+    <div class="panel ng"><h3>避けたい対応</h3>${ul(d.ng)}</div>
+  </div>
+  <div class="panel"><h3>初回訪問での説明の例</h3>
+    <div class="say"><small>ご本人へ</small>${esc(d.sayP)}</div>
+    ${(d.sayMore||[]).map(x=>`<div class="say"><small>${esc(x[0])}</small>${esc(x[1])}</div>`).join('')}
+    <div class="say"><small>ご家族へ</small>${esc(d.sayF)}</div></div>
+  <div class="panel"><h3>よく使われる薬 <span class="k">押すと薬の説明</span></h3>
+    ${d.medNote?`<p class="lead" style="margin-bottom:4px">${esc(d.medNote)}</p>`:''}
+    ${Object.keys(CLS).filter(k=>k!=='prn').map(k=>{const ids=d.meds.filter(id=>D[id].c===k); if(!ids.length) return '';
+      return `<p class="cls-h" style="margin:10px 0 6px">${esc(CLS[k].n)}</p><div class="chips">${ids.map(id=>`<button class="chip link" data-drug="${id}">${esc(D[id].n)}<small class="alt">${esc(chipSub(D[id]))}</small></button>`).join('')}</div>`}).join('')}
+    <p class="note" style="margin-top:10px">ここにない薬が出ていることもあります。お薬手帳の名前を「薬から」の画面で探してください。</p></div>
+  <button class="btn fill" data-addas="${d.id}" style="align-self:flex-start">この病名で初回アセスメントを作る</button>`;
+}
+
+function drugList(){
+  const cl=[['all','すべて'],...Object.entries(CLS).map(([k,v])=>[k,v.n.replace(/（.*）/,'')])];
+  return `<input type="search" id="q" placeholder="薬の名前で探す（例：えびりふぁい、アリピプラゾール錠「サワイ」）" value="${esc(S.q)}" autocomplete="off">
+  <div class="chips" id="cf">${cl.map(c=>`<button class="chip ${S.cf===c[0]?'on':''}" data-cf="${c[0]}">${esc(c[1])}</button>`).join('')}</div>
+  <div id="dl" style="display:flex;flex-direction:column;gap:10px"></div>`;
+}
+/* お薬手帳の書き方（例：成分名＋OD錠＋12mg＋「会社名」）でも探せるよう、形・量・会社名を外して比べる */
+const cleanQ=q=>String(q).replace(/[「『][^」』]*[」』]?/g,'').replace(/[0-9０-９.．]+\s*(mg|ｍｇ|μg|g|ｇ|%|％|ml|mL|ｍL)?/gi,'').replace(/口腔内崩壊錠|OD錠|ＯＤ錠|徐放錠|配合内用剤|内用液|カプセル|シロップ|細粒|顆粒|坐剤|テープ|貼付剤|錠|散/g,'');
+function matchDrug(d,q){ if(!q) return true; const k=hira(cleanQ(q))||hira(q); const h=hira([d.n,...(d.alt||[]),d.g,CLS[d.c].n,d.use,d.sub||'',d.prn?'頓服 とんぷく':''].join(' ')); return h.includes(k); }
+const inCls=(d,k)=>d.c===k||(d.also||[]).includes(k)||(k==='prn'&&!!d.prn);
+const gname=d=>d.g.replace(/（.*?）/g,'');
+const chipSub=d=>(d.alt?d.alt.join('・')+' / ':'')+(d.g==='漢方薬'?'漢方薬':gname(d));
+function fillDrugList(){
+  const el=document.getElementById('dl'); if(!el) return;
+  let html='';
+  for(const [k,c] of Object.entries(CLS)){
+    if(S.cf!=='all'&&S.cf!==k) continue;
+    const ds=DRUGS.filter(d=>inCls(d,k)&&matchDrug(d,S.q));
+    if(!ds.length) continue;
+    html+=`<p class="cls-h">${esc(c.n)}</p><div class="grid">${ds.map(d=>`<button class="card" data-drug="${d.id}"><b>${esc(dname(d))}</b><span>${esc(d.g)}${d.sub?'・'+esc(d.sub):''}${k==='prn'?'<br>頓服：'+esc(d.prn):''}</span></button>`).join('')}</div>`;
+  }
+  if(S.cf==='prn') html=`<div class="panel soft"><h3>頓服を使うときに確かめること</h3>${ul(PRN_GUIDE)}</div>`+html;
+  el.innerHTML=html||'<p class="lead">見つかりませんでした。カタカナ・ひらがな、成分名（ジェネリックの名前）のどれでも探せます。</p>';
+}
+function drugDetail(d){
+  const c=CLS[d.c], bz=CLS.bz;
+  const danger=d.bz?[...c.danger,...bz.danger.slice(0,3)]:c.danger;
+  return `<button class="back" data-back="drug">← 薬の一覧へ</button>
+  <div class="drow"><div><h2>${esc(dname(d))}</h2><p class="gen">一般名：${esc(d.g)}</p></div><span class="badge">${esc(c.n)}${d.sub?'・'+esc(d.sub):''}</span></div>
+  <div class="panel soft"><h3>何の薬？</h3><p>${esc(c.what)}</p><p style="margin-top:6px"><b>使われる病気：</b>${esc(d.use)}</p><p class="note" style="margin-top:4px">形：${esc(d.form)}</p></div>
+  ${d.warn.length?`<div class="panel"><h3>この薬で特に注意</h3><ul class="risks">${d.warn.map(w=>{const lv=HIGH.test(w)?'h':'m';return `<li class="${lv}"><span class="lv">${LV[lv]}</span><div><b>${esc(w)}</b></div></li>`}).join('')}</ul></div>`:''}
+  ${d.pts.length?`<div class="panel"><h3>この薬の特徴・飲み方</h3>${ul(d.pts)}</div>`:''}
+  ${d.prn?`<div class="panel"><h3>頓服で使うとき</h3><p style="margin-bottom:6px"><b>${esc(d.prn)}</b></p>${ul(PRN_GUIDE)}</div>`:''}
+  ${d.g!=='漢方薬'?`<div class="panel"><h3>ジェネリック（後発品）</h3><p>ジェネリックは、お薬手帳や薬袋に<b>「${esc(gname(d))}」</b>のあとに形（錠・OD錠など）と量、作った会社の名前が「」で付いた名前で書かれています。成分はこの薬と同じです。</p><p class="note" style="margin-top:6px">ジェネリックがあるかどうか、形が同じかどうかは薬局で確認できます。この画面の検索に、お薬手帳の名前をそのまま入れても探せます。</p></div>`:''}
+  <div class="two">
+    <div class="panel"><h3>よくある副作用 <span class="k">${esc(c.n)}に共通</span></h3>${ul(c.side)}</div>
+    <div class="panel ng"><h3>すぐ連絡するサイン</h3>${ul(danger)}</div>
+  </div>
+  <div class="panel"><h3>訪問で見るところ</h3>${ul(c.obs)}<p class="note" style="margin-top:8px">${esc(c.tip)}</p></div>
+  <div class="panel"><h3>ご本人への説明の例</h3><div class="say">${esc(c.say)}</div></div>`;
+}
+
+/* ================= 初回アセスメント ================= */
+const hasD=id=>S.a.dis.includes(id), hasG=id=>S.a.drugs.includes(id), hasB=id=>S.a.bg.includes(id);
+const drugsOf=c=>S.a.drugs.filter(id=>D[id].c===c);
+const isPrn=id=>(S.a.prn||[]).includes(id);
+const isBZ=id=>D[id].c==='bz'||!!D[id].bz;
+function rules(){
+  const R=[]; const add=(lv,t,d)=>R.push([lv,t,d||'']); const addE=(lv,t,d)=>R.push([lv,t,d||'',1]);
+  const nm=ids=>ids.map(id=>D[id].n).join('・');
+  const ap=drugsOf('ap'), ad=drugsOf('ad'), ms=drugsOf('ms');
+  /* 今日の訪問の記録から */
+  const F=S.f||{}; const fx=k=>Array.isArray(F[k])?F[k]:(F[k]?[F[k]]:[]);
+  if(F.sui==='具体的な計画がある') addE('h','具体的な自殺の計画がある','一人にしない。手段を遠ざけ、その場で主治医・管理者に報告。差し迫っていれば119・110。');
+  else if(F.sui==='考えることがある') addE('h','死にたい気持ちがある','いつから・方法・準備の有無を確かめ、主治医・管理者に報告。次の訪問日を約束する。');
+  else if(F.sui==='聞けなかった') addE('m','死にたい気持ちを確かめられていない','次の訪問で、直接たずねて確かめる。');
+  const mi=fx('medIss');
+  if(mi.includes('拒薬')||mi.includes('怠薬')) addE('h','服薬ができていない（'+mi.filter(v=>v!=='課題なし').join('・')+'）','再発の危険が高い状態です。理由（副作用・飲みにくさ・病気の受けとめ）を聞き、主治医に報告。');
+  else if(mi.includes('不規則')) addE('m','服薬が不規則','一包化・お薬カレンダー・アラームなど、飲み忘れを防ぐ工夫を考える。');
+  const sl=fx('sleep').filter(v=>v!=='課題なし');
+  if(sl.length) addE('m','睡眠の課題（'+sl.join('・')+'）','再発・悪化のサインのことがあります。何日続いているかを確かめ、続く時は主治医に報告。');
+  if(F.bowel==='3日以上出ていない') addE(S.a.drugs.some(id=>['ap','ac'].includes(D[id].c))?'h':'m','3日以上便が出ていない','お腹の張り・吐き気を確かめる。下剤の指示を確認し、腸閉塞のサインがあれば受診。');
+  if(F.water==='多すぎる') addE('m','水分のとりすぎ','水中毒に注意。体重の朝夕の差、頭痛・吐き気を確かめる。');
+  const ea=fx('eat');
+  if(ea.includes('拒食')) addE('m','拒食がある','脱水・低栄養に注意。'+(hasG('lithium')?'リーマスを飲んでいるので、リチウム中毒にも注意。':''));
+  if(ea.includes('過食')&&ap.length) addE('m','過食と抗精神病薬','体重増加・血糖の上昇に注意。');
+  if(F.side==='ある') addE('m','副作用らしい様子がある',(F.sideNote?F.sideNote+'。':'')+'いつから・どの薬の後からかを確かめ、主治医に報告。');
+  if(F.hal==='生活に支障あり') addE('m','幻覚・妄想で生活に支障がある','内容（命令する幻聴か）と、睡眠・服薬を確かめて主治医に報告。');
+  if(F.hoketsu==='不潔'||F.kankyo==='散乱') addE('m','清潔・部屋の乱れ','生活の乱れは、再発や気分の落ち込みのサインのことがあります。いつからかを確かめる。');
+  if(F.instEnd){const base=F.date||today(); const days=Math.round((new Date(F.instEnd)-new Date(base))/86400000);
+    if(days<0) addE('h','指示書の期限が切れている','終了日 '+F.instEnd.replace(/-/g,'/')+'。新しい指示書を主治医に依頼し、届くまでの訪問の扱いを管理者に確認。');
+    else if(days<=14) addE('m','指示書の期限が近い（あと'+days+'日）','終了日 '+F.instEnd.replace(/-/g,'/')+'。次の指示書を主治医に依頼する。');}
+  const gv=parseInt(F.gaf,10); if(gv&&gv<=40) addE('m',`GAF ${gv}（重い障害）`,'生活の多くの面で支援が必要な状態。訪問の回数や支援の量を見直す。');
+  const dmBan=['zyprexa','seroquel'].filter(hasG);
+  if(hasB('dm')&&dmBan.length) add('h',`糖尿病がある人に ${nm(dmBan)} は禁忌です`,'主治医・薬剤師に至急確認してください。');
+  if(hasB('dm')&&ap.some(x=>!dmBan.includes(x))) add('m','糖尿病と抗精神病薬','血糖が上がりやすくなります。のどの渇き・多飲・多尿・体重を毎回確認。');
+  if(ap.length>=2) add('m',`抗精神病薬が${ap.length}種類（${nm(ap)}）`,'副作用（便秘・眠気・パーキンソン症状・悪性症候群）が重なりやすい状態です。');
+  const bzs=S.a.drugs.filter(isBZ);
+  if(bzs.length>=2) add('m',`ベンゾジアゼピン系が${bzs.length}種類（${nm(bzs)}）`,'眠気・ふらつき・依存が重なります。実際に飲んでいる量を確認し、主治医に伝えましょう。');
+  const sleepy=S.a.drugs.filter(id=>isBZ(id)||D[id].c==='hy');
+  if(hasB('alcohol')&&sleepy.length) add('h','お酒と抗不安薬・睡眠薬の組み合わせ','呼吸が弱くなる・転倒・記憶がなくなる危険があります。');
+  if(hasB('alcohol')&&hasG('cymbalta')) add('m','お酒とサインバルタ','多量の飲酒は肝障害の危険が高まります。');
+  if(hasB('age65')&&bzs.length) add('h','65歳以上でベンゾジアゼピン系を服用','転倒・骨折・せん妄が起きやすくなります。夜間のトイレまでの動線を確認。');
+  if(hasB('age65')&&ad.length) add('m','高齢者の抗うつ薬','低ナトリウム血症（だるさ・ぼんやり・ふらつき）に注意。');
+  const anti=S.a.drugs.filter(id=>D[id].c==='ac'||D[id].sub==='三環系'||['contomin','levotomin','neuleptil','paxil','atarax'].includes(id));
+  if(hasB('age65')&&anti.length) add('m',`高齢者と抗コリン作用の強い薬（${nm(anti)}）`,'せん妄・便秘・尿が出にくい・物忘れが起きやすくなります。');
+  if(hasD('bp')&&ad.length&&!ms.length&&!ap.length) add('h','双極性障害で抗うつ薬だけを服用','躁転のおそれがあります。急に元気・眠らない・浪費に注意し、主治医に確認。');
+  else if(hasD('bp')&&ad.length) add('m','双極性障害と抗うつ薬','躁転のサイン（眠らない・多弁・浪費）に注意。');
+  if(hasG('lithium')){
+    add('h','リーマス（炭酸リチウム）を服用','脱水・発熱・下痢・食事がとれない時はリチウム中毒に注意。下痢・吐く・ふるえの悪化・ふらつきはすぐ連絡。');
+    if(hasB('nsaids')||hasG('loxonin')) add('h','リーマスと痛み止め（NSAIDs）','リチウムの血中濃度が上がります。ロキソニンなどを使う時は主治医・薬剤師に相談。');
+    if(hasB('age65')) add('m','高齢者のリーマス','腎機能が落ちていて中毒になりやすいことがあります。採血の予定を確認。');
+  }
+  if(hasG('lamictal')&&hasG('depakene')) add('h','ラミクタールとデパケンの組み合わせ','ラミクタールの濃度が上がり、重い発疹が出やすくなります。発疹・発熱・口内炎はすぐ受診。');
+  else if(hasG('lamictal')) add('m','ラミクタールを服用','飲み始め8週間の発疹・発熱・口内炎はすぐ受診。飲み忘れで数日あいたら主治医に相談。');
+  if(hasG('depromel')&&hasG('meratobel')) add('h','デプロメール（ルボックス）とメラトベルは併用禁忌','主治医・薬剤師に至急確認してください。');
+  if(hasG('latuda')&&hasG('aleviatin')) add('h','ラツーダとアレビアチンは併用禁忌','ラツーダの効き目が大きく下がります。主治医・薬剤師に至急確認してください。');
+  if(hasG('latuda')&&(hasG('tegretol')||hasG('phenobal'))) add('h','ラツーダと'+(hasG('tegretol')?'テグレトール':'フェノバール'),'ラツーダの効き目が大きく下がります（添付文書で併用禁忌の扱い）。主治医・薬剤師に確認してください。');
+  if(hasD('dem')&&hasG('serenace')) add('m','認知症とセレネース','レビー小体型認知症の人には禁忌です。認知症の種類を主治医に確認してください。');
+  if(hasG('depromel')&&hasG('rozerem')) add('h','デプロメール（ルボックス）とロゼレムは併用禁忌','主治医・薬剤師に至急確認してください。');
+  if(hasG('clozaril')) add('h','クロザリルを服用','決められた血液検査の日を確認。発熱・のどの痛み・胸の痛み・便秘はすぐ連絡。');
+  if(hasB('heart')){
+    if(hasG('lexapro')) add('h','心臓の病気とレクサプロ','QT延長のある人には禁忌です。心電図の結果を主治医・薬剤師に確認してください。');
+    const qt=S.a.drugs.filter(id=>['serenace','contomin','levotomin','atarax'].includes(id)||D[id].sub==='三環系');
+    if(qt.length) add('m',`心臓の病気と ${nm(qt)}`,'不整脈（QT延長）を起こしやすい薬です。動悸・失神に注意。');
+    const ch=S.a.drugs.filter(id=>D[id].c==='dem'&&id!=='memary');
+    if(ch.length) add('m',`心臓の病気と ${nm(ch)}`,'脈が遅くなる・失神に注意。脈拍を毎回測りましょう。');
+  }
+  if(hasD('id')){
+    add('m','体の不調が行動に出ることがある','大声・自傷・食べないなどが増えたら、まず便・尿・熱・歯・皮膚・月経など体の原因を探します。');
+    if(ap.length) add('m','知的障害と抗精神病薬','行動をおさえる目的で使われていることがあります。眠気・ふらつき・よだれ・むせ・体重増加を確認。');
+    add('m','伝わり方を確かめる','「はい」と答えても分かっていないことがあります。本人の言葉で言ってもらい、絵や実物で伝えましょう。');
+  }
+  if(hasD('dem')&&ap.length) add('m','認知症の人の抗精神病薬','転倒・誤嚥が増え、死亡のリスクも上がるとされます。眠気・むせ・歩き方を確認。');
+  if(hasB('preg')){
+    const pg=S.a.drugs.filter(id=>['depakene','tegretol','lithium','aleviatin','phenobal','topina','atarax'].includes(id));
+    if(pg.length) add('h',`妊娠の可能性と ${nm(pg)}`,'赤ちゃんへの影響がある薬です。自己判断でやめず、すぐ主治医に相談するよう伝えます。');
+    else if(S.a.drugs.length) add('m','妊娠の可能性','服薬について主治医に早めに相談するよう伝えます。');
+  }
+  const prns=S.a.drugs.filter(isPrn);
+  if(prns.length) add('m',`頓服がある（${nm(prns)}）`,'何の時に使うか・1回の量・1日の上限・次まであける時間を確認し、使った時間と効き目を記録。回数が増えたら主治医へ。');
+  const lax=drugsOf('lax');
+  const constip=S.a.drugs.filter(id=>['ap','ac'].includes(D[id].c)||D[id].sub==='三環系');
+  if(constip.length&&!lax.length) add('m','便秘になりやすい薬があるが、便秘薬が出ていない','最後の排便日を毎回確認し、3日以上出ない時は主治医に相談。');
+  if(hasG('magmitt')&&hasB('age65')) add('m','高齢者のマグミット（酸化マグネシウム）','高マグネシウム血症（吐き気・だるさ・ぼんやり・脈が遅い）に注意。');
+  if(hasG('lithium')&&lax.length) add('m','リーマスと便秘薬','下痢が続くと脱水になり、リチウム中毒を起こしやすくなります。');
+  const ssri=ad.filter(id=>['SSRI','SNRI'].includes(D[id].sub));
+  if(hasG('loxonin')&&ssri.length) add('m',`${nm(ssri)} とロキソニン`,'出血しやすくなります（胃の出血・あざ）。');
+  const lowSz=S.a.drugs.filter(id=>['clozaril','contomin','rodopin','ludiomil'].includes(id)||D[id].sub==='三環系');
+  if(hasG('sediel')&&ad.length) add('m','セディールと抗うつ薬','セロトニン症候群（興奮・ふるえ・汗・発熱）に注意。');
+  if(hasD('epi')&&lowSz.length) add('m',`てんかんと ${nm(lowSz)}`,'発作を起こしやすくする薬です。発作の回数の変化を主治医に伝えましょう。');
+  const epAll=S.a.drugs.filter(id=>inCls(D[id],'ep'));
+  if(epAll.length>=2) add('m',`抗てんかん薬が${epAll.length}種類（${nm(epAll)}）`,'眠気・ふらつきが重なりやすくなります。転倒に注意。');
+  const ind=S.a.drugs.filter(id=>['aleviatin','tegretol','phenobal'].includes(id));
+  if(ind.length&&S.a.drugs.length>ind.length) add('m',`${nm(ind)} はほかの薬の効き目を弱めることがある`,'新しい薬が増えた・減った時は、薬剤師に飲み合わせを確認しましょう。');
+  const psy=S.a.drugs.filter(id=>['keppra','fycompa','excegran'].includes(id));
+  if(psy.length&&S.a.dis.some(id=>id!=='epi')) add('m',`${nm(psy)} とこころの病気`,'イライラ・攻撃性・気分の落ち込みが出ることがあります。病状の悪化と区別がつきにくいので、飲み始め・増量の時期を確認。');
+  if(hasD('epi')||epAll.length) add('m','発作の時の対応を決めておく','時間を計る・顔を横に向ける・5分以上続けば119。入浴は一人で入らない工夫を。');
+  if(hasG('phenobal')&&hasB('alcohol')) add('h','お酒とフェノバール','呼吸が弱くなる危険があります。');
+  const lethal=S.a.drugs.filter(id=>['lithium','ludiomil'].includes(id)||D[id].sub==='三環系');
+  const suiDis=['dep','bp','bpd','ptsd','ed','sad','dys','ppd','dsc','subst','gam'].filter(hasD);
+  if(hasB('attempt')||suiDis.length) add('h','自殺・過量服薬のリスク',(hasB('attempt')?'自殺未遂・自傷の経験があります。':'')+'死にたい気持ちを毎回、直接たずねます。薬の保管場所と残量も確認。');
+  if(lethal.length&&(hasB('attempt')||suiDis.length)) add('h',`過量服薬で命に関わる薬（${nm(lethal)}）`,'まとめて飲めないよう、保管方法（家族・訪問看護での管理、処方日数）を主治医と相談。');
+  if(hasB('stop')) add('m','服薬を自分でやめた経験がある','残薬を毎回数えます。飲みにくさの理由を聞き、持効性注射剤などの選択肢を主治医と相談できます。');
+  const smk=S.a.drugs.filter(id=>['clozaril','zyprexa'].includes(id));
+  if(hasB('smoke')&&smk.length) add('m','たばこと '+nm(smk),'禁煙や入院で急にたばこをやめると、血中濃度が上がり副作用が強く出ることがあります。');
+  if(hasB('alone')&&(hasB('attempt')||suiDis.length||hasD('dem'))) add('m','一人暮らし','異変に気づく人が少ない状態です。連絡が取れない時の対応（誰が見に行くか）を決めておきます。');
+  const wd=S.a.drugs.filter(id=>['paxil','effexor'].includes(id));
+  if(wd.length) add('m','急にやめると離脱症状が強い薬',nm(wd)+'：飲み忘れや自己中断で、めまい・しびれ・イライラが出ます。');
+  if(hasG('intuniv')) add('m','インチュニブを服用','急にやめると血圧が急に上がります。');
+  const sero=ad.filter(id=>id!=='desyrel');
+  if(sero.length>=2) add('m',`抗うつ薬が${sero.length}種類`,'セロトニン症候群（興奮・ふるえ・汗・発熱）に注意。');
+  return R.sort((a,b)=>(a[0]==='h'?0:1)-(b[0]==='h'?0:1));
+}
+const uniq=a=>[...new Set(a)];
+function collect(){
+  const dsel=S.a.dis.map(id=>DS[id]), gsel=S.a.drugs.map(id=>D[id]);
+  const obs=uniq([...dsel.flatMap(d=>d.obs),...uniq(gsel.map(g=>g.c)).flatMap(c=>CLS[c].obs)]);
+  const sign=uniq(dsel.flatMap(d=>d.sign));
+  return {dsel,gsel,obs,sign};
+}
+function assessBase(){
+  const {dsel,gsel,obs,sign}=collect();
+  const R=rules();
+  const drisk=[]; dsel.forEach(d=>d.risk.forEach(r=>drisk.push([r[0],d.n+'：'+r[1],r[2]])));
+  drisk.sort((a,b)=>'hml'.indexOf(a[0])-'hml'.indexOf(b[0]));
+  const hasAny=dsel.length||gsel.length;
+  return `
+  <div class="panel step"><div class="step-h"><i>1</i><b>病名を選ぶ</b></div>
+    ${DGROUPS.map(g=>`<div><p class="cls-h" style="margin:2px 0 6px">${esc(g[0])}</p><div class="chips">${g[1].map(id=>DS[id]).map(d=>`<button class="chip ${hasD(d.id)?'on':''}" data-tdis="${d.id}" aria-pressed="${hasD(d.id)}">${esc(d.n.replace(/（.*）/,''))}</button>`).join('')}</div></div>`).join('')}</div>
+  <div class="panel step"><div class="step-h"><i>2</i><b>飲んでいる薬を選ぶ</b></div>
+    <p class="note">薬の種類を押すと一覧が開きます。お薬手帳を見ながら、あてはまる薬を押してください。</p>
+    <div class="grp">${Object.entries(CLS).map(([k,c])=>{const ds=DRUGS.filter(d=>inCls(d,k));const n=ds.filter(d=>hasG(d.id)).length;const open=!!S.open[k];
+      return `<div class="grp-i"><button class="grp-h" data-grp="${k}" aria-expanded="${open}"><span>${esc(c.n)}</span><span class="grp-n">${n?n+'つ選択':''}<i>${open?'▲':'▼'}</i></span></button>
+      ${open?`<div class="chips grp-b">${ds.map(d=>`<button class="chip ${hasG(d.id)?'on':''}" data-tdrug="${d.id}" aria-pressed="${hasG(d.id)}">${esc(d.n)}<small class="alt">${esc(chipSub(d))}</small></button>`).join('')}</div>`:''}</div>`}).join('')}</div>
+    ${gsel.length?'<div><p class="cls-h" style="margin:4px 0 6px">選んだ薬（名前を押すと外れます。頓服で出ている薬は「頓服」を押してください）</p><div class="selmeds">'+gsel.map(g=>`<div class="selmed"><button class="chip on x" data-rmdrug="${g.id}" aria-label="${esc(g.n)}を外す">${esc(g.n)}</button><button class="chip ${isPrn(g.id)?'on':''}" data-tprn="${g.id}" aria-pressed="${isPrn(g.id)}">頓服</button></div>`).join('')+'</div></div>':''}</div>
+  <div class="panel step"><div class="step-h"><i>3</i><b>あてはまること</b></div>
+    <div class="chips">${BG.map(b=>`<button class="chip ${hasB(b[0])?'on':''}" data-tbg="${b[0]}" aria-pressed="${hasB(b[0])}">${esc(b[1])}</button>`).join('')}</div></div>
+
+  ${hasAny?`
+  <div class="out-h"><h2>この方で特に気をつけること</h2></div>
+  ${R.length?`<div class="panel"><h3>組み合わせ・背景から</h3>${riskList(R)}</div>`:''}
+  ${drisk.length?`<div class="panel"><h3>病気から考えられるリスク</h3>${riskList(drisk)}</div>`:''}
+  ${gsel.length?`<div class="panel"><h3>薬ごとの注意</h3>${gsel.map(g=>`<div class="drugline"><b>${esc(g.n)} <span class="gen">${esc(CLS[g.c].n)}</span></b>${ul(g.warn.length?g.warn:CLS[g.c].danger.slice(0,3))}</div>`).join('')}</div>`:''}
+  <div class="two">
+    <div class="panel"><h3>訪問で毎回見ること</h3>${ul(obs)}</div>
+    ${sign.length?`<div class="panel"><h3>再発・悪化のサイン</h3>${ul(sign)}</div>`:''}
+  </div>
+  <div class="panel"><h3>初回訪問での説明の例</h3>
+    ${dsel.map(d=>`<div class="say"><small>ご本人へ（${esc(d.n)}）</small>${esc(d.sayP)}</div>${(d.sayMore||[]).map(x=>`<div class="say"><small>${esc(x[0])}（${esc(d.n)}）</small>${esc(x[1])}</div>`).join('')}<div class="say"><small>ご家族へ（${esc(d.n)}）</small>${esc(d.sayF)}</div>`).join('')}
+    ${uniq(gsel.map(g=>g.c)).map(c=>`<div class="say"><small>お薬の説明（${esc(CLS[c].n)}）</small>${esc(CLS[c].say)}</div>`).join('')}
+  </div>`:`<div class="panel"><p class="lead">病名か薬を選ぶと、ここに「この方で特に気をつけること」がまとまって出ます。</p></div>`}
+  <div class="panel"><h3>初回訪問の聞きもれチェック</h3>
+    <ul class="checks">${CHECK.map((c,i)=>`<li><label><input type="checkbox" id="chk${i}" data-chk="${i}" ${S.chk[i]?'checked':''}><span>${esc(c[0])}<small>${esc(c[1])}</small></span></label></li>`).join('')}</ul>
+    <p class="note" style="margin-top:6px">死にたい気持ちの聞き方は「危険なサイン」の画面にあります。</p></div>`;
+}
+/* ================= アセスメント・記録のタブ分け ================= */
+const SUBT=[['base','この方の基本'],['every','毎回の記録'],['month','月1回'],['init','初回・引き継ぎ']];
+const TABSTEPS={every:[4,5,6,7,8,9,10],month:[12,15],init:[11,13,14]};
+const TABINTRO={
+ every:['毎回の記録','アイちゃんの「看護記録（ケア項目）」と同じ並びです。訪問のたびに入れます。'],
+ month:['月1回の記録','報告書（精神）と指示書のための情報です。月末や、指示書が届いた時に入れます。'],
+ init:['初回・引き継ぎの記録','計画書・フェイスシート・サマリーのための情報です。初回訪問、計画の見直し、入院・引き継ぎの時に入れます。']};
+function formTab(sub){
+  const parts=visitForm().split('<div class="panel step">'); const map={};
+  parts.slice(1).forEach(p=>{const m=p.match(/<i>(\d+)<\/i>/); if(m) map[m[1]]=p;});
+  const body=TABSTEPS[sub].map((n,i)=>map[n]?'<div class="panel step">'+map[n].replace(/<i>\d+<\/i>/,'<i>'+(i+1)+'</i>'):'').join('');
+  return `<div class="out-h" style="margin-top:6px"><h2>${esc(TABINTRO[sub][0])}</h2></div>
+  <p class="note">${esc(TABINTRO[sub][1])}入れた内容は「まとめ」タブに、アイちゃんへ貼りつけられる形で出ます。名前・住所・電話番号は入れないでください。入れた内容はこの端末のブラウザにだけ残るので、転記が終わったら「すべて消す」を押してください。</p>${body}`;
+}
+const PII_OK=['隣','近所','大家','皆','母','父','兄','姉','奥','患者','利用者','看護師','世話人','職員','管理者','先生','お医者','薬剤師','相談員','支援員','ヘルパー','家族','息子','娘','孫','おじい','おばあ'];
+const PII={test:v=>{ v=String(v||'').replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).replace(/[−‐―ー－]/g,'-'); if(/0\d{1,4}[-\s]?\d{1,4}[-\s]?\d{3,4}/.test(v)) return true; const re=/([一-龥々ァ-ヶー]{1,6})(様|さん|くん|ちゃん|氏)/g; let m; while((m=re.exec(v))){ if(!PII_OK.some(w=>m[1].endsWith(w))) return true; } return false; }};
+function piiCheck(el){ const bad=PII.test(el.value||''); el.classList.toggle('pii',bad); el.setAttribute('aria-invalid',bad?'true':'false'); }
+function piiAny(){ return Object.values(S.f||{}).some(v=>typeof v==='string'&&PII.test(v)); }
+function oldBanner(){ return S.oldDay&&!S.a.example&&(S.a.dis.length||S.a.drugs.length||Object.keys(S.f).some(k=>!['_v','date'].includes(k)&&S.f[k]&&(!Array.isArray(S.f[k])||S.f[k].length)))?`<div class="alert"><b>前の日（${esc(S.oldDay.replace(/-/g,'/'))}）に入れた内容が残っています。</b> 別の利用者さんの記録をする時は「すべて消す」を、同じ利用者さんの続きなら「続けて使う」を押してください。<div class="foot-act" style="margin-top:8px"><button class="btn" data-keepold="1">続けて使う</button><button class="btn" data-clear="1">すべて消す</button></div></div>`:''; }
+function assess(){
+  const sub=S.sub||'base';
+  const bar=`<div class="subtabs" role="tablist" aria-label="記録の種類">${SUBT.map(t=>`<button role="tab" data-sub="${t[0]}" aria-selected="${sub===t[0]}">${esc(t[1])}</button>`).join('')}</div>`;
+  const body=sub==='base'?assessBase():formTab(sub);
+  const foot=`<div class="foot-act"><button class="btn fill" data-gosum="1">${sub==='base'?'まとめを見る（アイちゃん用）':'この記録のまとめを見る（アイちゃん用）'}</button>${S.a.example?'':'<button class="btn" data-clear="1">すべて消す</button>'}</div>`;
+  return `${S.a.example?`<div class="example"><span>例として入力しています（統合失調症の方）。どこかを押すか入力すると、例は消えて空の状態から始まります。</span><button class="btn" data-clear="1">すべて消す</button></div>`:''}${oldBanner()}${piiAny()?'<div class="alert"><b>名前や電話番号のような文字が入っています。</b> 個人情報はアプリに入れず、アイちゃんで直接入れてください。</div>':''}${bar}${body}${foot}`;
+}
+const SUMG={'看護記録（ケア項目）＝訪問看護記録書Ⅱ':'every','訪問看護報告書（精神）':'month','指示書':'month','訪問看護計画書（精神）':'init','緊急時連絡票':'init','フェイスシート（訪問看護記録書Ⅰ）':'init','サマリー':'init','参考':'ref'};
+const SUMF=[['all','すべて'],['every','毎回（看護記録）'],['month','月1回（報告書・指示書）'],['init','初回・引き継ぎ（計画書・緊急時連絡票・フェイスシート・サマリー）']];
+const sumShow=g=>{const f=S.sumF||'all'; return f==='all'||SUMG[g]===f||SUMG[g]==='ref';};
+function fillSugg(q){
+  const el=document.getElementById('asugg'); if(!el) return;
+  if(!q){el.innerHTML='';return;}
+  const hits=DRUGS.filter(d=>!hasG(d.id)&&matchDrug(d,q)).slice(0,8);
+  el.innerHTML=hits.length?'<div class="sugg">'+hits.map(d=>`<button data-adddrug="${d.id}">${esc(dname(d))}<small>${esc(d.g)}・${esc(CLS[d.c].n)}</small></button>`).join('')+'</div>':'<p class="note" style="margin-top:6px">見つかりませんでした。この一覧にない薬は、お薬手帳や薬局の説明書を確認してください。</p>';
+}
+function leaveEx(){ if(S.a.example){S.a={dis:[],drugs:[],bg:[],prn:[],example:false};S.f={_v:2,date:today()};S.chk={};S.oldDay='';} }
+function touchA(){ S.a.example=false; S.day=today(); save(); }
+
+/* ================= 今日の訪問の記録（アイちゃんの訪問看護記録書Ⅱに合わせた並び） ================= */
+const SEI=[
+ {k:'eat',l:'食事',o:['課題なし','不規則','拒食','過食'],multi:1},
+ {k:'sleep',l:'睡眠',o:['課題なし','不眠','入眠困難','早朝覚醒'],multi:1,x:['sleepH','text','睡眠時間（例：6時間）']},
+ {k:'medMgr',l:'服薬：管理方法',o:['服薬なし','自己管理','一部他者管理','全て他者管理'],x:['medWho','text','誰が管理しているか（例：グループホーム）']},
+ {k:'medIss',l:'服薬：課題',o:['課題なし','不規則','拒薬','怠薬'],multi:1},
+ {k:'hoketsu',l:'保清',o:['課題なし','やや不潔','不潔']},
+ {k:'kankyo',l:'環境整備',o:['課題なし','やや散乱','散乱']},
+ {k:'kinsen',l:'金銭の扱い',o:['課題なし','課題あり'],x:['kinsenNote','text','内容（例：月末にお金が足りなくなる）']},
+ {k:'taijin',l:'対人関係',o:['課題なし','課題あり'],x:['taijinNote','text','内容（例：同じ部屋の人とのトラブル）']}
+];
+const SYM=[
+ {k:'mood',l:'気分の落ち込み',o:['なし','少しある','強い']},
+ {k:'anx',l:'不安・緊張',o:['なし','少しある','強い']},
+ {k:'hal',l:'幻覚・妄想',o:['なし','あるが生活に支障なし','生活に支障あり']},
+ {k:'irr',l:'興奮・イライラ',o:['なし','少しある','強い']},
+ {k:'sui',l:'死にたい気持ち',o:['なし','考えることがある','具体的な計画がある','聞けなかった']}
+];
+const BODY=[
+ {k:'water',l:'水分のとり方',o:['ふつう','少ない','多すぎる']},
+ {k:'bowel',l:'排便の様子',o:['毎日〜2日に1回','3日以上出ていない','下痢']},
+ {k:'side',l:'副作用らしい様子',o:['なし','ある'],x:['sideNote','text','どんな様子か（例：手のふるえ）']},
+ {k:'rhythm',l:'生活リズム',o:['整っている','少し乱れ','大きく乱れている（昼夜逆転など）']},
+ {k:'social',l:'社会資源の利用（通所・ヘルパーなど）',o:['使えている','一部','使えていない']},
+ {k:'body',l:'体の病気・合併症',o:['安定','注意が必要','悪化している']}
+];
+const CARE=['内服確認','内服セット','内服介助','残薬確認','声掛け','傾聴','助言','生活リハビリ（調理・掃除・整頓）','清潔援助','受診状況確認','受診介助'];
+const VIT=[['temp','体温（℃）','例：36.4'],['pulse','脈拍（回/分）','例：76'],['bp','血圧（右）','例：124/78'],['spo2','SpO2（%）','例：98'],['resp','呼吸（回/分）','例：16'],['weight','体重（kg）','例：60'],['waterMl','水分摂取量（ml/日）','例：1500']];
+const EDU=[['exInfo','情報提供（病気・薬・再発のサインなどの説明）'],['exSelf','自己管理方法指導（服薬・睡眠・体調の管理）'],['exFam','家族指導（家族・支援者への説明）'],['exEm','調子が悪い時・緊急時の連絡方法を説明した']];
+const TXT=[['wish','本人の希望・困りごと（本人の言葉で）'],['family','家族・支援者からの情報'],['crisisSign','調子が悪くなる前のサイン（本人と確かめたこと）'],['crisisAct','その時の対応・連絡先（クライシスプラン）']];
+const SHIJI=['生活リズムの確立','家事能力、社会技能等の獲得','対人関係の改善（家族含む）','社会資源活用の支援','薬物療法継続への援助','身体合併症の発症・悪化の防止','その他'];
+const FS_HOBBY=['たばこ','酒','ＴＶ','読書','旅行','買い物'];
+const FS_MUNTELA=['病気と理解している','一部理解している','病気と思っていない','確認できていない'];
+const SUM_ADL=[{k:'adlEat',l:'食事',o:['自立','要介助']},{k:'adlExc',l:'排泄',o:['自立','要介助']},{k:'adlToilet',l:'トイレ',o:['自立','要介助','不可']},{k:'adlBath',l:'入浴',o:['自立','要介助','不可']},{k:'adlOut',l:'外出',o:['自立','要介助','不可']}];
+const SPEC=Object.fromEntries([...SEI,...SYM,...BODY,{k:'shiji',o:SHIJI,multi:1},{k:'instType',o:['精神科訪問看護指示書','精神科特別訪問看護指示書']},{k:'instMulti',o:['なし','あり']},{k:'instShort',o:['なし','あり']},...SUM_ADL,{k:'pain',o:['痛みの訴えなし','痛みの訴えあり']},{k:'hobby',o:FS_HOBBY,multi:1},{k:'muntela',o:FS_MUNTELA},{k:'econ',o:['問題なし','年金のみ','生活保護','その他']},{k:'ins',o:['医療保険（精神）','生活保護','自立支援医療（精神通院）','介護保険'],multi:1},{k:'infect',o:['無','不明','有']},{k:'allergy',o:['無','不明','有']},{k:'monthTrend',o:['安定していた','日による波があった','良くなった','悪くなった']},{k:'pulseR',o:['整','不整']},{k:'care',o:CARE,multi:1}].map(s=>[s.k,s]));
+const GAF=[[91,'症状がなく、広い範囲の活動で非常に良好'],[81,'症状はほとんどなく、生活はおおむね良好'],[71,'一時的な症状があっても、生活への支障はわずか'],[61,'軽い症状、または生活に少し支障があるが、おおむね良好'],[51,'中くらいの症状、または生活・対人関係に中くらいの支障'],[41,'重い症状（死にたい気持ちなど）、または生活に重い支障（仕事や作業が続かないなど）'],[31,'現実の判断やコミュニケーションの障害、または多くの面で重い支障'],[21,'幻覚・妄想に行動が左右される、または判断に重い障害があり、ほとんどの場面で生活が難しい'],[11,'自分や他人を傷つける危険がある、または身の回りのことがほとんどできない'],[1,'重い危険が続く、または重い自殺行為']];
+const gafRange=x=>`${x[0]}〜${x[0]===91?100:x[0]+9}`;
+const gafOK=v=>{v=parseInt(v,10); return v>=1&&v<=100?v:0;};
+const gafText=v=>{v=parseInt(v,10); if(!v||v<1||v>100) return ''; const r=GAF.find(x=>v>=x[0]); return r?`${gafRange(r)}：${r[1]}`:'';};
+const fv=k=>(S.f&&S.f[k])||'';
+const fa=k=>{const v=S.f&&S.f[k]; return Array.isArray(v)?v:(v?[v]:[]);};
+const fis=(k,v)=>fa(k).includes(v);
+const issues=k=>fa(k).filter(v=>v!=='課題なし');
+function toggleSel(k,v){
+  const sp=SPEC[k]; if(!sp) return;
+  if(k==='medMgr'&&v==='服薬なし'&&S.f.medMgr!=='服薬なし') S.f.medIss=[];
+  if(k==='medIss'&&S.f.medMgr==='服薬なし') S.f.medMgr='';
+  if(!sp.multi){S.f[k]=S.f[k]===v?'':v; return;}
+  let a=fa(k).slice(); const none=sp.o[0]==='課題なし'?'課題なし':null;
+  if(a.includes(v)) a=a.filter(x=>x!==v);
+  else if(v===none) a=[v];
+  else {a=a.filter(x=>x!==none); a.push(v);}
+  S.f[k]=a;
+}
+function selRow(it){
+  const x=it.x?`<input type="${it.x[1]}" id="f-${it.x[0]}" data-f="${it.x[0]}" value="${esc(fv(it.x[0]))}" placeholder="${esc(it.x[2])}" aria-label="${esc(it.x[2])}">`:'';
+  return `<div class="frow"><span class="fl">${esc(it.l)}${it.multi?' <span class="note">（いくつでも）</span>':''}</span><div class="chips">${it.o.map(v=>`<button class="chip ${fis(it.k,v)?'on':''}" data-sel="${it.k}" data-v="${esc(v)}" aria-pressed="${fis(it.k,v)}">${esc(v)}</button>`).join('')}</div>${x}</div>`;
+}
+const tarea=(k,l,ph)=>`<label class="tlabel">${esc(l)}<textarea id="f-${k}" data-f="${k}" rows="3" placeholder="${esc(ph||'')}">${esc(fv(k))}</textarea></label>`;
+const checks=list=>`<ul class="checks">${list.map(x=>`<li><label><input type="checkbox" id="f-${x[0]}" data-ex="${x[0]}" ${S.f&&S.f[x[0]]?'checked':''}><span>${esc(x[1])}</span></label></li>`).join('')}</ul>`;
+function visitForm(){
+  return `<div class="out-h" style="margin-top:6px"><h2>今日の訪問の記録</h2></div>
+  <p class="note">アイちゃんの「看護記録（ケア項目）」と同じ並びです。入れた内容は「まとめ」タブに、そのまま貼りつけられる形で出ます。名前・住所・電話番号は入れないでください。入れた内容はこの端末のブラウザにだけ残るので、転記が終わったら上の「すべて消す」を押してください。</p>
+  <div class="panel step"><div class="step-h"><i>4</i><b>訪問日・VS</b></div>
+    <div class="frow"><span class="fl">訪問日</span><input type="date" id="f-date" data-f="date" value="${esc(fv('date'))}"></div>
+    <div class="vit">${VIT.map(v=>`<label>${esc(v[1])}<input type="text" inputmode="decimal" id="f-${v[0]}" data-f="${v[0]}" value="${esc(fv(v[0]))}" placeholder="${esc(v[2])}"></label>`).join('')}
+      <label>最終排便日<input type="date" id="f-lastBowel" data-f="lastBowel" value="${esc(fv('lastBowel'))}"></label></div>
+    ${selRow({k:'pulseR',l:'脈のリズム',o:['整','不整']})}</div>
+  <div class="panel step"><div class="step-h"><i>5</i><b>精神（アイちゃんの「精神」欄）</b></div>
+    ${SEI.map(selRow).join('')}
+    <div class="frow">${tarea('katsudo','活動の状況（外出の回数・時間・場所など）','例：作業所に週3回。休日はほとんど外出しない。')}</div></div>
+  <div class="panel step"><div class="step-h"><i>6</i><b>精神症状（表情・言動など）</b></div>
+    ${SYM.map(selRow).join('')}
+    <div class="frow">${tarea('seishin','表情・言動（見たこと・本人が話したこと）','例：表情はやや硬いが、問いかけには答えられる。夜に声が聞こえると話す。')}</div></div>
+  <div class="panel step"><div class="step-h"><i>7</i><b>体のこと・生活の様子</b></div>
+    ${BODY.map(selRow).join('')}</div>
+  <div class="panel step"><div class="step-h"><i>8</i><b>GAF尺度</b></div>
+    <div class="gafrow"><input type="number" min="1" max="100" inputmode="numeric" id="f-gaf" data-f="gaf" value="${esc(fv('gaf'))}" aria-label="GAFの点数"><span class="gafhint" id="gafhint">${esc(gafText(fv('gaf')))}</span></div>
+    <p class="note">GAFは、その月の最初の訪問で判定し、記録書Ⅱと報告書（判定した日も）に書きます。</p>
+    <details id="gafdet" ${S.gafOpen?'open':''}><summary class="note" style="cursor:pointer">点数の目安を見る</summary><ul class="plain" style="margin-top:6px;font-size:.88rem">${GAF.map(x=>`<li>${gafRange(x)}：${esc(x[1])}</li>`).join('')}</ul></details></div>
+  <div class="panel step"><div class="step-h"><i>9</i><b>実施した看護内容</b></div>
+    ${selRow({k:'care',l:'したこと',o:CARE,multi:1})}
+    <div class="frow">${tarea('careNote','精神支援の内容（自由に）','例：眠れない時の過ごし方を一緒に考えた。')}</div></div>
+  <div class="panel step"><div class="step-h"><i>10</i><b>指導・教育・連携</b></div>
+    ${checks(EDU)}
+    <div class="tlist" style="margin-top:8px">${tarea('renkei','連携（医師・相談支援専門員・ヘルパーなど）','例：主治医に入眠困難が続いていることを報告。')}${tarea('renraku','連絡欄','')}</div></div>
+  <div class="panel step"><div class="step-h"><i>11</i><b>計画書のための情報</b></div>
+    <p class="note">令和8年6月からの様式（別紙様式3 精神科訪問看護計画書）に合わせています。指示書の○の項目は、主治医の精神科訪問看護指示書の「留意事項及び指示事項」を見て選びます。</p>
+    ${selRow({k:'shiji',l:'指示書で○が付いている項目',o:SHIJI,multi:1})}
+    <div class="tlist" style="margin-top:8px">${tarea('visitPlan','訪問の計画','例：看護職員 週2回（月・木）')}${tarea('services','ほかのサービスの利用','例：就労継続支援B型（週3回）、グループホーム')}${TXT.map(t=>tarea(t[0],t[1])).join('')}</div></div>
+  <div class="panel step"><div class="step-h"><i>12</i><b>報告書（精神）のための情報（月に1回）</b></div>
+    <p class="note">報告書はひと月分のまとめです。月末や報告書を書く日に入れてください。「毎回の記録」と合わせて、病状の経過の案を作ります。</p>
+    ${selRow({k:'monthTrend',l:'今月の精神状態',o:['安定していた','日による波があった','良くなった','悪くなった']})}
+    <div class="frow"><span class="fl">GAFを判定した日（月の最初の訪問）</span><input type="date" id="f-gafDate" data-f="gafDate" value="${esc(fv('gafDate'))}"></div>
+    <div class="tlist" style="margin-top:8px">${tarea('monthEvents','今月の出来事・変化（受診・薬の変更・体のことなど）','例：主治医が安定剤を調整。足の痛みで皮膚科を受診し、その後は痛みなし。')}${tarea('familyRel','家族等との関係','例：母と月1回電話で話している。関係は良好。')}${tarea('infoTo','情報提供先と情報提供日','例：相談支援事業所（10月15日）')}${tarea('tokki','特記すべき事項（頻回に訪問看護が必要な理由を含む）','')}</div></div>
+  <div class="panel step"><div class="step-h"><i>13</i><b>フェイスシートのための情報（初回）</b></div>
+    <p class="note">アイちゃんの「フェイスシート（訪問看護記録書Ⅰ）」の欄です。住所・電話番号・家族の名前は入れないでください（アイちゃんで直接入れます）。</p>
+    <div class="tlist">${tarea('intro','訪問看護導入までの経過（依頼目的）','例：退院に合わせて主治医から依頼。服薬の継続と生活の支援が目的。')}</div>
+    ${selRow({k:'hobby',l:'趣味・嗜好',o:FS_HOBBY,multi:1,x:['hobbyNote','text','そのほか（例：音楽、散歩）']})}
+    <div class="frow"><span class="fl">会話が広がる話題</span><input type="text" id="f-goodTopic" data-f="goodTopic" value="${esc(fv('goodTopic'))}" placeholder="例：音楽、ダンスの動画"></div>
+    <div class="frow"><span class="fl">注意が必要な話題</span><input type="text" id="f-ngTopic" data-f="ngTopic" value="${esc(fv('ngTopic'))}" placeholder="例：入院していた時のこと"></div>
+    <div class="tlist" style="margin-top:8px">${tarea('lifeHistory','生活歴（学校・仕事・住まいの移り変わりなど）','')}</div>
+    ${selRow({k:'muntela',l:'病気の説明の理解・受け止め（本人）',o:FS_MUNTELA,x:['muntelaP','text','本人の言葉で（例：「薬を飲むと眠れる」）']})}
+    <div class="tlist">${tarea('muntelaF','病気の説明の理解・受け止め（家族）','')}${tarea('familyWish','今後の生活への意向・希望（家族）','')}${tarea('kaigo','介護力（家庭・支援者での見守りの状況など）','例：グループホームの世話人が毎日、服薬を声かけ。')}</div>
+    ${selRow({k:'econ',l:'経済状況',o:['問題なし','年金のみ','生活保護','その他'],x:['econNote','text','そのほか（例：障害年金と工賃）']})}
+    ${selRow({k:'ins',l:'保険・公費',o:['医療保険（精神）','生活保護','自立支援医療（精神通院）','介護保険'],multi:1})}
+    ${selRow({k:'infect',l:'感染症',o:['無','不明','有'],x:['infectNote','text','有の時の内容']})}
+    ${selRow({k:'allergy',l:'アレルギー',o:['無','不明','有'],x:['allergyNote','text','有の時の内容（食品・薬品など）']})}</div>
+  <div class="panel step"><div class="step-h"><i>14</i><b>サマリーのための情報（引き継ぎ・入院・終了の時）</b></div>
+    <p class="note">アイちゃんの「サマリー」の欄です。入院や他の事業所への引き継ぎの時に使います。眠る・家屋の状況・経過は、ここまでの入力からも案を作ります。</p>
+    ${SUM_ADL.map(selRow).join('')}
+    <div class="frow"><span class="fl">最終入浴日</span><input type="date" id="f-lastBath" data-f="lastBath" value="${esc(fv('lastBath'))}"></div>
+    ${selRow({k:'pain',l:'痛み',o:['痛みの訴えなし','痛みの訴えあり'],x:['painNote','text','詳細と対応（例：腰痛。湿布で対応）']})}
+    <div class="frow"><span class="fl">眠れない時の対処方法</span><input type="text" id="f-sleepCope" data-f="sleepCope" value="${esc(fv('sleepCope'))}" placeholder="例：頓服の睡眠薬を使う"></div>
+    <div class="tlist" style="margin-top:8px">${tarea('keika','経過（入力しない時は案を作ります）','例：グループホームに入居してから安定している。')}</div></div>
+  <div class="panel step"><div class="step-h"><i>15</i><b>指示書のための情報</b></div>
+    <p class="note">主治医の指示書（紙）を見て入れます。アイちゃんの「指示書」の画面には、病院・医師・開始日・終了日だけを登録します。指示の中身は、まとめで照らし合わせに使います。</p>
+    ${selRow({k:'instType',l:'指示書の種類',o:['精神科訪問看護指示書','精神科特別訪問看護指示書']})}
+    <div class="vit"><label>指示期間の開始日<input type="date" id="f-instStart" data-f="instStart" value="${esc(fv('instStart'))}"></label><label>指示期間の終了日<input type="date" id="f-instEnd" data-f="instEnd" value="${esc(fv('instEnd'))}"></label></div>
+    ${selRow({k:'instMulti',l:'複数名訪問の必要',o:['なし','あり']})}
+    ${selRow({k:'instShort',l:'短時間訪問の必要',o:['なし','あり']})}
+    <div class="tlist" style="margin-top:8px">${tarea('instNote','指示書の特記事項・指示内容のメモ','例：服薬確認と生活リズムの支援。体重の増加に注意。')}</div></div>
+`;
+}
+/* 計画書の文例：全国の公開されている記載例（看護系メディア・自治体や学会の資料）を、共通する考え方にまとめて書き直したもの */
+const PLANS={
+ scz:{long:['調子を崩さずに、今の住まいでの生活を続けられる'],short:['お薬カレンダーを使って、毎日決まった時間に薬を飲める','声や不安が強い日は、訪問の時に看護師へ伝えられる'],issue:['薬の必要性に納得しきれず、自己中断のおそれがある','意欲の低下で、閉じこもりや清潔の乱れが起きやすい','幻聴・妄想で生活リズムが崩れやすい'],support:['訪問時に薬の仕分けを一緒に行い、残薬を確かめる','幻聴・妄想は否定も肯定もせず、気持ちを受け止めて現実の話題につなぐ','悪化のサインと相談先を、本人・家族と共有する','日中の過ごし方と外出の機会を一緒に考える']},
+ dep:{long:['体調に合わせて、家事や日課を続けられる'],short:['週に1回、近所を10分歩ける','眠れない日を記録し、訪問の時に話せる'],issue:['意欲の低下で横になる時間が長く、体力や生活動作が落ちるおそれがある','自分を責める気持ちや、死にたい気持ちがある'],support:['その日の体調に合う活動を一緒に決める','つらさを急かさずに聴く','毎回、死にたい気持ちの有無を直接たずねる','家族には、励ますより見守ってもらうよう伝える']},
+ bp:{long:['気分の波に早く気づき、入院せずに過ごせる'],short:['睡眠時間を毎日記録できる','気分が高い時の大きな買い物は、家族に相談してから決める'],issue:['躁状態での浪費・睡眠不足・攻撃的な言動','うつ状態での自殺の危険'],support:['睡眠・活動量・お金の使い方から、気分の波を観察する','躁のサインを一覧にし、早めの受診につなげる','必要に応じて、家族と金銭管理の決まりを作る','気分安定薬の血中濃度検査の予定を確かめる']},
+ anx:{long:['不安と付き合いながら外出できる'],short:['週に1回、安心できる範囲の外出を試せる','発作の時に呼吸法を使える'],issue:['予期不安で外出を避けている','外出しないことで体力が落ちるおそれがある'],support:['発作の回数と状況を記録する','呼吸法やリラクゼーションを一緒に練習する','少しずつ外出に挑む計画を本人と作る','頓服の使い方と回数を確かめる']},
+ ocd:{long:['確認や手洗いに生活を振り回されずに過ごせる'],short:['シャワーを、本人と決めた時間内に終えられる'],issue:['強迫行為で疲れ果てている','外出が減っている','家族が確認などに巻き込まれている'],support:['行為にかかる時間と疲れを記録する','主治医の方針に合わせ、段階的に時間を短くする練習を支える','家族が行為に巻き込まれないよう助言する']},
+ ptsd:{long:['生活の中で安心できる時間が増える'],short:['フラッシュバックの時に、対処法を1つ使える','眠れない時に相談できる'],issue:['フラッシュバックや悪夢で眠れない','ストレスへの対処がうまくできない'],support:['安全な話題・環境から関わり、体験を無理に聞き出さない','リラクゼーションと睡眠環境の調整を一緒に行う','使える相談先・支援先を整理する']},
+ alc:{long:['お酒に頼らない生活を続けられる'],short:['飲んだ量を記録し、訪問の時に見せられる','月に2回、自助グループに参加できる'],issue:['離脱症状や飲酒による生活の乱れと体力の低下','再飲酒した時に自分を責めやすい'],support:['飲酒量・離脱症状・肝機能を確かめる','再飲酒を責めず、次の対策を一緒に考える','断酒会・AAを紹介し、専門医療機関と連携する']},
+ dem:{long:['住み慣れた場所で、穏やかに過ごせる'],short:['水分と食事を、決めた量とれる','夕方に落ち着かなくなる回数が減る'],issue:['行動・心理症状による介護者の疲れ','脱水・便秘・服薬の失敗'],support:['生活歴や環境から、行動の理由を考える','水分・食事・排便・服薬を確かめる','家族に関わり方を助言し、介護保険サービスと連携する']},
+ asd:{long:['自分に合った生活の仕方で暮らし、困った時に相談できる'],short:['1週間の予定表を見て通院できる'],issue:['予定の変化や感覚の過敏さで、パニックになりやすい','抑うつ・不安などの二次障害のおそれ'],support:['予定や手順を書いて、目で見える形にする','刺激の少ない環境を一緒に考える','家族・相談支援専門員と支援の方針をそろえる']},
+ adhd:{long:['忘れ物や支払い忘れで困らずに暮らせる'],short:['スマホのアラームで、服薬とゴミ出しができる'],issue:['計画・片付け・お金の管理が苦手','失敗が続くことによる自信の低下'],support:['スマホなど本人が使いやすい道具を一緒に設定する','やることを小さく分ける','できたことを具体的に認める']},
+ bpd:{long:['つらい気持ちを、行動ではなく言葉で伝えられる'],short:['つらい時に、決めた連絡方法で相談できる'],issue:['感情の揺れによる自傷・衝動的な行動','支援者との関係が揺れやすい'],support:['訪問時間・連絡のルールを事業所全体でそろえる','行動の裏にある気持ちを一緒に探る','自傷の代わりになる対処法を一緒に考える','薬の残量を確かめる']},
+ ed:{long:['体と心に必要な食事を続けられる'],short:['体重と食事の記録を、訪問の時に一緒に見られる'],issue:['低体重・電解質の異常による体の危険','過食・嘔吐のくり返し'],support:['体重・バイタルを測り、主治医と共有する','体型や食事のことで責めない','家族の関わり方を助言する']},
+ epi:{long:['発作によるけがをせず、安心して暮らせる'],short:['毎日決まった時間に抗てんかん薬を飲める','発作の記録をつけられる'],issue:['飲み忘れや睡眠不足で、発作の危険が高まる','発作への不安'],support:['発作のきっかけ（睡眠不足・ストレス・飲酒など）を一緒に確かめる','家族・支援者に発作時の対応を説明する','入浴時の安全を確かめる']},
+ id:{long:['支援を受けながら、健康に地域で暮らせる'],short:['体の痛い所や調子の悪い所を、絵カードなどで伝えられる'],issue:['体調の悪さを言葉で伝えにくい','服薬や受診を自分で管理しにくい'],support:['分かりやすい言葉と見本で説明する','ヘルパー・相談支援専門員と役割を分け、情報をそろえる','いつもとの違い（食事・排便・睡眠・行動）を確かめる']},
+ sad:{long:['気分の波と症状の変化に早く気づき、入院せずに過ごせる'],short:['睡眠時間を毎日記録できる','声や気分の変化を、訪問の時に看護師へ伝えられる'],issue:['気分の波と幻覚・妄想が重なり、生活が乱れやすい','うつの時期の自殺の危険'],support:['睡眠・気分・幻聴の様子を毎回確かめる','悪化のサインを一覧にし、早めの受診につなげる','服薬の状況と副作用を確かめる']},
+ del:{long:['近所や家族とのトラブルを減らし、今の住まいで暮らし続けられる'],short:['眠れない日や困ったことを、訪問の時に話せる'],issue:['妄想による近所・家族とのトラブル','治療や服薬を受け入れにくい'],support:['妄想を否定も肯定もせず、困っている気持ちを受け止める','睡眠・疲れなど、本人の困りごとから支援する','家族・関係機関とトラブルの状況を共有する']},
+ dys:{long:['気分と付き合いながら、日課を続けられる'],short:['1日の気分を0〜10で記録できる','週に1回、本人が決めた小さな活動ができる'],issue:['長く続く気分の落ち込みと自信のなさ','活動の減少と孤立'],support:['気分の記録を一緒に見て、変化に気づく','小さな目標を一緒に決め、できたことを認める','死にたい気持ちの有無を確かめる']},
+ ppd:{long:['心と体を休めながら、自分のペースで育児ができる'],short:['1日に続けて4時間眠れる時間をつくれる','つらい時に家族や支援者に頼める'],issue:['睡眠不足と育児の負担による気分の落ち込み','自分を責める気持ち・死にたい気持ち'],support:['睡眠・食事・気分と、死にたい気持ちを毎回確かめる','家族と休める時間の分担を相談する','保健師・子育て支援と連携する']},
+ adj:{long:['ストレスと上手に付き合いながら、自分らしい生活に戻れる'],short:['困っていることを書き出して、訪問の時に一緒に見られる','眠れない日を記録できる'],issue:['ストレスによる気分の落ち込み・不眠','仕事や生活への支障'],support:['ストレスの原因と対処法を一緒に整理する','睡眠・食事・気分を確かめる','必要に応じて、職場や支援機関との調整を手伝う']},
+ hoard:{long:['安全に暮らせる住まいを保てる'],short:['通り道と火の周りに物を置かないでいられる','捨てるかどうかを、看護師と一緒に1日1か所決められる'],issue:['物があふれることによる火災・転倒の危険','不衛生・近所とのトラブル'],support:['通路・火の周り・台所の安全を毎回確かめる','本人の同意を得て、小さく区切って片付ける','関係機関と情報を共有し、支援をそろえる']},
+ dsc:{long:['安心できる時間が増え、自分の生活を続けられる'],short:['ぼーっとし始めた時に、決めた対処法（深呼吸・冷たい物を持つなど）を使える'],issue:['解離による記憶の抜け・危険な行動','自傷の危険'],support:['解離のきっかけと様子を記録する','グラウンディングの方法を一緒に練習する','安全な環境か確かめ、関係機関と連携する']},
+ som:{long:['体の症状と付き合いながら、日常生活を続けられる'],short:['症状と活動を記録し、訪問の時に一緒に見られる','決まった主治医に相談して受診できる'],issue:['体の症状への強い不安による生活の支障','受診や薬の使いすぎ'],support:['症状のつらさを認めて聴く','症状があってもできる活動を一緒に増やす','新しい症状は確かめ、必要な時は受診につなぐ']},
+ subst:{long:['薬物を使わない生活を続け、回復の仲間とつながれる'],short:['使いたくなった時に、決めた相手に連絡できる','回復プログラムや自助グループに参加できる'],issue:['薬物の再使用・過量摂取の危険','後遺症の幻覚・妄想と生活の乱れ'],support:['再使用を責めず、きっかけと次の対策を一緒に考える','処方薬の量と残数を確かめる','回復プログラム・自助グループ・関係機関と連携する']},
+ gam:{long:['ギャンブルをしない生活を続け、借金を整理できる'],short:['お金の管理方法を決め、週に1回一緒に確かめられる','自助グループや相談窓口に行ける'],issue:['ギャンブルによる借金・生活の破綻','借金を苦にした死にたい気持ち'],support:['お金の使い方と借金の状況を一緒に整理する','自助グループ・専門機関・法律の相談窓口につなぐ','死にたい気持ちの有無を確かめる']},
+ hbd:{long:['記憶を補う工夫を使いながら、安心して生活できる'],short:['スケジュール帳とアラームで、服薬と予定を守れる'],issue:['記憶・注意・段取りの障害による生活の支障','感情のコントロールが難しく、トラブルになりやすい'],support:['メモ・スケジュール帳・アラームの使い方を一緒に整える','服薬の管理方法を決めて確かめる','家族・支援機関と関わり方をそろえる']},
+ insom:{long:['自分に合った睡眠のリズムを保てる'],short:['毎朝決めた時刻に起きられる','睡眠の記録をつけ、訪問の時に一緒に見られる'],issue:['不眠による昼間の不調','睡眠薬の使いすぎ・夜間の転倒'],support:['睡眠の記録を一緒に見て、生活の工夫を考える','睡眠薬の使い方と、翌朝の眠気・ふらつきを確かめる','眠れない日が続く時は主治医に相談する']}
+};
+const SITU=[
+ {n:'服薬の中断・拒薬',t:()=>hasB('stop')||fis('medIss','拒薬')||fis('medIss','怠薬'),long:['薬との付き合い方を自分で決めて、続けられる'],short:['副作用のつらさを、訪問の時に言える'],issue:['病気の受けとめ・副作用・妄想などから、薬を飲まないことがある'],support:['飲まない理由を聴く','無理に飲ませず、主治医と調整する','飲みやすい時間・方法を一緒に探す']},
+ {n:'退院して間もない',t:()=>hasB('discharge'),long:['再入院せずに、地域での生活を続けられる'],short:['退院後1か月は週2回の訪問を受け、通院を続けられる'],issue:['環境の変化による再発の危険'],support:['退院前の話し合いで、課題を関係者と共有する','本人の言葉でクライシスプランを作り、関係機関と共有する']},
+ {n:'生活リズムの乱れ・閉じこもり',t:()=>(S.f.rhythm&&S.f.rhythm!=='整っている')||S.f.social==='使えていない',long:['日中に行く場所を持てる'],short:['本人と決めた時刻までに起きられる'],issue:['生活リズムの乱れ・閉じこもり'],support:['趣味や好きなことの話から関係をつくる','通所などの準備を段階的に支える']},
+ {n:'死にたい気持ち・自傷',t:()=>(S.f.sui&&S.f.sui!=='なし')||hasB('attempt'),short:['死にたい気持ちが強い時に、決めた連絡先へ電話できる'],issue:['死にたい気持ち・自傷の危険'],support:['毎回、死にたい気持ちの有無を直接たずねる','危険な物や薬の保管を確かめる','緊急時の連絡体制を本人・家族と共有する']},
+ {n:'水の飲みすぎ',t:()=>S.f.water==='多すぎる',long:['自分で水分を調整し、水中毒を起こさない'],short:['朝と夜に体重を測り、記録できる'],issue:['水を飲みすぎることによる水中毒の危険'],support:['体重の増え方の目安を主治医と決める','制限するより、自分で調整できるよう支える','水以外に気持ちが向く活動を探す']},
+ {n:'体の合併症（便秘・血糖など）',t:()=>hasB('dm')||S.f.bowel==='3日以上出ていない'||drugsOf('ap').length>0,short:['排便を記録し、3日出なければ伝えられる'],issue:['抗精神病薬などによる便秘・体重増加・血糖の上昇'],support:['排便・体重・血糖に関わる症状を観察する','必要な時は受診を勧め、内科と連携する']},
+ {n:'お金の管理',t:()=>S.f.kinsen==='課題あり',short:['1週間の予算の中でやりくりできる'],issue:['お金の管理が難しい'],support:['家計表を一緒につける','日常生活自立支援事業の利用を検討する']},
+ {n:'家族の支援',t:()=>!!S.f.family||!!S.f.exFam,long:['家族が無理をせず、本人を支え続けられる'],issue:['家族の負担・不安'],support:['家族だけの時間をとって思いを聴く','家族会・相談先を紹介する']}
+];
+const SRC=[['厚生労働省 訪問看護計画書等の記載要領（令和8年3月27日 保医発0327第10号・別紙様式3／4）','https://www.mhlw.go.jp/content/12400000/001681763.pdf'],['精神科訪問看護指示書の様式（留意事項及び指示事項の6項目）','https://sakakibara.hosp.go.jp/files/000107993.pdf'],['精神科訪問看護計画書の書き方と文例','https://toaru-comedical.com/keikaku-seishin/'],['精神科訪問看護計画書の目標の立て方','https://ns-pace-career.com/media/tips/09999/'],['訪問看護計画書の書き方','https://mitsukeru-hokan.techro.co.jp/hokan-keikakusho/'],['精神科訪問看護の目的と計画','https://houkan.kaipoke.biz/magazine/nursing-knowledge/psychiatric-visiting-nurse-purpose.html'],['退院後の地域生活の支援（厚生労働省資料）','https://www.mhlw.go.jp/content/12200000/0000125865.pdf'],['多飲水の看護','https://www.kango-roo.com/kq/archive/196'],['うつ病・不安障害・てんかんの看護計画の例','https://www.aikoandsibajyun.info/entry/utubyou']];
+function plan(){
+  const F=S.f||{}, P=[], ap=drugsOf('ap');
+  const p=(t,a)=>P.push([t,a.length?a:['今の状態を保てるよう、観察を続ける']]);
+  let a=[];
+  if(F.rhythm&&F.rhythm!=='整っている') a.push('起きる・寝る・食事の時間を一緒に確かめ、生活リズムを整える');
+  if(issues('sleep').length) a.push('睡眠時間を毎回確かめ、眠れない日が続く時は主治医に相談する');
+  if(hasD('bp')) a.push('睡眠時間の変化を、躁・うつの早めのサインとして毎回記録する');
+  p('生活リズムの確立',a); a=[];
+  if((F.hoketsu&&F.hoketsu!=='課題なし')||(F.kankyo&&F.kankyo!=='課題なし')) a.push('清潔・部屋の片付けのうち、できることから一緒に行う（生活リハビリ）');
+  if(issues('eat').length) a.push('食事の内容と時間を一緒に確かめ、食べ方を整える');
+  if(F.kinsen==='課題あり') a.push('お金の使い方を一緒に確かめる（必要に応じて日常生活自立支援事業・成年後見制度につなぐ）');
+  p('家事能力、社会技能等の獲得',a); a=[];
+  if(F.taijin==='課題あり') a.push('困っている人間関係について話を聞き、伝え方を一緒に考える');
+  if(F.family) a.push('家族・支援者の思いや負担を聞き、家族への支援も行う');
+  p('対人関係の改善（家族含む）',a); a=[];
+  if(F.social&&F.social!=='使えている') a.push('相談支援専門員と連携し、使えるサービス（通所・ヘルパーなど）を一緒に考える');
+  if(hasD('id')||hasD('dem')||hasD('asd')) a.push('支援者と情報や関わり方をそろえる');
+  p('社会資源活用の支援',a); a=[];
+  if(S.a.drugs.length) a.push('服薬の状況・残薬・副作用を毎回確かめる');
+  if(issues('medIss').length) a.push('飲み忘れ・飲まない理由を聞き、一包化・お薬カレンダー・アラームなど続けやすい方法を一緒に考える');
+  if(S.a.drugs.some(isPrn)) a.push('頓服を使った時間・理由・効き目を記録する');
+  if(F.side==='ある') a.push('副作用らしい様子を主治医に報告し、対応を相談する');
+  if(hasB('stop')) a.push('自分で薬をやめた理由を聞き、続けやすい方法を主治医と相談する');
+  p('薬物療法継続への援助',a); a=[];
+  a.push('バイタル・体重・排便を毎回確かめる');
+  if(hasB('dm')||ap.length) a.push('のどの渇き・多飲・多尿・体重の変化を確かめる（血糖）');
+  if(F.bowel==='3日以上出ていない'||ap.length) a.push('最後の排便日を確かめ、便秘が続く時は下剤の指示を確認する');
+  if(F.body==='悪化している') a.push('体の病気について受診につなぐ');
+  if(F.body==='注意が必要') a.push('体の病気の症状を観察し、変化があれば主治医に報告する');
+  p('身体合併症の発症・悪化の防止',a);
+  const sui=(F.sui&&F.sui!=='なし')||hasB('attempt')||['dep','bp','bpd','sad','ppd','dys'].some(hasD);
+  if(sui) P.push(['危機時の対応',['死にたい気持ちを毎回、直接たずねる','調子が悪くなる前のサインと対応を本人と決めておく（クライシスプラン）','薬の保管場所と残量を確かめる']]);
+  const sj=fa('shiji');
+  if(sj.filter(x=>x!=='その他').length) return P.filter(x=>sj.includes(x[0])||x[0]==='危機時の対応'||!(x[1].length===1&&x[1][0].startsWith('今の状態'))).map(x=>[sj.includes(x[0])?x[0]+'（指示書）':x[0],x[1]]);
+  return P;
+}
+function tsuin(){ return (!S.a.dis.length||S.a.dis.some(id=>!['id','dem','epi','hbd'].includes(id)))?'精神科':'医療機関'; }
+function medSentence(ok){
+  const F=S.f||{}, mi=issues('medIss');
+  if(F.medMgr==='服薬なし') return '服薬なし。';
+  const who=F.medMgr?F.medMgr+(F.medWho?'（'+F.medWho+'）':''):'';
+  if(!who&&!mi.length) return '';
+  if(!who) return '服薬は'+mi.join('・')+'がある。';
+  return '服薬は'+who+'で、'+(mi.length?mi.join('・')+'がある。':ok);
+}
+function zenshin(){
+  const F=S.f||{}, s=[];
+  const vit=[F.temp?'体温'+F.temp+'℃':'',F.pulse?'脈拍'+F.pulse+'回/分'+(F.pulseR?'（'+F.pulseR+'）':''):'',F.bp?'血圧'+F.bp:'',F.spo2?'SpO2 '+F.spo2+'%':''].filter(Boolean);
+  if(vit.length) s.push(vit.join('、')+'。');
+  const sy=SYM.filter(it=>it.k!=='sui'&&F[it.k]&&F[it.k]!=='なし').map(it=>it.l+(F[it.k]==='少しある'?'が少しある':F[it.k]==='強い'?'が強い':'：'+F[it.k]));
+  if(sy.length) s.push(sy.join('、')+'。'); else if(SYM.some(it=>it.k!=='sui'&&F[it.k])&&(!F.sui||F.sui==='なし')) s.push('精神症状の悪化は見られない。');
+  if(F.sui==='なし') s.push('希死念慮なし。'); else if(F.sui==='考えることがある') s.push('希死念慮あり（具体的な計画はなし）。'); else if(F.sui==='具体的な計画がある') s.push('希死念慮あり、具体的な計画あり。'); else if(F.sui==='聞けなかった') s.push('希死念慮は確認できず。');
+  if(F.seishin) s.push(F.seishin.replace(/。?$/,'。'));
+  const sl=issues('sleep'); if(sl.length) s.push('睡眠は'+sl.join('・')+'あり'+(F.sleepH?'（'+F.sleepH+'）':'')+'。'); else if(fis('sleep','課題なし')) s.push('睡眠は良好'+(F.sleepH?'（'+F.sleepH+'）':'')+'。');
+  const ea=issues('eat'); if(ea.length) s.push('食事は'+ea.join('・')+'あり。'); else if(fis('eat','課題なし')) s.push('食事はとれている。');
+  {const m=medSentence('課題なし。'); if(m) s.push(m);}
+  if(F.bowel==='3日以上出ていない') s.push('3日以上排便なし。'); else if(F.bowel==='下痢') s.push('下痢あり。');
+  if(F.side==='ある') s.push('副作用らしい様子あり'+(F.sideNote?'（'+F.sideNote+'）':'')+'。');
+  return s.join('');
+}
+function buildSum(){
+  const F=S.f||{}, {dsel,gsel,sign}=collect(), out=[];
+  if(!S.a.dis.length&&!S.a.drugs.length&&!Object.keys(F).some(k=>k!=='date'&&k!=='_v'&&(Array.isArray(F[k])?F[k].length:F[k]))) return out;
+  const R=rules(); const GV=gafOK(F.gaf);
+  const sec=(g,t,lines,hint)=>{const l=lines.filter(x=>x); if(l.length) out.push([t,l.join('\n'),g,hint||'']);};
+  const G1='看護記録（ケア項目）＝訪問看護記録書Ⅱ', G2='訪問看護計画書（精神）', G3='参考';
+  sec(G1,'保険区分・GAF尺度',['医療保険：「精神」にチェック', GV?'GAF尺度：'+GV+'点':''],'保険区分の「精神」と、その下のGAF尺度');
+  const unit={temp:'℃',pulse:'回/分',spo2:'%',resp:'回/分',weight:'kg',waterMl:'ml/日'};
+  sec(G1,'☆VS他',[...VIT.filter(v=>F[v[0]]).map(v=>v[1].replace(/（.*）/,'')+'：'+F[v[0]]+(unit[v[0]]||'')+(v[0]==='pulse'&&F.pulseR?'（'+F.pulseR+'）':'')), F.lastBowel?'最終排便日：'+F.lastBowel.replace(/-/g,'/'):'']);
+  const ch=(k,l)=>{const v=issues(k); return fa(k).length?`＜${l}＞`+(v.length?'課題あり：'+v.join('・'):'課題なし'):'';};
+  sec(G1,'精神（チェック欄）',[ch('eat','食事')+(F.sleepH&&false?'':''), ch('sleep','睡眠')+(F.sleepH&&fa('sleep').length?'（'+F.sleepH+'）':''),
+    (F.medMgr||fa('medIss').length)?'＜服薬＞'+(F.medMgr?'管理方法：'+F.medMgr+(F.medWho?'（'+F.medWho+'）':''):'')+(fa('medIss').length?(F.medMgr?'／':'')+(issues('medIss').length?'課題あり：'+issues('medIss').join('・'):'課題なし'):''):'',
+    F.hoketsu?'＜保清＞'+(F.hoketsu==='課題なし'?'課題なし':'課題あり：'+F.hoketsu):'',
+    F.kankyo?'＜環境整備＞'+(F.kankyo==='課題なし'?'課題なし':'課題あり：'+F.kankyo):'',
+    F.kinsen?'＜金銭の扱い＞'+F.kinsen+(F.kinsenNote&&F.kinsen==='課題あり'?'（'+F.kinsenNote+'）':''):'',
+    F.taijin?'＜対人関係＞'+F.taijin+(F.taijinNote&&F.taijin==='課題あり'?'（'+F.taijinNote+'）':''):''],'「課題なし／課題あり」と、その中の項目にチェック。（ ）の中は文字で');
+  sec(G1,'活動の状況（外出頻度・時間・場所など）',[F.katsudo]);
+  const syl=SYM.filter(it=>F[it.k]).map(it=>`${it.l}：${F[it.k]}`).join('。');
+  sec(G1,'精神症状（表情・言動など）',[F.seishin, syl?syl+'。':'']);
+  const care=fa('care'), yk=care.filter(c=>['内服確認','内服セット','内服介助','残薬確認'].includes(c)), ss=care.filter(c=>['声掛け','傾聴','助言'].includes(c));
+  sec(G1,'実施した看護内容',[yk.length?'薬剤管理（'+yk.join('・')+'）':'', care.includes('清潔援助')?'清潔援助':'', care.includes('生活リハビリ（調理・掃除・整頓）')?'生活リハビリテーション（調理・掃除・整頓）':'', care.includes('受診状況確認')?'受診状況確認':'', care.includes('受診介助')?'受診介助':'', (ss.length||F.careNote)?'精神支援（'+[ss.join('　'),F.careNote].filter(Boolean).join('　')+'）':''],'あてはまる所にチェック。（ ）の中は文字で');
+  sec(G1,'☆全身状態フリー記入（報告書に反映）',[zenshin()],'アプリが入力から作った文の案です。読んで直してから貼ってください');
+  sec(G1,'☆指導・教育',[F.exInfo?'情報提供（病気・薬・再発のサインなどの説明）':'', F.exSelf?'自己管理方法指導（服薬・睡眠・体調の管理）':'', F.exFam?'家族指導（家族・支援者への説明）':'', F.exEm?'情報提供（調子が悪い時・緊急時の連絡方法）':'']);
+  const rep=R.filter(r=>r[0]==='h'&&r[3]).map(r=>'主治医へ報告（案）：'+r[1]);
+  sec(G1,'☆連携',[F.renkei, ...(F.renkei?[]:rep)],F.renkei?'':'入力がない時は、報告した方がよいことの案を出しています');
+  sec(G1,'☆連絡欄',[F.renraku]);
+  /* 訪問看護報告書（精神）：アイちゃんの報告書の欄の順番 */
+  const G4='訪問看護報告書（精神）';
+  const tr={'安定していた':'今月は大きな精神症状の悪化なく、安定して経過している。','日による波があった':'精神状態には日による波がみられた。','良くなった':'前月と比べて、精神状態は改善の傾向にある。','悪くなった':'今月は精神状態の悪化がみられた。'}[F.monthTrend]||'';
+  const vit2=[F.temp?'体温'+F.temp+'℃':'',F.pulse?'脈拍'+F.pulse+'回/分':'',F.spo2?'酸素飽和度'+F.spo2+'%':'',F.bp?'血圧'+F.bp+'mmHg':''].filter(Boolean);
+  const syp=SYM.filter(it=>it.k!=='sui'&&F[it.k]&&F[it.k]!=='なし').map(it=>it.l+(F[it.k]==='少しある'?'が少しある':F[it.k]==='強い'?'が強い':'：'+F[it.k]));
+  const life2=[F.katsudo, F.rhythm==='少し乱れ'?'生活リズムがやや乱れている。':(F.rhythm&&F.rhythm!=='整っている'?'生活リズムが大きく乱れている（昼夜逆転など）。':''), (F.hoketsu&&F.hoketsu!=='課題なし')||(F.kankyo&&F.kankyo!=='課題なし')?'保清・環境整備に課題（'+[F.hoketsu!=='課題なし'?F.hoketsu:'',F.kankyo!=='課題なし'?F.kankyo:''].filter(Boolean).join('・')+'）がある。':'', F.taijin==='課題あり'?'対人関係に課題がある'+(F.taijinNote?'（'+F.taijinNote+'）':'')+'。':''].filter(Boolean).map(x=>x.replace(/。?$/,'。')).join('');
+  const sl2=issues('sleep'), ea2=issues('eat'), mi2=issues('medIss');
+  const dly=[sl2.length?'睡眠は'+sl2.join('・')+'がみられる'+(F.sleepH?'（'+F.sleepH+'）':'')+'。':(fis('sleep','課題なし')?'睡眠は良好。':''), ea2.length?'食事は'+ea2.join('・')+'がある。':(fis('eat','課題なし')?'食事は摂取できている。':''), medSentence('継続できている。')].join('');
+  const bodyp=[F.bowel==='3日以上出ていない'?'3日以上排便がない日がある。':F.bowel==='下痢'?'下痢がみられる。':(F.bowel?'排便は良好。':''), F.side==='ある'?'副作用と思われる様子がある'+(F.sideNote?'（'+F.sideNote+'）':'')+'。':'', F.body==='悪化している'?'体の病気の悪化がある。':F.body==='注意が必要'?'体の病気に注意が必要な状態。':'', F.monthEvents].filter(Boolean).map(x=>x.replace(/。?$/,'。')).join('');
+  const fut=uniq([syp.length||tr?'精神状態':'' , sl2.length?'睡眠状況':'', S.a.drugs.length?'服薬の継続':'', F.social?'通所などの日中活動':'', (F.bowel||F.side||F.body)?'排便や体の状態':''].filter(Boolean));
+  const keika=[vit2.length?vit2.join('、')+'。':'', [tr, syp.length?syp.join('、')+'。':'', F.sui&&F.sui!=='なし'&&F.sui!=='聞けなかった'?'希死念慮がある。':(F.sui==='なし'?'希死念慮はない。':'')].join(''), life2, dly, bodyp?'身体面では、'+bodyp:'', fut.length?'今後も'+fut.join('・')+'に留意しながら、安定した生活が続けられるよう支援を継続していく。':''].filter(Boolean);
+  sec(G4,'病状の経過（案）',[keika.join('\n')],'今日の記録と、「月1回」の記録の今月の様子から作った文の案です。ひと月分の記録を見て、数値の範囲（例：体温35.7〜36.9℃）などに直してから貼ってください');
+  const care2=fa('care'), kn=[];
+  if(care2.some(c=>['内服確認','内服セット','内服介助','残薬確認'].includes(c))) kn.push('服薬管理（'+care2.filter(c=>['内服確認','内服セット','内服介助','残薬確認'].includes(c)).join('・')+'）');
+  if(care2.some(c=>['声掛け','傾聴','助言'].includes(c))) kn.push(care2.filter(c=>['声掛け','傾聴','助言'].includes(c)).join('・')+'による精神的支援');
+  if(F.careNote) kn.push(F.careNote);
+  if(care2.includes('生活リハビリ（調理・掃除・整頓）')) kn.push('生活リハビリテーション（調理・掃除・整頓）');
+  if(care2.includes('清潔援助')) kn.push('清潔援助');
+  if(care2.includes('受診状況確認')) kn.push('受診状況の確認');
+  if(care2.includes('受診介助')) kn.push('受診介助');
+  if(F.exInfo) kn.push('病気・薬・再発のサインについての情報提供');
+  if(F.exSelf) kn.push('服薬・睡眠・体調の自己管理の指導');
+  if(F.exFam) kn.push('家族・支援者への助言');
+  kn.push('バイタルサイン・全身状態の観察');
+  sec(G4,'看護の内容',kn,'1行ずつ貼るか、まとめて貼ります');
+  sec(G4,'家族等との関係',[F.familyRel||F.family]);
+  sec(G4,'情報提供（情報提供先・情報提供日）',[F.infoTo]);
+  const rep2=R.filter(r=>r[0]==='h'&&r[3]).map(r=>'（案）'+r[1]);
+  sec(G4,'特記すべき事項（頻回に訪問看護が必要な理由を含む）',[F.tokki, ...(F.tokki?[]:rep2)],F.tokki?'':'入力がない時は、主治医に伝えた方がよいことの案を出しています');
+  if(GV) sec(G4,'ＧＡＦ',[`${GV}点${(F.gafDate||F.date)?'（判定日：'+(F.gafDate||F.date).replace(/-/g,'/')+'）':''}`],'月の初日の訪問時の値を書きます');
+  const sit=SITU.filter(x=>x.t());
+  const blocks=[...dsel.filter(d=>PLANS[d.id]).map(d=>[d.n,PLANS[d.id]]), ...sit.map(x=>[x.n,x])];
+  const longs=uniq(blocks.flatMap(b=>b[1].long||[])), shorts=uniq(blocks.flatMap(b=>b[1].short||[]));
+  sec(G2,'看護の目標（案）',['長期目標', ...(longs.length?longs:['症状の変化に早めに気づき、本人らしい生活を続けられる']).map(g=>'・'+g), shorts.length?'短期目標':'', ...shorts.map(g=>'・'+g), F.wish?'本人の希望・困りごと：「'+String(F.wish).replace(/^[「『]|[」』]$/g,'')+'」':''],'全国の記載例をもとにした文例です。本人と話して、本人の言葉に直してから使ってください');
+  sec(G2,'療養上の課題・支援内容（案）',blocks.flatMap((b,i)=>[(i?'\n':'')+`${i+1}．${b[0]}`, ...(b[1].issue||[]).map(x=>'課題：'+x), ...(b[1].support||[]).map(x=>'支援：'+x)]),'課題と支援内容を対応させて、具体的に書きます（記載要領）');
+  sec(G2,'指示書の項目ごとの支援（案）',plan().flatMap(x=>['【'+x[0]+'】',...x[1].map(i=>'・'+i)]),fa('shiji').length?'指示書で○が付いた項目を中心に出しています':'「初回・引き継ぎ」の記録で指示書の○の項目を選ぶと、その項目を中心に出します');
+  sec(G2,'評価',[GV?`GAF尺度：${GV}点（${gafText(GV)}）`:''],'目標がどこまでできたかを、回数・日数・本人の言葉などの根拠と一緒に書きます');
+  const hr=[];dsel.forEach(d=>d.risk.filter(r=>r[0]==='h').forEach(r=>hr.push(`・${d.n}：${r[1]}`)));
+  sec(G2,'備考（特別な管理を要する内容、その他留意すべき事項等）',[F.visitPlan?'訪問の計画：'+F.visitPlan:'', F.services?'ほかのサービスの利用：'+F.services:'', ...R.filter(r=>r[0]==='h').map(r=>'・'+r[1]), ...hr, sign.length?'再発のサイン：'+sign.slice(0,6).join('、'):'', F.crisisSign?'本人と確かめたサイン：'+F.crisisSign:'', F.crisisAct?'その時の対応：'+F.crisisAct:''],'ほかのサービスの利用状況や、緊急時に気をつけることも書きます（記載要領）');
+  /* 緊急時連絡票：アイちゃんの欄の順番。個人情報（電話・住所・家族）はアイちゃんで直接入れる */
+  const G5='緊急時連絡票';
+  const life=F.sui==='具体的な計画がある'||hasB('attempt')||['dep','bp','bpd','sad','ppd','subst','gam'].some(hasD);
+  sec(G5,'緊急の場合は、この順番で連絡（1）',['意識がない・呼吸がおかしい・けいれんが止まらない'+(life?'・自殺のおそれが差し迫っている':'')+'時は、救急車（119）。そのあと訪問看護ステーションへ連絡。'],'電話番号はアイちゃんで直接入れてください');
+  sec(G5,'緊急の場合は、この順番で連絡（2）',['それ以外の急な体調・精神状態の変化は、訪問看護ステーション（緊急時の連絡先）へ。看護師が主治医と相談して対応する。']);
+  const prnD=S.a.drugs.filter(isPrn).map(id=>D[id].n);
+  sec(G5,'特別な指示がある場合',[F.crisisSign?'調子が悪くなる前のサイン：'+F.crisisSign:'', F.crisisAct?'その時の対応：'+F.crisisAct:'', prnD.length?'頓服：'+prnD.join('・')+'（主治医の指示の量・回数を守る）':''],'クライシスプランと頓服の決まりを書きます');
+  const amb=[dsel.length?tsuin()+'に通院中（'+dsel.map(d=>d.n).join('・')+'）。':tsuin()+'に通院中。', 'お薬手帳で服用中の薬を確認できる。', hasD('epi')||S.a.drugs.some(id=>inCls(D[id],'ep'))?'てんかん発作あり（5分以上続く時は救急）。':'', hasB('dm')?'糖尿病あり。':'', hasB('heart')?'心臓の病気・不整脈あり。':'', hasB('attempt')?'自殺未遂・自傷の経験あり。':'', S.a.drugs.length?'過量服薬が疑われる時は、薬の空き殻・薬袋を持参する。':'', hasD('id')||hasD('asd')||hasD('dem')?'言葉で症状を伝えにくいため、ふだんの様子を知る支援者の同行が望ましい。':''].filter(Boolean);
+  sec(G5,'救急車連絡時の必要事項（その他必要事項）',[amb.join('')],'自宅付近の目印・搬送先の病院はアイちゃんで直接入れてください');
+  const cau=[], once=new Set();
+  const addc=(k,t)=>{if(!once.has(k)){once.add(k);cau.push(t);}};
+  S.a.drugs.forEach(id=>{const d=D[id];
+    if(id==='lithium') addc(id,'リーマス：脱水・発熱・下痢の時はリチウム中毒に注意。痛み止め（NSAIDs）との併用に注意');
+    if(id==='zyprexa'||id==='seroquel') addc('dm','ジプレキサ・セロクエル：糖尿病には使えない。高血糖（のどの渇き・多尿）に注意');
+    if(id==='clozaril') addc(id,'クロザリル：発熱・のどの痛みは無顆粒球症のおそれ。すぐ主治医へ');
+    if(id==='depromel') addc(id,'デプロメール：飲み合わせの禁忌が多い（ロゼレム・メラトベルなど）');
+    if(d.sub==='三環系') addc('tca','三環系抗うつ薬：過量服薬で命に関わる');
+    if(d.c==='ap') addc('ap','抗精神病薬服用中：高熱・体のこわばり（悪性症候群）、腸閉塞に注意');
+    if(isBZ(id)) addc('bz','抗不安薬・睡眠薬（ベンゾジアゼピン系）服用中：急な中止で離脱、お酒との併用に注意');
+    if(inCls(d,'ep')) addc('ep','抗てんかん薬服用中：急にやめると発作が起きやすい');
+    if(id==='cyanamide'||id==='noxbin') addc('alc','抗酒薬服用中：アルコールを含む薬・消毒でも反応することがある');
+  });
+  const sk=S.a.drugs.filter(id=>['lamictal','tegretol','aleviatin','phenobal'].includes(id)).map(id=>D[id].n);
+  if(sk.length) cau.push(sk.join('・')+'：発疹・発熱・口内炎は重い薬疹のおそれ。すぐ主治医へ');
+  sec(G5,'治療（薬）への注意',[cau.join('／')],'アイちゃんでは1行の欄です。長い時は大事なものから残してください');
+  sec(G5,'アイちゃんで直接入れる欄',['通常の連絡先・緊急時の連絡先（電話番号）','自宅付近の目印','搬送先の病院指定（病院名・科）','ご家族の連絡先','居宅介護支援事業所・医療機器','避難場所（第一次・広域）','※主治医・お客様情報はフェイスシートから自動で入ります'],'個人情報なので、このアプリには入れません');
+  /* フェイスシート（訪問看護記録書Ⅰ）：アイちゃんの欄の順番。住所・電話・家族の名前はアイちゃんで直接入れる */
+  const G6='フェイスシート（訪問看護記録書Ⅰ）';
+  sec(G6,'独居・保険情報',[hasB('alone')?'独居：チェックを入れる':'', fa('ins').length?'保険・公費：'+fa('ins').join('、'):'']);
+  const introDraft='（案）'+tsuin()+'に通院中'+(dsel.length?'（'+dsel.map(d=>d.n).join('・')+'）':'')+'。'+(hasB('discharge')?'退院に合わせて、':'')+'服薬の継続支援、症状の観察と再発の予防、日常生活の支援を目的に訪問看護を開始。';
+  sec(G6,'訪問看護導入までの経過（訪問看護依頼目的）',[F.intro||introDraft],F.intro?'':'入力がない時は、病名からの案を出しています');
+  sec(G6,'趣味・嗜好',[fa('hobby').length?fa('hobby').join('、')+(F.hobbyNote?'、'+F.hobbyNote:''):(F.hobbyNote||''), F.ngTopic?'注意が必要な話題：'+F.ngTopic:'', F.goodTopic?'会話が広がる話題：'+F.goodTopic:''],'たばこ・酒などはチェック欄、話題は「注意が必要な話題」「会話が広がる話題」の欄へ');
+  sec(G6,'生活歴',[F.lifeHistory]);
+  sec(G6,'病歴（傷病名）',dsel.map(d=>'・'+d.n+'（治療中）'),'アイちゃんでは「病歴追加」から傷病名を登録し、「治療中」にチェック');
+  sec(G6,'感染症・アレルギー',[F.infect?'感染症：'+F.infect+(F.infect==='有'&&F.infectNote?'（'+F.infectNote+'）':''):'', F.allergy?'アレルギー：'+F.allergy+(F.allergy==='有'&&F.allergyNote?'（'+F.allergyNote+'）':''):'']);
+  sec(G6,'病名・病状に対する説明と理解・受け止め状況',[(F.muntela||F.muntelaP)?'本人：'+[F.muntela,F.muntelaP?'「'+F.muntelaP.replace(/^「|」$/g,'')+'」':''].filter(Boolean).join('。'):'', F.muntelaF?'ご家族：'+F.muntelaF:'', F.exInfo?'（今回、病気・薬・再発のサインについて説明した）':'']);
+  sec(G6,'今後の生活に対する意向・希望',[F.wish?'本人：'+F.wish:'', F.familyWish?'ご家族：'+F.familyWish:'']);
+  sec(G6,'介護力（家庭での看護の状況など）',[F.kaigo]);
+  sec(G6,'経済状況',[F.econ?F.econ+(F.econNote?'（'+F.econNote+'）':''):'']);
+  /* サマリー：アイちゃんの欄の順番 */
+  const G7='サマリー';
+  const kaoku=[F.kankyo==='課題なし'?'部屋は片付いている。':F.kankyo==='やや散乱'?'片付けをしているが、やや散乱している。':F.kankyo==='散乱'?'部屋が散乱している。':'', F.hoketsu&&F.hoketsu!=='課題なし'?'保清：'+F.hoketsu+'。':''].join('');
+  sec(G7,'家屋の状況（フリー記入）',[kaoku],'「精神」欄の環境整備・保清から作っています');
+  const keikaDraft=['（案）'+(dsel.length?tsuin()+'に通院中（'+dsel.map(d=>d.n).join('・')+'）。':tsuin()+'に通院中。'), F.intro||'', tr, F.monthEvents||'', medSentence('継続できている。'), F.katsudo||'', GV?'GAF '+GV+'点。':'', '訪問看護で、服薬の継続・症状の観察・生活の支援を続けている。'].filter(Boolean).map(x=>x.replace(/。?$/,'。')).join('');
+  sec(G7,'経過',[F.keika||keikaDraft],F.keika?'':'入力がない時は、ここまでの入力から案を作っています');
+  const adl=(k,l)=>F[k]?`${l}：${F[k]}`:'';
+  sec(G7,'食事・排泄・トイレ・入浴・外出',[adl('adlEat','食事'), adl('adlExc','排泄')+(F.adlExc&&F.lastBowel?'（最終排便日 '+F.lastBowel.replace(/-/g,'/')+'）':''), adl('adlToilet','トイレ'), adl('adlBath','入浴')+(F.adlBath&&F.lastBath?'（最終入浴日 '+F.lastBath.replace(/-/g,'/')+'）':''), adl('adlOut','外出')],'アイちゃんでは「自立／要介助」などにチェック');
+  const slp=issues('sleep');
+  sec(G7,'眠る',[slp.length?'不眠の訴えあり（'+slp.join('・')+(F.sleepH?'、'+F.sleepH:'')+'）':(fis('sleep','課題なし')?'不眠の訴えなし':''), slp.length&&(F.sleepCope||S.a.drugs.some(id=>isPrn(id)&&D[id].c==='hy'))?'対処方法：'+(F.sleepCope||'頓服の睡眠薬（'+S.a.drugs.filter(id=>isPrn(id)&&D[id].c==='hy').map(id=>D[id].n).join('・')+'）'):'']);
+  sec(G7,'痛み',[F.pain?F.pain+(F.pain==='痛みの訴えあり'&&F.painNote?'（'+F.painNote+'）':''):'']);
+  sec(G7,'備考',[...R.filter(r=>r[0]==='h').map(r=>'・'+r[1]), S.a.drugs.length?'・服用中の薬はお薬手帳で確認（'+S.a.drugs.map(id=>D[id].n).join('・')+'）':'', F.crisisSign?'・調子が悪くなる前のサイン：'+F.crisisSign:'', F.crisisAct?'・その時の対応：'+F.crisisAct:'', F.goodTopic?'・会話が広がる話題：'+F.goodTopic:'', F.ngTopic?'・注意が必要な話題：'+F.ngTopic:''],'引き継ぎ先に伝えたいことをまとめています');
+  /* 指示書：アイちゃんの指示書の画面は病院・医師・開始日・終了日だけ。中身は照らし合わせ用 */
+  const G8='指示書';
+  const dt=x=>x?x.replace(/-/g,'/'):'';
+  sec(G8,'指示書の登録（アイちゃん）',[F.instType?'種類：'+F.instType+(F.instType==='精神科特別訪問看護指示書'?'（「特別指示書」のタブで登録）':'（「指示書」のタブで登録）'):'', F.instStart?'開始日：'+dt(F.instStart):'', F.instEnd?'終了日：'+dt(F.instEnd):'', (F.instStart||F.instEnd)?'病院・クリニック名と医師名は、アイちゃんの一覧から選ぶ':''],'アイちゃんの指示書の画面は、この4つの欄だけです');
+  sec(G8,'指示書との照らし合わせ',[dsel.length?'傷病名：アプリでは「'+dsel.map(d=>d.n).join('・')+'」。指示書の主たる傷病名と同じか確認':'', S.a.drugs.length?'投与中の薬剤：アプリでは「'+S.a.drugs.map(id=>D[id].n).join('・')+'」。指示書の薬と、お薬手帳の最新の処方が同じか確認':'', fa('shiji').length?'留意事項及び指示事項（○の項目）：'+fa('shiji').join('、')+'。計画書の「療養上の課題・支援内容」に、この項目が入っているか確認':'留意事項及び指示事項：指示書で○が付いた項目を、「初回・引き継ぎ」の記録で選んでください', F.instMulti==='あり'?'複数名訪問の必要あり：記録に同行者を書く':'', F.instShort==='あり'?'短時間訪問の必要あり：30分未満の訪問は報告書のカレンダーに✔印':'', F.instType==='精神科特別訪問看護指示書'?'特別指示書の期間の訪問は、報告書のカレンダーで△にする（月1回・14日まで）':'', F.instNote?'指示内容のメモ：'+F.instNote:''],'指示書（紙）と見比べるための確認リストです');
+  sec(G3,'病名・処方薬（フェイスシートとの確認用）',[dsel.length?'病名：'+dsel.map(d=>d.n).join('、'):'', ...gsel.map(g=>`・${g.n}（${g.g==='漢方薬'?'漢方薬':gname(g)}）${isPrn(g.id)?'［頓服］':''}`), S.a.bg.length?'背景：'+BG.filter(b=>hasB(b[0])).map(b=>b[1]).join('、'):'', F.family?'家族・支援者から：'+F.family:'']);
+  sec(G3,'アセスメントの要点（詳しい版）',R.map(r=>`・[${LV[r[0]]}] ${r[1]}${r[2]?'：'+r[2]:''}`));
+  return out;
+}
+function sumView(){
+  const secs=buildSum();
+  if(!secs.length) return `<div class="panel"><p class="lead">まだ何も入っていません。「アセスメント・記録」で病名・薬・今日の様子を入れると、ここにアイちゃん用のまとめが出ます。</p></div>`;
+  let html='', g='';
+  secs.forEach((s,i)=>{
+    if(!sumShow(s[2])) return;
+    if(s[2]!==g){g=s[2]; html+=`<h2 style="margin-top:8px">${esc(g)}</h2>`; if(g==='訪問看護報告書（精神）') html+=`<p class="note">アイちゃんの「月次帳票」→ その月の「精神様式」の報告書に貼ります。</p>`; if(g==='指示書') html+=`<p class="note">アイちゃんの「指示書」の画面には期間だけを登録します。照らし合わせは、指示書が届いた時と更新の時に見ます。</p>`; if(g==='サマリー') html+=`<p class="note">アイちゃんの「サマリー」に貼ります。入院や引き継ぎ、終了の時に使います。</p>`; if(g==='フェイスシート（訪問看護記録書Ⅰ）') html+=`<p class="note">アイちゃんの「フェイスシート」に貼ります。主に初回訪問の時に使います。</p>`; if(g==='緊急時連絡票') html+=`<p class="note">アイちゃんの「緊急時連絡票」に貼ります。初回訪問や、クライシスプラン・薬が変わった時に見直します。</p>`; if(g==='訪問看護計画書（精神）') html+=`<p class="note">アイちゃんの「計画書」の同じ欄に貼ります。（案）と書いた欄は、看護師が読んで直してから使ってください。</p>`;}
+    html+=`<div class="panel"><div class="sec-h"><h3>${esc(s[0])}</h3><button class="btn sm" data-copysec="${i}">コピー</button></div>${s[3]?`<p class="note" style="margin:-2px 0 6px">${esc(s[3])}</p>`:''}<pre class="out" id="sec-${i}">${esc(s[1])}</pre></div>`;
+  });
+  return `${oldBanner()}${piiAny()?'<div class="alert"><b>名前や電話番号のような文字が入っています。</b> 貼りつける前に確かめてください。</div>':''}${S.a.example?`<div class="example"><span>例の内容が入っています。「アセスメント・記録」で選び直してください。</span></div>`:''}
+  <div class="panel soft"><h3>アイちゃんへの転記のしかた</h3>
+    <ul class="plain"><li>アイちゃんで「看護記録編集」→ その日の記録の「ケア項目」を開きます</li><li>下の欄の順番は、アイちゃんの画面の上からの順番と同じです。項目ごとの「コピー」を押して、同じ名前の欄に貼りつけます</li><li>チェック欄（精神・実施した看護内容など）は、書いてある項目にアイちゃん側でチェックを入れます</li><li>計画書の欄は、月初めや初回に「計画書」の画面で使います</li></ul>
+    <div class="chips" style="margin-top:10px">${SUMF.map(x=>`<button class="chip ${(S.sumF||'all')===x[0]?'on':''}" data-sumf="${x[0]}" aria-pressed="${(S.sumF||'all')===x[0]}">${esc(x[1])}</button>`).join('')}</div>
+    <div style="margin-top:10px"><button class="btn fill" data-copysec="all">表示中の欄を全部コピー</button></div></div>
+  ${html}
+  <details class="panel"><summary style="cursor:pointer;font-weight:700">計画書の文例・書き方の出典</summary><ul class="plain" style="margin-top:8px;font-size:.85rem;word-break:break-all">${SRC.map(x=>'<li>'+esc(x[0])+'：<a href="'+x[1]+'" target="_blank" rel="noopener">'+esc(x[1])+'</a></li>').join('')}</ul><p class="note" style="margin-top:6px">文例は、公開されている記載例から共通する考え方をまとめ、書き直したものです。認知症・摂食障害・ADHD・知的障害は公開例が少なく、一般的な看護の内容で補っています。</p></details>
+  <p class="note">転記が終わったら、「アセスメント・記録」の「すべて消す」で、この端末に残っている内容を消してください。</p>`;
+}
+function copyText(txt,btn,el){
+  const orig=btn.textContent;
+  const done=()=>{btn.textContent='コピーしました';setTimeout(()=>{btn.textContent=orig},1800);};
+  const fb=()=>{ if(el){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);} btn.textContent='選んだ文をコピーしてください'; };
+  try{navigator.clipboard.writeText(txt).then(done,fb);}catch(e){fb();}
+}
+
+/* ================= 危険なサイン ================= */
+function emView(){
+  return `<div class="alert"><b>迷ったら一人で判断しない。</b> 主治医・ステーションの管理者にすぐ連絡します。意識がない・呼吸がおかしい・けいれんが止まらない時は119番。</div>
+  <div class="panel"><h3>死にたい気持ちの聞き方</h3>
+    <p class="lead" style="margin-bottom:8px">はっきり聞くことで危険が高まることはありません。聞かれたことで「話してもいいんだ」と感じる人が多くいます。</p>
+    <div class="say"><small>聞き方の例</small>「つらい日が続くと、死んでしまいたいと思う方もいます。あなたは、死にたいと思うことはありますか」</div>
+    <div class="say"><small>「ある」と答えたら続けて聞く</small>「いつ頃からですか」「どんな方法を考えましたか」「実際に準備したことはありますか」「今日、実行しそうな気持ちはありますか」</div>
+    <div class="two" style="margin-top:10px">
+      <div><h3 style="color:var(--danger)">危険が高いサイン</h3>${ul(['具体的な方法や日時を考えている','手段を準備している（薬のため込み・ロープなど）','過去に自殺未遂がある','最近大きな喪失があった（死別・失職・離別）','お酒を飲んでいる','一人暮らしで孤立している','急に落ち着いて、お別れのようなことを言う'])}</div>
+      <div><h3 style="color:var(--accent)">すること</h3>${ul(['話してくれたことにお礼を言い、否定せずに聞く','一人にしない（家族・支援者に来てもらう）','手段（薬・刃物・ひもなど）を遠ざける','その場で主治医・管理者に報告し、対応を決める','差し迫っていれば119・110','次に会う日を約束する'])}</div>
+    </div></div>
+  <h2>すぐ連絡が必要な状態</h2>
+  ${EM.map(e=>`<div class="panel em"><h3>${esc(e.n)}</h3>
+    <div><span class="lbl">こんな様子</span><p>${esc(e.see)}</p></div>
+    <div><span class="lbl">起きやすい場面・関係する薬</span><p>${esc(e.why)}</p></div>
+    <div class="act"><span class="lbl">すること</span><p>${esc(e.act)}</p></div></div>`).join('')}`;
+}
+
+/* ================= 操作 ================= */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button'); if(!t) return;
+  const ds=t.dataset;
+  if(ds.tab){S.tab=ds.tab; if(ds.tab==='dis')S.dis=null; if(ds.tab==='drug')S.drug=null; save(); render(); scrollTo(0,0); return;}
+  if(ds.dis){S.tab='dis';S.dis=ds.dis;render();scrollTo(0,0);return;}
+  if(ds.drug){S.tab='drug';S.drug=ds.drug;render();scrollTo(0,0);return;}
+  if(ds.back){if(ds.back==='dis')S.dis=null;else S.drug=null;render();scrollTo(0,0);return;}
+  if(ds.cf){S.cf=ds.cf;document.querySelectorAll('#cf .chip').forEach(c=>c.classList.toggle('on',c.dataset.cf===S.cf));fillDrugList();return;}
+  if(ds.addas){if(S.a.example){S.a={dis:[],drugs:[],bg:[],example:false};S.f={_v:2,date:today()};} if(!hasD(ds.addas))S.a.dis.push(ds.addas); touchA(); S.tab='as'; render(); scrollTo(0,0); return;}
+  if(ds.clear){if(!t.dataset.armed){t.dataset.armed='1';const o=t.textContent;t.textContent='もう一度押すと全部消えます';setTimeout(()=>{if(t.isConnected){delete t.dataset.armed;t.textContent=o;}},4000);return;} S.oldDay='';S.a={dis:[],drugs:[],bg:[],prn:[],example:false};S.f={_v:2,date:today()};S.chk={};save();render();return;}
+  if(ds.sel){leaveEx();toggleSel(ds.sel,ds.v); touchA(); render(); return;}
+  if(ds.keepold){S.oldDay=''; S.day=today(); save(); render(); return;}
+  if(ds.sub){S.sub=ds.sub; save(); render(); scrollTo(0,0); return;}
+  if(ds.sumf){S.sumF=ds.sumf; save(); render(); return;}
+  if(ds.gosum){S.sumF=(S.sub&&S.sub!=='base')?S.sub:'all';S.tab='sum'; save(); render(); scrollTo(0,0); return;}
+  if(ds.copysec!==undefined){const secs=buildSum(); if(ds.copysec==='all'){copyText(secs.filter(s=>sumShow(s[2])).map(s=>'【'+s[0]+'】\n'+s[1]).join('\n\n'),t,document.getElementById('main'));} else {const s=secs[+ds.copysec]; if(s) copyText(s[1],t,document.getElementById('sec-'+ds.copysec));} return;}
+  if(ds.tdis){leaveEx();const i=S.a.dis.indexOf(ds.tdis); i<0?S.a.dis.push(ds.tdis):S.a.dis.splice(i,1); touchA(); render(); return;}
+  if(ds.tbg){leaveEx();const i=S.a.bg.indexOf(ds.tbg); i<0?S.a.bg.push(ds.tbg):S.a.bg.splice(i,1); touchA(); render(); return;}
+  if(ds.adddrug){leaveEx();if(!hasG(ds.adddrug))S.a.drugs.push(ds.adddrug); touchA(); render(); const p=document.getElementById('apick'); if(p)p.focus(); return;}
+  if(ds.grp){S.open[ds.grp]=!S.open[ds.grp]; render(); return;}
+  if(ds.tdrug){leaveEx();const i=S.a.drugs.indexOf(ds.tdrug); i<0?S.a.drugs.push(ds.tdrug):S.a.drugs.splice(i,1); touchA(); render(); return;}
+  if(ds.tprn){leaveEx();S.a.prn=S.a.prn||[]; const i=S.a.prn.indexOf(ds.tprn); i<0?S.a.prn.push(ds.tprn):S.a.prn.splice(i,1); touchA(); render(); return;}
+  if(ds.rmdrug){leaveEx();S.a.prn=(S.a.prn||[]).filter(x=>x!==ds.rmdrug); S.a.drugs=S.a.drugs.filter(x=>x!==ds.rmdrug); touchA(); render(); return;}
+});
+document.addEventListener('input',e=>{
+  if(e.target.id==='q'){S.q=e.target.value;fillDrugList();}
+  if(e.target.id==='apick'){fillSugg(e.target.value);}
+  if(e.target.dataset&&e.target.dataset.f){if(S.a.example) leaveEx(); S.f[e.target.dataset.f]=e.target.value; touchA(); piiCheck(e.target);
+    if(e.target.dataset.f==='gaf'){const h=document.getElementById('gafhint'); if(h) h.textContent=gafText(e.target.value)||(e.target.value?'1〜100の数を入れてください':'');}}
+});
+document.addEventListener('change',e=>{
+  if(!e.target.dataset) return;
+  if(e.target.dataset.chk!==undefined){S.chk[e.target.dataset.chk]=e.target.checked; save();}
+  if(e.target.dataset.ex){if(S.a.example){leaveEx();S.f[e.target.dataset.ex]=e.target.checked;touchA();render();return;} S.f[e.target.dataset.ex]=e.target.checked; touchA();}
+  if(e.target.dataset.f&&e.target.type==='date'){leaveEx();S.f[e.target.dataset.f]=e.target.value; touchA();}
+});
+document.addEventListener('focusin',e=>{
+  const t=e.target; if(!S.a.example||!t||!t.dataset||!t.dataset.f||t.type==='date') return;
+  const id=t.id; leaveEx(); touchA(); render(); const el=document.getElementById(id); if(el) el.focus();
+});
+document.addEventListener('toggle',e=>{ if(e.target&&e.target.id==='gafdet') S.gafOpen=e.target.open; },true);
+document.addEventListener('keydown',e=>{
+  if(e.target.id==='apick'&&e.key==='Enter'){const b=document.querySelector('#asugg [data-adddrug]'); if(b){e.preventDefault(); b.click();}}
+});
+render();
+</script>
+</body>
+</html>
