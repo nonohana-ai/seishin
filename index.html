@@ -154,6 +154,19 @@ a{color:var(--info)}
 .gpath{margin:-2px 0 6px;padding:8px 12px;border-left:4px solid var(--accent-fill);background:var(--surface);border-radius:0 8px 8px 0;font-size:.9rem}
 .gpath b{display:block;font-size:.75rem;letter-spacing:.06em;color:var(--accent)}
 .grid.dg{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.aimock{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);margin:0 0 4px}
+.aimock .bar{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;padding:8px 12px;background:var(--bg);border-bottom:1px solid var(--line);font-size:.85rem}
+.aimock .bar b{font-size:.75rem;letter-spacing:.06em;color:var(--accent)}
+.aimrow{display:flex;gap:10px;align-items:center;width:100%;text-align:left;font:inherit;font-size:.9rem;color:var(--ink);background:none;border:none;border-top:1px solid var(--line);padding:8px 12px;cursor:pointer;min-height:40px}
+.aimrow:first-of-type{border-top:none}
+.aimrow:hover{background:var(--accent-soft)}
+.aimrow small{color:var(--muted)}
+.aimnote{padding:6px 12px 8px;margin:0;border-top:1px solid var(--line)}
+.no{flex:none;display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:var(--accent-fill);color:var(--accent-ink);font-weight:700;font-size:.8rem;margin-right:6px}
+.aimrow .no{margin-right:0}
+.sumcard{scroll-margin-top:90px}
+.aimap{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;margin:-2px 0 2px;padding:7px 10px;border-radius:8px;background:var(--accent-soft);font-size:.86rem;line-height:1.55}
+.aimap b{flex:none;font-size:.75rem;letter-spacing:.06em;color:var(--accent-ink);background:var(--accent-fill);border-radius:999px;padding:1px 9px}
 .dcard{display:flex;align-items:stretch;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;min-width:0}
 .dcard.on{border-color:var(--accent-fill);background:var(--accent-soft)}
 .dsel{flex:1;min-width:0;display:flex;gap:10px;align-items:flex-start;text-align:left;font:inherit;color:inherit;background:none;border:none;padding:12px;cursor:pointer}
@@ -1091,7 +1104,8 @@ const TABINTRO={
 function formTab(sub){
   const parts=visitForm().split('<div class="panel step">'); const map={};
   parts.slice(1).forEach(p=>{const m=p.match(/<i>(\d+)<\/i>/); if(m) map[m[1]]=p;});
-  const body=TABSTEPS[sub].map((n,i)=>map[n]?'<div class="panel step">'+map[n].replace(/<i>\d+<\/i>/,'<i>'+(i+1)+'</i>'):'').join('');
+  const STEP_AI={4:'ケア項目の「☆VS他」',5:'ケア項目の「精神」＜食事＞〜＜対人関係＞と＜活動の状況＞',6:'ケア項目の「精神」＜精神症状＞（と「☆全身状態フリー記入」の文）',7:'ケア項目の「☆全身状態フリー記入」の文と、計画書の案に使います（この手順そのものの欄はありません）',8:'報告書（精神）の「ＧＡＦ」（月の最初の訪問の値）',9:'ケア項目の「精神」＜実施した看護内容＞',10:'ケア項目の「☆指導・教育」「☆連携」「☆連絡欄」',11:'計画書の「看護の目標」「療養上の課題・支援内容」「備考」と、緊急時連絡票の「特別な指示」',12:'報告書（精神）の「病状の経過」「家族等との関係」「情報提供」「特記すべき事項」',13:'フェイスシートの各欄（導入までの経過・趣味・生活歴・意向など）',14:'サマリーの「家屋の状況」「経過」「食事〜外出」「眠る」「痛み」',15:'指示書の開始日・終了日（中身は指示書の紙と見比べる）'};
+  const body=TABSTEPS[sub].map((n,i)=>map[n]?'<div class="panel step">'+map[n].replace(/<i>\d+<\/i>/,'<i>'+(i+1)+'</i>').replace('</b></div>','</b></div>'+(STEP_AI[n]?'<p class="aimap"><b>アイちゃんでは</b>'+esc(STEP_AI[n])+'</p>':'')):'').join('');
   return `<div class="out-h" style="margin-top:6px"><h2>${esc(TABINTRO[sub][0])}</h2></div>
   <p class="note">${esc(TABINTRO[sub][1])}入れた内容は「まとめ」タブに、アイちゃんへ貼りつけられる形で出ます。名前・住所・電話番号は入れないでください。入れた内容はこの端末のブラウザにだけ残るので、転記が終わったら「すべて消す」を押してください。</p>${body}`;
 }
@@ -1526,18 +1540,27 @@ const FIELD={
  '指示書との照らし合わせ':'貼りません。主治医の指示書（紙）と見比べます'};
 const GSHORT={'看護記録（ケア項目）＝訪問看護記録書Ⅱ':'ケア項目の','訪問看護報告書（精神）':'報告書の','訪問看護計画書（精神）':'計画書の','緊急時連絡票':'緊急時連絡票の','フェイスシート（訪問看護記録書Ⅰ）':'フェイスシートの','サマリー':'サマリーの','指示書':'指示書の'};
 function destOf(g,t){ const f=FIELD[t]; if(g==='参考') return '貼りません。フェイスシートや記録と見比べる確認用です'; if(!f) return ''; if(/^貼りません/.test(f)) return f; return (GSHORT[g]||'')+f; }
+/* アイちゃんの画面の並びを縮めた見取り図。番号はまとめの欄の番号と同じ */
+const AILABEL={'保険区分・GAF尺度':'保険区分（「精神」にチェック）','☆VS他':'☆VS他（体温・脈拍・血圧など）','精神（チェック欄）':'精神：＜食事＞〜＜対人関係＞','活動の状況（外出頻度・時間・場所など）':'精神：＜活動の状況＞','精神症状（表情・言動など）':'精神：＜精神症状＞','実施した看護内容':'精神：＜実施した看護内容＞','☆全身状態フリー記入（報告書に反映）':'☆全身状態フリー記入','☆指導・教育':'☆指導・教育','☆連携':'☆連携','☆連絡欄':'☆連絡欄'};
+const aiLabel=t=>AILABEL[t]||((FIELD[t]||'').match(/「([^」]+)」/)||[])[1]||t;
+function aiMap(g,items){
+  if(!GPATH[g]||!items||!items.length) return '';
+  return `<div class="aimock" aria-label="アイちゃんの画面の並び"><div class="bar"><b>アイちゃんの画面</b><span>${esc(g)}</span></div>${items.map(x=>`<button class="aimrow" data-goto="card-${x.i}"><span class="no">${x.no}</span><span>${esc(aiLabel(x.t))}</span>${/^貼りません/.test(FIELD[x.t]||'')?'<small>（貼りません）</small>':''}</button>`).join('')}<p class="note aimnote">上から、アイちゃんの画面と同じ順番です。番号を押すと、その欄のまとめに移ります。まとめの欄にも同じ番号が付いています。</p></div>`;
+}
 function sumView(){
   const secs=buildSum();
   if(!secs.length) return `<div class="panel"><p class="lead">まだ何も入っていません。「アセスメント・記録」で病名・薬・今日の様子を入れると、ここにアイちゃん用のまとめが出ます。</p></div>`;
-  let html='', g='';
+  let html='', g=''; const cnt={}, items={};
   secs.forEach((s,i)=>{
     if(!sumShow(s[2])) return;
-    if(s[2]!==g){g=s[2]; html+=`<h2 style="margin-top:8px">${esc(g)}</h2>`; if(GPATH[g]) html+=`<p class="gpath"><b>アイちゃんで開く画面</b>${esc(GPATH[g])}</p>`; if(g==='訪問看護報告書（精神）') html+=`<p class="note">アイちゃんの「月次帳票」→ その月の「精神様式」の報告書に貼ります。</p>`; if(g==='指示書') html+=`<p class="note">アイちゃんの「指示書」の画面には期間だけを登録します。照らし合わせは、指示書が届いた時と更新の時に見ます。</p>`; if(g==='サマリー') html+=`<p class="note">アイちゃんの「サマリー」に貼ります。入院や引き継ぎ、終了の時に使います。</p>`; if(g==='フェイスシート（訪問看護記録書Ⅰ）') html+=`<p class="note">アイちゃんの「フェイスシート」に貼ります。主に初回訪問の時に使います。</p>`; if(g==='緊急時連絡票') html+=`<p class="note">アイちゃんの「緊急時連絡票」に貼ります。初回訪問や、クライシスプラン・薬が変わった時に見直します。</p>`; if(g==='訪問看護計画書（精神）') html+=`<p class="note">アイちゃんの「計画書」の同じ欄に貼ります。（案）と書いた欄は、看護師が読んで直してから使ってください。</p>`;}
-    html+=`<div class="panel"><div class="sec-h"><h3>${esc(s[0])}</h3><button class="btn sm" data-copysec="${i}">コピー</button></div>${destOf(s[2],s[0])?`<p class="dest"><b>貼る場所</b>${esc(destOf(s[2],s[0]))}</p>`:''}${s[3]?`<p class="note" style="margin:-2px 0 6px">${esc(s[3])}</p>`:''}<pre class="out" id="sec-${i}">${esc(s[1])}</pre></div>`;
+    const no=(cnt[s[2]]=(cnt[s[2]]||0)+1); (items[s[2]]=items[s[2]]||[]).push({no,i,t:s[0]});
+    if(s[2]!==g){g=s[2]; html+=`<h2 style="margin-top:8px">${esc(g)}</h2>`; if(GPATH[g]) html+=`<p class="gpath"><b>アイちゃんで開く画面</b>${esc(GPATH[g])}</p>`; html+='@@MAP'+g+'@@'; if(g==='訪問看護報告書（精神）') html+=`<p class="note">アイちゃんの「月次帳票」→ その月の「精神様式」の報告書に貼ります。</p>`; if(g==='指示書') html+=`<p class="note">アイちゃんの「指示書」の画面には期間だけを登録します。照らし合わせは、指示書が届いた時と更新の時に見ます。</p>`; if(g==='サマリー') html+=`<p class="note">アイちゃんの「サマリー」に貼ります。入院や引き継ぎ、終了の時に使います。</p>`; if(g==='フェイスシート（訪問看護記録書Ⅰ）') html+=`<p class="note">アイちゃんの「フェイスシート」に貼ります。主に初回訪問の時に使います。</p>`; if(g==='緊急時連絡票') html+=`<p class="note">アイちゃんの「緊急時連絡票」に貼ります。初回訪問や、クライシスプラン・薬が変わった時に見直します。</p>`; if(g==='訪問看護計画書（精神）') html+=`<p class="note">アイちゃんの「計画書」の同じ欄に貼ります。（案）と書いた欄は、看護師が読んで直してから使ってください。</p>`;}
+    html+=`<div class="panel sumcard" id="card-${i}"><div class="sec-h"><h3>${GPATH[s[2]]?`<span class="no">${no}</span>`:''}${esc(s[0])}</h3><button class="btn sm" data-copysec="${i}">コピー</button></div>${destOf(s[2],s[0])?`<p class="dest"><b>貼る場所</b>${esc(destOf(s[2],s[0]))}</p>`:''}${s[3]?`<p class="note" style="margin:-2px 0 6px">${esc(s[3])}</p>`:''}<pre class="out" id="sec-${i}">${esc(s[1])}</pre></div>`;
   });
+  Object.keys(items).forEach(k=>{ html=html.split('@@MAP'+k+'@@').join(aiMap(k,items[k])); });
   return `${oldBanner()}${piiAny()?'<div class="alert"><b>名前や電話番号のような文字が入っています。</b> 貼りつける前に確かめてください。</div>':''}${S.a.example?`<div class="example"><span>例の内容が入っています。「アセスメント・記録」で選び直してください。</span></div>`:''}
   <div class="panel soft"><h3>アイちゃんへの転記のしかた</h3>
-    <ul class="plain"><li>見出しの下の「アイちゃんで開く画面」の画面を、アイちゃんで開きます（看護記録なら「看護記録編集」→ その日の記録 →「ケア項目」のタブ。「精神」の欄はその中の下の方にあります）</li><li>欄ごとの緑の帯「貼る場所」に書いてある欄に、「コピー」を押して貼りつけます。欄の順番は、アイちゃんの画面の上からの順番と同じです</li><li>チェック欄（精神・実施した看護内容など）は、書いてある項目にアイちゃん側でチェックを入れます</li><li>計画書の欄は、月初めや初回に「計画書」の画面で使います</li></ul>
+    <ul class="plain"><li>見出しの下の「アイちゃんで開く画面」の画面を、アイちゃんで開きます（看護記録なら「看護記録編集」→ その日の記録 →「ケア項目」のタブ。「精神」の欄はその中の下の方にあります）</li><li>その下の「アイちゃんの画面」の見取り図が、アイちゃんの画面の上からの並びです。①②③…の番号は、下のまとめの欄の番号と同じです</li><li>まとめの欄の「コピー」を押し、緑の帯「貼る場所」に書いてあるアイちゃんの欄に貼りつけます</li><li>チェック欄（精神・実施した看護内容など）は、書いてある項目にアイちゃん側でチェックを入れます</li><li>計画書の欄は、月初めや初回に「計画書」の画面で使います</li></ul>
     <div class="chips" style="margin-top:10px">${SUMF.map(x=>`<button class="chip ${(S.sumF||'all')===x[0]?'on':''}" data-sumf="${x[0]}" aria-pressed="${(S.sumF||'all')===x[0]}">${esc(x[1])}</button>`).join('')}</div>
     <div style="margin-top:10px"><button class="btn fill" data-copysec="all">表示中の欄を全部コピー</button></div></div>
   ${html}
@@ -1576,6 +1599,7 @@ document.addEventListener('click',e=>{
   if(ds.tab){S.tab=ds.tab; if(ds.tab==='dis')S.dis=null; if(ds.tab==='drug'){S.drug=null;S.dmulti=false;} save(); render(); scrollTo(0,0); return;}
   if(ds.dis){S.tab='dis';S.dis=ds.dis;render();scrollTo(0,0);return;}
   if(ds.drug){S.tab='drug';S.drug=ds.drug;render();scrollTo(0,0);return;}
+  if(ds.goto){const el=document.getElementById(ds.goto); if(el&&el.scrollIntoView) el.scrollIntoView({behavior:'smooth',block:'start'}); return;}
   if(ds.dpick){S.dpick=S.dpick||[]; const i=S.dpick.indexOf(ds.dpick); i<0?S.dpick.push(ds.dpick):S.dpick.splice(i,1); if(S.dmulti) render(); else { const y=scrollY; fillDrugList(); scrollTo(0,y); } return;}
   if(ds.dmulti){S.dmulti=true;S.drug=null;render();scrollTo(0,0);return;}
   if(ds.dmultiback){S.dmulti=false;S.drug=null;render();scrollTo(0,0);return;}
