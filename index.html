@@ -149,6 +149,22 @@ a{color:var(--info)}
 .chip{min-height:38px}
 .btn{min-height:40px}
 .pii{border-color:var(--danger)!important;outline:2px solid var(--danger)}
+.dest{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;margin:0 0 8px;padding:7px 10px;border-radius:8px;background:var(--accent-soft);font-size:.86rem;line-height:1.55}
+.dest b{flex:none;font-size:.75rem;letter-spacing:.06em;color:var(--accent-ink);background:var(--accent-fill);border-radius:999px;padding:1px 9px}
+.gpath{margin:-2px 0 6px;padding:8px 12px;border-left:4px solid var(--accent-fill);background:var(--surface);border-radius:0 8px 8px 0;font-size:.9rem}
+.gpath b{display:block;font-size:.75rem;letter-spacing:.06em;color:var(--accent)}
+.grid.dg{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.dcard{display:flex;align-items:stretch;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;min-width:0}
+.dcard.on{border-color:var(--accent-fill);background:var(--accent-soft)}
+.dsel{flex:1;min-width:0;display:flex;gap:10px;align-items:flex-start;text-align:left;font:inherit;color:inherit;background:none;border:none;padding:12px;cursor:pointer}
+.dsel .box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);display:grid;place-items:center;font-weight:700;margin-top:1px;background:var(--surface)}
+.dcard.on .box{background:var(--accent-fill);border-color:var(--accent-fill);color:var(--accent-ink)}
+.dt{display:flex;flex-direction:column;min-width:0}.dt b{font-size:1rem}.dt span{color:var(--muted);font-size:.82rem;line-height:1.5}
+.dmore{flex:none;font:inherit;font-size:.82rem;font-weight:700;color:var(--accent);background:none;border:none;border-left:1px solid var(--line);padding:0 12px;cursor:pointer}
+.pickbar{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:2px solid var(--accent-fill);box-shadow:0 -4px 16px rgba(0,0,0,.12);padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between}
+.pb-t{display:flex;flex-direction:column;min-width:0;flex:1 1 200px}.pb-t span{color:var(--muted);font-size:.82rem;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pb-a{display:flex;gap:8px}
+.drow .btn.sm{min-height:34px}
 .btn.sm{font-size:.8rem;padding:5px 12px}
 .selmeds{display:flex;flex-wrap:wrap;gap:8px}
 .selmed{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--line);border-radius:999px}
@@ -798,7 +814,7 @@ const M=document.getElementById('main');
 function render(){
   document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===S.tab));
   if(S.tab==='dis') M.innerHTML=S.dis?disDetail(DS[S.dis]):disList();
-  if(S.tab==='drug'){M.innerHTML=S.drug?drugDetail(D[S.drug]):drugList(); if(!S.drug) fillDrugList();}
+  if(S.tab==='drug'){ if(S.dmulti&&!(S.dpick||[]).some(id=>D[id])) S.dmulti=false; M.innerHTML=S.drug?drugDetail(D[S.drug]):(S.dmulti?multiView():drugList()); if(!S.drug&&!S.dmulti) fillDrugList(); }
   if(S.tab==='as') M.innerHTML=assess();
   if(S.tab==='em') M.innerHTML=emView();
   if(S.tab==='sum') M.innerHTML=sumView();
@@ -835,11 +851,44 @@ function disDetail(d){
   <button class="btn fill" data-addas="${d.id}" style="align-self:flex-start">この病名で初回アセスメントを作る</button>`;
 }
 
+/* ================= 薬をいくつも選んで、まとめて見る ================= */
+function pickBar(){
+  const ids=(S.dpick||[]).filter(id=>D[id]);
+  if(!ids.length) return '';
+  return `<div class="pickbar" role="region" aria-label="選んだ薬"><div class="pb-t"><b>選んだ薬：${ids.length}種類</b><span>${esc(ids.map(id=>D[id].n).join('・'))}</span></div><div class="pb-a"><button class="btn fill" data-dmulti="1">まとめて見る</button><button class="btn" data-dclear="1">選び直す</button></div></div>`;
+}
+function drugCard(d,k){
+  const on=(S.dpick||[]).includes(d.id);
+  return `<div class="dcard ${on?'on':''}"><button class="dsel" data-dpick="${d.id}" aria-pressed="${on}"><span class="box" aria-hidden="true">${on?'✓':''}</span><span class="dt"><b>${esc(dname(d))}</b><span>${esc(d.g)}${d.sub?'・'+esc(d.sub):''}${k==='prn'?'<br>頓服：'+esc(d.prn):''}</span></span></button><button class="dmore" data-drug="${d.id}" aria-label="${esc(d.n)}をくわしく見る">くわしく</button></div>`;
+}
+function multiView(){
+  const ids=(S.dpick||[]).filter(id=>D[id]); const ds=ids.map(id=>D[id]); const cls=uniq(ds.map(d=>d.c));
+  const keepA=S.a, keepF=S.f; let R=[];
+  try{ S.a={dis:[],drugs:ids,bg:[],prn:[],example:false}; S.f={_v:2}; R=rules(); } finally { S.a=keepA; S.f=keepF; }
+  const real=x=>!/^薬ごとに違います/.test(x);
+  const hiList=a=>'<ul class="risks">'+a.map(w=>{const lv=HIGH.test(w)?'h':'m';return `<li class="${lv}"><span class="lv">${LV[lv]}</span><div><b>${esc(w)}</b></div></li>`}).join('')+'</ul>';
+  const dangerOf=c=>{const bzHy=c==='hy'&&ds.some(d=>d.c==='hy'&&d.bz); return [...CLS[c].danger.filter(real),...(bzHy?CLS.bz.danger.slice(0,3):[])];};
+  const obs=uniq(cls.flatMap(c=>CLS[c].obs));
+  return `<button class="back" data-dmultiback="1">← 薬の一覧へ（選び直す）</button>
+  <h2>選んだ薬のまとめ（${ids.length}種類）</h2>
+  <div class="chips">${ds.map(d=>`<span class="chip on">${esc(d.n)}</span>`).join('')}</div>
+  <p class="note">薬の名前の「くわしく」で、1つずつの説明に移れます。説明から戻ると、このまとめに戻ります。</p>
+  <div class="panel"><h3>飲み合わせ・組み合わせの注意</h3>${R.length?riskList(R):'<p class="lead">選んだ薬の組み合わせで、特別な注意は見つかりませんでした（このアプリに入っている範囲です）。</p>'}</div>
+  <div class="panel"><h3>薬ごとの「特に注意」</h3>${ds.map(d=>`<div class="drugline"><div class="drow"><b>${esc(d.n)} <span class="gen">${esc(CLS[d.c].n)}</span></b><button class="btn sm" data-drug="${d.id}">くわしく</button></div>${d.warn.length?hiList(d.warn):'<p class="note">この薬だけの特別な注意はありません。下の種類ごとの注意を見てください。</p>'}</div>`).join('')}</div>
+  <div class="two">
+    <div class="panel ng"><h3>すぐ連絡するサイン</h3>${cls.map(c=>{const a=dangerOf(c); return a.length?`<p class="cls-h">${esc(CLS[c].n)}</p>${ul(a)}`:'';}).join('')||'<p class="note">種類ごとの決まったサインはありません。上の「特に注意」を見てください。</p>'}</div>
+    <div class="panel"><h3>訪問で見るところ</h3>${ul(obs)}</div>
+  </div>
+  <div class="panel"><h3>よくある副作用</h3>${cls.map(c=>{const a=CLS[c].side.filter(real); return a.length?`<p class="cls-h">${esc(CLS[c].n)}</p>${ul(a)}`:'';}).join('')}</div>
+  <div class="panel"><h3>ご本人への説明の例</h3>${cls.map(c=>CLS[c].say?`<div class="say"><small>${esc(CLS[c].n)}</small>${esc(CLS[c].say)}</div>`:'').join('')}</div>
+  <div class="foot-act"><button class="btn fill" data-dtoas="1">この薬を「この方の基本」に入れる</button><button class="btn" data-dmultiback="1">薬の一覧へ戻る</button></div>`;
+}
 function drugList(){
   const cl=[['all','すべて'],...Object.entries(CLS).map(([k,v])=>[k,v.n.replace(/（.*）/,'')])];
   return `<input type="search" id="q" placeholder="薬の名前で探す（例：えびりふぁい、アリピプラゾール錠「サワイ」）" value="${esc(S.q)}" autocomplete="off">
   <div class="chips" id="cf">${cl.map(c=>`<button class="chip ${S.cf===c[0]?'on':''}" data-cf="${c[0]}">${esc(c[1])}</button>`).join('')}</div>
-  <div id="dl" style="display:flex;flex-direction:column;gap:10px"></div>`;
+  <p class="note">薬の名前を押すと選べます（いくつでも）。選んだら下の「まとめて見る」で、全部の薬の注意・すぐ連絡するサイン・訪問で見るところを1つの画面で見られます。1つずつ見る時は「くわしく」を押します。</p>
+  <div id="dl" style="display:flex;flex-direction:column;gap:10px"></div><div id="pickbar"></div>`;
 }
 /* お薬手帳の書き方（例：成分名＋OD錠＋12mg＋「会社名」）でも探せるよう、形・量・会社名を外して比べる */
 const cleanQ=q=>String(q).replace(/[「『][^」』]*[」』]?/g,'').replace(/[0-9０-９.．]+\s*(mg|ｍｇ|μg|g|ｇ|%|％|ml|mL|ｍL)?/gi,'').replace(/口腔内崩壊錠|OD錠|ＯＤ錠|徐放錠|配合内用剤|内用液|カプセル|シロップ|細粒|顆粒|坐剤|テープ|貼付剤|錠|散/g,'');
@@ -854,15 +903,16 @@ function fillDrugList(){
     if(S.cf!=='all'&&S.cf!==k) continue;
     const ds=DRUGS.filter(d=>inCls(d,k)&&matchDrug(d,S.q));
     if(!ds.length) continue;
-    html+=`<p class="cls-h">${esc(c.n)}</p><div class="grid">${ds.map(d=>`<button class="card" data-drug="${d.id}"><b>${esc(dname(d))}</b><span>${esc(d.g)}${d.sub?'・'+esc(d.sub):''}${k==='prn'?'<br>頓服：'+esc(d.prn):''}</span></button>`).join('')}</div>`;
+    html+=`<p class="cls-h">${esc(c.n)}</p><div class="grid dg">${ds.map(d=>drugCard(d,k)).join('')}</div>`;
   }
   if(S.cf==='prn') html=`<div class="panel soft"><h3>頓服を使うときに確かめること</h3>${ul(PRN_GUIDE)}</div>`+html;
+  const pb=document.getElementById('pickbar'); if(pb){ pb.innerHTML=pickBar(); if(el.style) el.style.paddingBottom=(S.dpick&&S.dpick.length)?'130px':''; }
   el.innerHTML=html||'<p class="lead">見つかりませんでした。カタカナ・ひらがな、成分名（ジェネリックの名前）のどれでも探せます。</p>';
 }
 function drugDetail(d){
   const c=CLS[d.c], bz=CLS.bz;
   const danger=d.bz?[...c.danger,...bz.danger.slice(0,3)]:c.danger;
-  return `<button class="back" data-back="drug">← 薬の一覧へ</button>
+  return `<button class="back" data-back="drug">${S.dmulti?'← 選んだ薬のまとめへ':'← 薬の一覧へ'}</button>
   <div class="drow"><div><h2>${esc(dname(d))}</h2><p class="gen">一般名：${esc(d.g)}</p></div><span class="badge">${esc(c.n)}${d.sub?'・'+esc(d.sub):''}</span></div>
   <div class="panel soft"><h3>何の薬？</h3><p>${esc(c.what)}</p><p style="margin-top:6px"><b>使われる病気：</b>${esc(d.use)}</p><p class="note" style="margin-top:4px">形：${esc(d.form)}</p></div>
   ${d.warn.length?`<div class="panel"><h3>この薬で特に注意</h3><ul class="risks">${d.warn.map(w=>{const lv=HIGH.test(w)?'h':'m';return `<li class="${lv}"><span class="lv">${LV[lv]}</span><div><b>${esc(w)}</b></div></li>`}).join('')}</ul></div>`:''}
@@ -1418,18 +1468,76 @@ function buildSum(){
   sec(G3,'アセスメントの要点（詳しい版）',R.map(r=>`・[${LV[r[0]]}] ${r[1]}${r[2]?'：'+r[2]:''}`));
   return out;
 }
+/* まとめの各欄を、アイちゃんのどの画面のどの欄に貼るか */
+const GPATH={
+ '看護記録（ケア項目）＝訪問看護記録書Ⅱ':'ホーム →「看護記録編集」→ その日の記録を選ぶ → 下の「ケア項目」のタブ',
+ '訪問看護報告書（精神）':'ホーム →「月次帳票」→ その月の「精神様式」の報告書',
+ '訪問看護計画書（精神）':'ホーム →「計画書」（その月）',
+ '緊急時連絡票':'ホーム →「緊急時連絡票」',
+ 'フェイスシート（訪問看護記録書Ⅰ）':'ホーム →「フェイスシート」',
+ 'サマリー':'ホーム →「サマリー」',
+ '指示書':'ホーム →「指示書」→「新規登録」または「編集」',
+ '参考':''};
+const FIELD={
+ '保険区分・GAF尺度':'いちばん上の「保険区分」の「精神」にチェック（GAFはここでは入れられません。報告書の「ＧＡＦ」で入れると、ここに表示されます）',
+ '☆VS他':'「☆VS他」の体温・脈拍・血圧などの欄',
+ '精神（チェック欄）':'下の方の「精神」の＜食事＞＜睡眠＞＜服薬＞＜保清＞＜環境整備＞＜金銭の扱い＞＜対人関係＞（チェックを入れ、（ ）の中に文字）',
+ '活動の状況（外出頻度・時間・場所など）':'「精神」の＜活動の状況＞の欄',
+ '精神症状（表情・言動など）':'「精神」の＜精神症状＞の欄',
+ '実施した看護内容':'「精神」の＜実施した看護内容＞（チェックを入れ、（ ）の中に文字）',
+ '☆全身状態フリー記入（報告書に反映）':'「☆全身状態フリー記入」の欄',
+ '☆指導・教育':'「☆指導・教育」（チェックを入れ、（ ）の中に文字）',
+ '☆連携':'「☆連携（医師・ケアマネジャー・ヘルパーなど）」の欄',
+ '☆連絡欄':'「☆連絡欄」',
+ '病状の経過（案）':'「病状の経過」の欄',
+ '看護の内容':'「看護の内容」の欄',
+ '家族等との関係':'「家族等との関係」の欄',
+ '情報提供（情報提供先・情報提供日）':'「情報提供」の情報提供先・情報提供日',
+ '特記すべき事項（頻回に訪問看護が必要な理由を含む）':'「特記すべき事項」の欄',
+ 'ＧＡＦ':'いちばん下の「ＧＡＦ」（点数を選び、判定日を入れる）',
+ '看護の目標（案）':'「看護・リハビリテーションの目標」の欄',
+ '療養上の課題・支援内容（案）':'表の「療養上の課題・支援内容」（左の年月日も入れる）',
+ '指示書の項目ごとの支援（案）':'「療養上の課題・支援内容」に、必要な分だけ足す',
+ '評価':'表の「評価」の欄',
+ '備考（特別な管理を要する内容、その他留意すべき事項等）':'「備考」の欄',
+ '緊急の場合は、この順番で連絡（1）':'「緊急の場合は、この順番で連絡をしてください」の1',
+ '緊急の場合は、この順番で連絡（2）':'同じ欄の2',
+ '特別な指示がある場合':'「特別な指示がある場合」の欄',
+ '救急車連絡時の必要事項（その他必要事項）':'「救急車連絡時必要事項」の「その他必要事項」',
+ '治療（薬）への注意':'「治療（薬）への注意」の欄',
+ 'アイちゃんで直接入れる欄':'貼りません。アイちゃんの画面で直接入れます',
+ '独居・保険情報':'「独居」と「保険情報」（チェック）',
+ '訪問看護導入までの経過（訪問看護依頼目的）':'「訪問看護導入までの経過（訪問看護依頼目的）」の欄',
+ '趣味・嗜好':'「趣味・嗜好」のチェックと、「注意が必要な話題」「会話が広がる話題」',
+ '生活歴':'「生活歴」の欄',
+ '病歴（傷病名）':'「病歴追加」から傷病名を登録し、「治療中」にチェック',
+ '感染症・アレルギー':'「感染症」「アレルギー」（チェック）',
+ '病名・病状に対する説明と理解・受け止め状況':'「病名・病状に対する説明（ムンテラ）と理解・受け止め状況」の本人・ご家族',
+ '今後の生活に対する意向・希望':'「今後の生活に対する意向・希望」の本人・ご家族',
+ '介護力（家庭での看護の状況など）':'「介護力」の欄',
+ '経済状況':'「経済状況」（チェック）',
+ '家屋の状況（フリー記入）':'「家屋の状況」の「フリー記入」',
+ '経過':'「経過」の欄',
+ '食事・排泄・トイレ・入浴・外出':'「食事」「排泄」「トイレ」「入浴」「外出」（自立・要介助などにチェック）',
+ '眠る':'「眠る」（不眠の訴え・対処方法）',
+ '痛み':'「痛み」（痛みの訴え・詳細と対応）',
+ '備考':'「備考」の欄',
+ '指示書の登録（アイちゃん）':'開始日・終了日（病院・クリニック名と医師名は一覧から選ぶ）',
+ '指示書との照らし合わせ':'貼りません。主治医の指示書（紙）と見比べます'};
+const GSHORT={'看護記録（ケア項目）＝訪問看護記録書Ⅱ':'ケア項目の','訪問看護報告書（精神）':'報告書の','訪問看護計画書（精神）':'計画書の','緊急時連絡票':'緊急時連絡票の','フェイスシート（訪問看護記録書Ⅰ）':'フェイスシートの','サマリー':'サマリーの','指示書':'指示書の'};
+function destOf(g,t){ const f=FIELD[t]; if(g==='参考') return '貼りません。フェイスシートや記録と見比べる確認用です'; if(!f) return ''; if(/^貼りません/.test(f)) return f; return (GSHORT[g]||'')+f; }
 function sumView(){
   const secs=buildSum();
   if(!secs.length) return `<div class="panel"><p class="lead">まだ何も入っていません。「アセスメント・記録」で病名・薬・今日の様子を入れると、ここにアイちゃん用のまとめが出ます。</p></div>`;
   let html='', g='';
   secs.forEach((s,i)=>{
     if(!sumShow(s[2])) return;
-    if(s[2]!==g){g=s[2]; html+=`<h2 style="margin-top:8px">${esc(g)}</h2>`; if(g==='訪問看護報告書（精神）') html+=`<p class="note">アイちゃんの「月次帳票」→ その月の「精神様式」の報告書に貼ります。</p>`; if(g==='指示書') html+=`<p class="note">アイちゃんの「指示書」の画面には期間だけを登録します。照らし合わせは、指示書が届いた時と更新の時に見ます。</p>`; if(g==='サマリー') html+=`<p class="note">アイちゃんの「サマリー」に貼ります。入院や引き継ぎ、終了の時に使います。</p>`; if(g==='フェイスシート（訪問看護記録書Ⅰ）') html+=`<p class="note">アイちゃんの「フェイスシート」に貼ります。主に初回訪問の時に使います。</p>`; if(g==='緊急時連絡票') html+=`<p class="note">アイちゃんの「緊急時連絡票」に貼ります。初回訪問や、クライシスプラン・薬が変わった時に見直します。</p>`; if(g==='訪問看護計画書（精神）') html+=`<p class="note">アイちゃんの「計画書」の同じ欄に貼ります。（案）と書いた欄は、看護師が読んで直してから使ってください。</p>`;}
-    html+=`<div class="panel"><div class="sec-h"><h3>${esc(s[0])}</h3><button class="btn sm" data-copysec="${i}">コピー</button></div>${s[3]?`<p class="note" style="margin:-2px 0 6px">${esc(s[3])}</p>`:''}<pre class="out" id="sec-${i}">${esc(s[1])}</pre></div>`;
+    if(s[2]!==g){g=s[2]; html+=`<h2 style="margin-top:8px">${esc(g)}</h2>`; if(GPATH[g]) html+=`<p class="gpath"><b>アイちゃんで開く画面</b>${esc(GPATH[g])}</p>`; if(g==='訪問看護報告書（精神）') html+=`<p class="note">アイちゃんの「月次帳票」→ その月の「精神様式」の報告書に貼ります。</p>`; if(g==='指示書') html+=`<p class="note">アイちゃんの「指示書」の画面には期間だけを登録します。照らし合わせは、指示書が届いた時と更新の時に見ます。</p>`; if(g==='サマリー') html+=`<p class="note">アイちゃんの「サマリー」に貼ります。入院や引き継ぎ、終了の時に使います。</p>`; if(g==='フェイスシート（訪問看護記録書Ⅰ）') html+=`<p class="note">アイちゃんの「フェイスシート」に貼ります。主に初回訪問の時に使います。</p>`; if(g==='緊急時連絡票') html+=`<p class="note">アイちゃんの「緊急時連絡票」に貼ります。初回訪問や、クライシスプラン・薬が変わった時に見直します。</p>`; if(g==='訪問看護計画書（精神）') html+=`<p class="note">アイちゃんの「計画書」の同じ欄に貼ります。（案）と書いた欄は、看護師が読んで直してから使ってください。</p>`;}
+    html+=`<div class="panel"><div class="sec-h"><h3>${esc(s[0])}</h3><button class="btn sm" data-copysec="${i}">コピー</button></div>${destOf(s[2],s[0])?`<p class="dest"><b>貼る場所</b>${esc(destOf(s[2],s[0]))}</p>`:''}${s[3]?`<p class="note" style="margin:-2px 0 6px">${esc(s[3])}</p>`:''}<pre class="out" id="sec-${i}">${esc(s[1])}</pre></div>`;
   });
   return `${oldBanner()}${piiAny()?'<div class="alert"><b>名前や電話番号のような文字が入っています。</b> 貼りつける前に確かめてください。</div>':''}${S.a.example?`<div class="example"><span>例の内容が入っています。「アセスメント・記録」で選び直してください。</span></div>`:''}
   <div class="panel soft"><h3>アイちゃんへの転記のしかた</h3>
-    <ul class="plain"><li>アイちゃんで「看護記録編集」→ その日の記録の「ケア項目」を開きます</li><li>下の欄の順番は、アイちゃんの画面の上からの順番と同じです。項目ごとの「コピー」を押して、同じ名前の欄に貼りつけます</li><li>チェック欄（精神・実施した看護内容など）は、書いてある項目にアイちゃん側でチェックを入れます</li><li>計画書の欄は、月初めや初回に「計画書」の画面で使います</li></ul>
+    <ul class="plain"><li>見出しの下の「アイちゃんで開く画面」の画面を、アイちゃんで開きます（看護記録なら「看護記録編集」→ その日の記録 →「ケア項目」のタブ。「精神」の欄はその中の下の方にあります）</li><li>欄ごとの緑の帯「貼る場所」に書いてある欄に、「コピー」を押して貼りつけます。欄の順番は、アイちゃんの画面の上からの順番と同じです</li><li>チェック欄（精神・実施した看護内容など）は、書いてある項目にアイちゃん側でチェックを入れます</li><li>計画書の欄は、月初めや初回に「計画書」の画面で使います</li></ul>
     <div class="chips" style="margin-top:10px">${SUMF.map(x=>`<button class="chip ${(S.sumF||'all')===x[0]?'on':''}" data-sumf="${x[0]}" aria-pressed="${(S.sumF||'all')===x[0]}">${esc(x[1])}</button>`).join('')}</div>
     <div style="margin-top:10px"><button class="btn fill" data-copysec="all">表示中の欄を全部コピー</button></div></div>
   ${html}
@@ -1465,9 +1573,14 @@ function emView(){
 document.addEventListener('click',e=>{
   const t=e.target.closest('button'); if(!t) return;
   const ds=t.dataset;
-  if(ds.tab){S.tab=ds.tab; if(ds.tab==='dis')S.dis=null; if(ds.tab==='drug')S.drug=null; save(); render(); scrollTo(0,0); return;}
+  if(ds.tab){S.tab=ds.tab; if(ds.tab==='dis')S.dis=null; if(ds.tab==='drug'){S.drug=null;S.dmulti=false;} save(); render(); scrollTo(0,0); return;}
   if(ds.dis){S.tab='dis';S.dis=ds.dis;render();scrollTo(0,0);return;}
   if(ds.drug){S.tab='drug';S.drug=ds.drug;render();scrollTo(0,0);return;}
+  if(ds.dpick){S.dpick=S.dpick||[]; const i=S.dpick.indexOf(ds.dpick); i<0?S.dpick.push(ds.dpick):S.dpick.splice(i,1); if(S.dmulti) render(); else { const y=scrollY; fillDrugList(); scrollTo(0,y); } return;}
+  if(ds.dmulti){S.dmulti=true;S.drug=null;render();scrollTo(0,0);return;}
+  if(ds.dmultiback){S.dmulti=false;S.drug=null;render();scrollTo(0,0);return;}
+  if(ds.dclear){S.dpick=[];S.dmulti=false;render();return;}
+  if(ds.dtoas){leaveEx(); S.a.drugs=uniq([...S.a.drugs,...(S.dpick||[]).filter(id=>D[id])]); touchA(); S.tab='as'; S.sub='base'; S.dmulti=false; save(); render(); scrollTo(0,0); return;}
   if(ds.back){if(ds.back==='dis')S.dis=null;else S.drug=null;render();scrollTo(0,0);return;}
   if(ds.cf){S.cf=ds.cf;document.querySelectorAll('#cf .chip').forEach(c=>c.classList.toggle('on',c.dataset.cf===S.cf));fillDrugList();return;}
   if(ds.addas){if(S.a.example){S.a={dis:[],drugs:[],bg:[],example:false};S.f={_v:2,date:today()};} if(!hasD(ds.addas))S.a.dis.push(ds.addas); touchA(); S.tab='as'; render(); scrollTo(0,0); return;}
