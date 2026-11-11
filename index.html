@@ -174,6 +174,10 @@ a{color:var(--info)}
 .dcard.on .box{background:var(--accent-fill);border-color:var(--accent-fill);color:var(--accent-ink)}
 .dt{display:flex;flex-direction:column;min-width:0}.dt b{font-size:1rem}.dt span{color:var(--muted);font-size:.82rem;line-height:1.5}
 .dmore{flex:none;font:inherit;font-size:.82rem;font-weight:700;color:var(--accent);background:none;border:none;border-left:1px solid var(--line);padding:0 12px;cursor:pointer}
+.ocrbox{display:flex;flex-direction:column;gap:8px}
+.ocrbox .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ocrbar{height:8px;border-radius:4px;background:var(--line);overflow:hidden}.ocrbar i{display:block;height:100%;background:var(--accent-fill);transition:width .3s}
+.ocrbox details pre{white-space:pre-wrap;font:inherit;font-size:13px;max-height:220px;overflow:auto;margin:6px 0 0}
 .pickbar{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:2px solid var(--accent-fill);box-shadow:0 -4px 16px rgba(0,0,0,.12);padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between}
 .pb-t{display:flex;flex-direction:column;min-width:0;flex:1 1 200px}.pb-t span{color:var(--muted);font-size:.82rem;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pb-a{display:flex;gap:8px}
@@ -185,6 +189,7 @@ textarea{background:var(--surface);color:var(--ink);border:1px solid var(--line)
 footer{margin-top:28px;border-top:1px solid var(--line);padding-top:12px}
 @media (prefers-reduced-motion:no-preference){.card,.chip,nav.tabs button{transition:background .15s,border-color .15s}}
 </style>
+
 </head>
 <body>
 <div class="wrap">
@@ -898,7 +903,8 @@ function multiView(){
 }
 function drugList(){
   const cl=[['all','すべて'],...Object.entries(CLS).map(([k,v])=>[k,v.n.replace(/（.*）/,'')])];
-  return `<input type="search" id="q" placeholder="薬の名前で探す（例：えびりふぁい、アリピプラゾール錠「サワイ」）" value="${esc(S.q)}" autocomplete="off">
+  return `<div id="ocr">${ocrPanel()}</div>
+  <input type="search" id="q" placeholder="薬の名前で探す（例：えびりふぁい、アリピプラゾール錠「サワイ」）" value="${esc(S.q)}" autocomplete="off">
   <div class="chips" id="cf">${cl.map(c=>`<button class="chip ${S.cf===c[0]?'on':''}" data-cf="${c[0]}">${esc(c[1])}</button>`).join('')}</div>
   <p class="note">薬の名前を押すと選べます（いくつでも）。選んだら下の「まとめて見る」で、全部の薬の注意・すぐ連絡するサイン・訪問で見るところを1つの画面で見られます。1つずつ見る時は「くわしく」を押します。</p>
   <div id="dl" style="display:flex;flex-direction:column;gap:10px"></div><div id="pickbar"></div>`;
@@ -922,6 +928,81 @@ function fillDrugList(){
   const pb=document.getElementById('pickbar'); if(pb){ pb.innerHTML=pickBar(); if(el.style) el.style.paddingBottom=(S.dpick&&S.dpick.length)?'130px':''; }
   el.innerHTML=html||'<p class="lead">見つかりませんでした。カタカナ・ひらがな、成分名（ジェネリックの名前）のどれでも探せます。</p>';
 }
+/* ================= 写真（お薬手帳・薬の説明書）から薬を選ぶ =================
+   写真はこの端末の中だけで文字にします（外に送りません）。保存もしません。 */
+let OCR={st:'',p:0,msg:'',found:[],text:''};
+const OCR_JS='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+/* 比べやすくする：半角→全角、カタカナ→ひらがな、濁点・小さい字・のばす棒・空白を外す */
+const SMALL={'ぁ':'あ','ぃ':'い','ぅ':'う','ぇ':'え','ぉ':'お','っ':'つ','ゃ':'や','ゅ':'ゆ','ょ':'よ','ゎ':'わ'};
+const onorm=t=>hira(String(t).normalize('NFKC')).normalize('NFD').replace(/[゙゚゛゜゛゜]/g,'').normalize('NFC').replace(/[ぁぃぅぇぉっゃゅょゎ]/g,c=>SMALL[c]).replace(/[一―‐－ｰ−~〜「」『』【】\[\]|｜.,、。:：;；'"`]/g,'');
+function ocrKeys(d){
+  const ks=[d.n,...(d.alt||[])];
+  if(d.g!=='漢方薬'){ const g=gname(d); ks.push(g); const g2=g.replace(/(ナトリウム|カリウム|塩酸塩|塩酸|酸エチル)$/,''); if(g2!==g) ks.push(g2); }
+  return uniq(ks.map(onorm).filter(k=>k.length>=3));
+}
+/* まず名前そのままで探す。見つからない薬だけ、1文字ちがい（読み違い）まで許して探す。
+   ただし、ほかの薬の名前として読めた所に重なる時は数えない（ブロチゾラムをエチゾラムと取りちがえないため） */
+function nearEnds(k,t){
+  const ends=[]; let prev=new Array(k.length+1); for(let i=0;i<=k.length;i++) prev[i]=i;
+  for(let j=1;j<=t.length;j++){ const cur=[0]; for(let i=1;i<=k.length;i++) cur[i]=Math.min(prev[i]+1,cur[i-1]+1,prev[i-1]+(k[i-1]===t[j-1]?0:1)); if(cur[k.length]<=1) ends.push(j); prev=cur; }
+  return ends;
+}
+function findDrugsInText(text){
+  const t=onorm(text); const hit=new Set(); const spans=[];
+  for(const d of DRUGS){ for(const k of ocrKeys(d)){ let i=t.indexOf(k); while(i>=0){ hit.add(d.id); spans.push([i,i+k.length]); i=t.indexOf(k,i+1); } } }
+  for(const d of DRUGS){ if(hit.has(d.id)) continue;
+    for(const k of ocrKeys(d)){ if(k.length<5) continue;
+      if(nearEnds(k,t).some(j=>{const s0=j-k.length; return !spans.some(([x,y])=>s0<y&&j>x);})){ hit.add(d.id); break; } } }
+  return DRUGS.filter(d=>hit.has(d.id)).map(d=>d.id);
+}
+function ocrPanel(){
+  const pick=`<button class="btn fill" data-ocr="1">📷 お薬手帳・薬の説明書を写真で読む</button><input type="file" id="ocrfile" accept="image/*" hidden>`;
+  if(OCR.st==='busy') return `<div class="panel soft ocrbox"><b>写真の文字を読んでいます…</b><div class="ocrbar"><i style="width:${Math.round(OCR.p*100)}%"></i></div><p class="note">${esc(OCR.msg)}　初めての時は文字の辞書を読み込むので、30秒〜1分ほどかかります。</p></div>`;
+  if(OCR.st==='done'){
+    const ds=OCR.found.map(id=>D[id]).filter(Boolean);
+    return `<div class="panel soft ocrbox"><b>${ds.length?`写真から ${ds.length}種類 の薬を選びました`:'写真から薬の名前が見つかりませんでした'}</b>
+    ${ds.length?`<div class="chips">${ds.map(d=>`<span class="chip on">${esc(d.n)}</span>`).join('')}</div>
+    <p class="note">下の一覧で緑のチェックが付いています。違う薬はもう一度押して外し、足りない薬は名前で探して足してください。このアプリに入っていない薬は選べません。</p>
+    <div class="row"><button class="btn fill" data-dmulti="1">まとめて見る</button>${pick}</div>`
+    :`<p class="note">文字がはっきり写るように、明るい所で、薬の名前の所を大きく撮り直してください。手で名前を探すこともできます。</p><div class="row">${pick}</div>`}
+    <details><summary>読み取った文字を見る（確かめ用・保存しません）</summary><pre>${esc(OCR.text)}</pre></details>
+    <button class="btn sm" data-ocrclose="1" style="align-self:flex-start">この表示を閉じる</button></div>`;
+  }
+  return `<div class="ocrbox">${OCR.st==='err'?`<p class="note" style="color:var(--red,#c0392b)">${esc(OCR.msg)}</p>`:''}<div class="row">${pick}</div><p class="note">写真に写った薬の名前を読んで、自動で選びます。写真はこの端末の中だけで読み、外に送ったり保存したりしません。</p></div>`;
+}
+function ocrRefresh(){ const el=document.getElementById('ocr'); if(el) el.innerHTML=ocrPanel(); }
+function loadOcrLib(){
+  if(window.Tesseract) return Promise.resolve();
+  return new Promise((ok,ng)=>{ const sc=document.createElement('script'); sc.src=OCR_JS; sc.onload=()=>ok(); sc.onerror=()=>ng(new Error('lib')); document.head.appendChild(sc); });
+}
+/* 大きさをそろえ、白黒にして文字をくっきりさせる */
+function prepImage(file){
+  return new Promise((ok,ng)=>{
+    const url=URL.createObjectURL(file); const im=new Image();
+    im.onload=()=>{ const W=Math.min(2400,Math.max(1600,im.width)); const sc=W/im.width; const c=document.createElement('canvas'); c.width=W; c.height=Math.round(im.height*sc);
+      const x=c.getContext('2d'); x.drawImage(im,0,0,c.width,c.height); const id=x.getImageData(0,0,c.width,c.height); const a=id.data;
+      for(let i=0;i<a.length;i+=4){ let v=0.299*a[i]+0.587*a[i+1]+0.114*a[i+2]; v=Math.max(0,Math.min(255,(v-128)*1.4+140)); a[i]=a[i+1]=a[i+2]=v; }
+      x.putImageData(id,0,0); URL.revokeObjectURL(url); ok(c); };
+    im.onerror=()=>{URL.revokeObjectURL(url); ng(new Error('img'));}; im.src=url;
+  });
+}
+async function runOcr(file){
+  if(!file) return;
+  OCR={st:'busy',p:0,msg:'準備しています',found:[],text:''}; ocrRefresh();
+  try{
+    await loadOcrLib();
+    const img=await prepImage(file);
+    const w=await Tesseract.createWorker('jpn',1,{logger:m=>{ if(m.status==='recognizing text'){OCR.p=m.progress;OCR.msg='文字を読んでいます';} else {OCR.msg='文字の辞書を読み込んでいます';OCR.p=Math.min(OCR.p,.1);} ocrRefresh(); }});
+    const r=await w.recognize(img); await w.terminate();
+    const text=r.data.text||''; const found=findDrugsInText(text);
+    S.dpick=uniq([...(S.dpick||[]),...found]); S.dmulti=false; S.drug=null;
+    OCR={st:'done',p:1,msg:'',found,text};
+  }catch(err){
+    OCR={st:'err',p:0,msg:err&&err.message==='img'?'写真を開けませんでした。別の写真で試してください。':'文字を読む道具を読み込めませんでした。インターネットにつながっているか確かめて、もう一度押してください。',found:[],text:''};
+  }
+  if(S.tab==='drug'&&!S.drug&&!S.dmulti){ ocrRefresh(); fillDrugList(); }
+}
+
 function drugDetail(d){
   const c=CLS[d.c], bz=CLS.bz;
   const danger=d.bz?[...c.danger,...bz.danger.slice(0,3)]:c.danger;
@@ -1603,7 +1684,9 @@ document.addEventListener('click',e=>{
   if(ds.dpick){S.dpick=S.dpick||[]; const i=S.dpick.indexOf(ds.dpick); i<0?S.dpick.push(ds.dpick):S.dpick.splice(i,1); if(S.dmulti) render(); else { const y=scrollY; fillDrugList(); scrollTo(0,y); } return;}
   if(ds.dmulti){S.dmulti=true;S.drug=null;render();scrollTo(0,0);return;}
   if(ds.dmultiback){S.dmulti=false;S.drug=null;render();scrollTo(0,0);return;}
-  if(ds.dclear){S.dpick=[];S.dmulti=false;render();return;}
+  if(ds.dclear){S.dpick=[];S.dmulti=false;if(OCR.st==='done')OCR={st:'',p:0,msg:'',found:[],text:''};render();return;}
+  if(ds.ocr){const f=document.getElementById('ocrfile'); if(f){f.value='';f.click();} return;}
+  if(ds.ocrclose){OCR={st:'',p:0,msg:'',found:[],text:''}; ocrRefresh(); return;}
   if(ds.dtoas){leaveEx(); S.a.drugs=uniq([...S.a.drugs,...(S.dpick||[]).filter(id=>D[id])]); touchA(); S.tab='as'; S.sub='base'; S.dmulti=false; save(); render(); scrollTo(0,0); return;}
   if(ds.back){if(ds.back==='dis')S.dis=null;else S.drug=null;render();scrollTo(0,0);return;}
   if(ds.cf){S.cf=ds.cf;document.querySelectorAll('#cf .chip').forEach(c=>c.classList.toggle('on',c.dataset.cf===S.cf));fillDrugList();return;}
@@ -1630,6 +1713,7 @@ document.addEventListener('input',e=>{
     if(e.target.dataset.f==='gaf'){const h=document.getElementById('gafhint'); if(h) h.textContent=gafText(e.target.value)||(e.target.value?'1〜100の数を入れてください':'');}}
 });
 document.addEventListener('change',e=>{
+  if(e.target.id==='ocrfile'){ runOcr(e.target.files&&e.target.files[0]); return; }
   if(!e.target.dataset) return;
   if(e.target.dataset.chk!==undefined){S.chk[e.target.dataset.chk]=e.target.checked; save();}
   if(e.target.dataset.ex){if(S.a.example){leaveEx();S.f[e.target.dataset.ex]=e.target.checked;touchA();render();return;} S.f[e.target.dataset.ex]=e.target.checked; touchA();}
